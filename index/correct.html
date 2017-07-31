@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>联创世华</title>
+		<link rel="stylesheet" href="../assets/css/amazeui.css">
+		<link rel="stylesheet" href="../assets/css/common.css" />
+		<link rel="stylesheet" href="../assets/css/style.css">
+		
+	</head>
+
+	<body>
+		<header data-am-widget="header" class="am-header am-header-fixed index-header">
+			<div class="am-header-left am-header-nav">
+				<a href="javascript:history.back()" class="">
+					<i class="arrow-left"></i>
+				</a>
+			</div>
+			<ul class = "correct-nav">
+				<li class = "nav-item active"><a href="javascript:;">全真模拟</a></li>
+				<li class = "nav-item"><a href="javascript:;">历年真题</a></li>
+			</ul>
+		</header>
+		<div class="header-nav">
+			<ul class = "clearfix nav-wrapper">
+				<li class = "nav-item">
+					<span class = "title">年份</span>
+					<i class = "arrow-down"></i>
+				</li>
+				<li class = "nav-item">
+					<span class = "title">地区</span>
+					<i class = "arrow-down"></i>
+				</li>
+				<li class = "nav-item">
+					<span class = "title">考试项目</span>
+					<i class = "arrow-down"></i>
+				</li>
+			</ul>
+			<div class="h-nav-down" id = "nav-wrapper">
+				<div id="scroller">
+					<ul class = "h-nav">
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">地区</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+					</ul>
+					<ul class = "h-nav">
+						<li class = "list-item">全部</li>
+						<li class = "list-item">地区</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+					</ul>
+					<ul class = "h-nav">
+						<li class = "list-item">全部</li>
+						<li class = "list-item">考试类型</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+						<li class = "list-item">全部</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="line-half"></div>
+		<div class="lcs-wrapper">
+			<ul class = "lcs-list">
+				<li class = "list-item">
+					<a href="javascript:;" class = "item-href">
+						<div class="content">
+							<h1 class = "title">2017年4月22日北京公务员</h1>
+							<div class="infor">
+								<span class = "no-answer situation">未作答</span>
+								<span class = "answer">已有<i>123</i>人作答</span>
+							</div>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="nav-mask"></div>
+	</body>
+	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
+	<script type="text/javascript" src="../assets/js/template.js"></script>
+	<script type="text/javascript" src="../assets/js/common.js"></script>
+	<script type="text/javascript" src="../assets/js/iscroll.js" ></script>
+	<script type="text/javascript">
+		$(function() {
+			//设置mask高度
+    		$('body').height($(window).height());
+    		$('body').addClass('bg-color');
+			//区域滚动
+			var myScroll = new IScroll('#nav-wrapper', {
+				click: true
+			});
+			//nav选择
+			$('.correct-nav li').on('click',function(){
+				$(this).addClass('active').siblings().removeClass('active');
+			})
+			//nav下拉
+			$('.nav-wrapper li').on('click', function() {
+				$(this).addClass('active').siblings().removeClass('active');
+				var index = $(this).index();
+				$('.h-nav-down').show();
+				$('.h-nav-down ul').eq(index).show().siblings().hide();
+				$('.nav-mask').show();
+				myScroll.refresh();
+			});
+			//点击遮罩，下拉列表隐藏
+			$('.nav-mask').click(function(){
+				$(this).hide();
+				$('.h-nav-down').hide();
+				$('.h-nav-down ul').hide();
+				$('.nav-wrapper li').removeClass('active');
+			});
+			//点击选项下拉列表隐藏
+			$('.h-nav li').on('click',function(){
+				$(this).addClass('active').siblings().removeClass('active');
+				setTimeout(function(){
+					$('.nav-mask').hide();
+					$('.h-nav-down').hide();
+					$('.h-nav-down ul').hide();
+//					$('.nav-wrapper li').removeClass('active');
+				},200 );
+				
+			})
+			
+		});
+	</script>
+
+</html>
