@@ -1,16 +1,3 @@
-//页面地址前缀
-//function preUrl(path) {
-//	var fUrl = 'http://localhost:8080/hm_tjjt/';
-//	var fUrl = 'http://192.168.2.74:8080/hm_tjjt/';
-//	var fUrl = 'www.jintaiwei.cn/hm_tjjt/';
-//	return fUrl + path;
-//}
-//function newUrl(path) {
-//	var fUrl = 'http://124.128.23.74:8010/hmapi_jintai/v100/';
-//	var fUrl = 'www.jintaiwei.cn/hmapi_jintai/v100/';
-//	var fUrl = 'http://192.168.2.74:8080/hmapi_jintai/v100/';
-//	return fUrl + path;
-//}
 
 /*
  *  获取地址栏中的参数

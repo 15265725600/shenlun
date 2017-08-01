@@ -28,13 +28,18 @@
 		    </h1>
 		</header>
 		<div class="ssc-container">
+			
 			<div class="sl-order">
 				<div class="order-num">订单号：<span>1123</span></div>
+				<div class="order-num">批改价格：<span>￥1123</span></div>
 				<div class="order-num">考试项目：<span>1123</span></div>
 				<div class="order-num">提交时间：<span>1123</span></div>
-				<div class="order-num sur-time">剩余批改时间：<span>1123</span></div>
-				<div class="order-num">剩批改时间：<span>1123</span></div>
-				<div class="n-correct">待批改</div>
+				<!--待批改-->
+				<!--<div class="n-correct">待批改</div>-->
+				<!--待支付-->
+				<div class="n-pay">待支付</div>
+				<!--已批改-->
+				<!--<div class="y-correct">已批改</div>-->
 				<div class="batch">详批</div>
 			</div>
 			<div class="sl-result">
@@ -80,11 +85,15 @@
 				<textarea name="" rows="3" cols="" class="text" style= "border:none">留言：请好好批改</textarea>
 			</div>
 		</div>
-		<footer class="scd-footer">
-			<a href="sl-correct.html">马上批改</a>
-			<a href="correct-details.html">查看批改详情</a>
+		<!--待支付状态-->
+		<footer class="sscd-footer">
+			<span class = "remove">取消批改</span>
+			<a href="javascript:;" class="pay">去支付</a>
 		</footer>
-		
+		<!--已批改状态-->
+		<!--<footer class="scd-footer">
+			<a href="correct-details.html">查看批改详情</a>
+		</footer>-->
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>

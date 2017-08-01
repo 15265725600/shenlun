@@ -28,9 +28,12 @@
 		    </h1>
 		</header>
 		<div class="msc-container">
-			<ul class="msc-nav clearfix">
+			<ul class="msc-nav ssc-nav clearfix">
 				<li class="list-item active">
 					<a href="javascript:;">全部</a>
+				</li>
+				<li class="list-item">
+					<a href="javascript:;">待支付</a>
 				</li>
 				<li class="list-item">
 					<a href="javascript:;">待批改</a>
@@ -43,7 +46,7 @@
 			<div class="msc-list-content">
 				<ul class="mac-list">
 					<li class="list-item">
-						<a href="sl-correct-details.html">
+						<a href="stu-sl-correct-details.html">
 							<div class="item-top">
 								<span class="order-num">订单号：12345</span>
 								<span class = "correct n-correct">待批改</span>
@@ -57,7 +60,7 @@
 						</a>
 					</li>
 					<li class="list-item">
-						<a href="sl-correct-details.html">
+						<a href="stu-sl-correct-details.html">
 							<div class="item-top">
 								<span class="order-num">订单号：12345</span>
 								<!--<span class = "correct n-correct">待批改</span>-->
@@ -70,7 +73,27 @@
 							</div>
 						</a>
 					</li>
+					<li class="list-item">
+						<a href="stu-sl-correct-details.html">
+							<div class="item-top">
+								<span class="order-num">订单号：12345</span>
+								<!--<span class = "correct n-correct">待批改</span>-->
+								<!--<span class="correct y-correct">已批改</span>-->
+								<span class="correct n-pay">待支付</span>
+							</div>
+							<div class="item-content">
+								<h1 class="title">2017年国家公务员考试申论模拟试卷</h1>
+								<span class="time">2012-1-1</span>
+								<div class="sur-time">剩余批改时间：<span>7天2小时22分钟</span></div>
+							</div>
+						</a>
+					</li>
 				</ul>
+				<!--无订单-->
+				<div class="no-order">
+					<img src="../assets/i/no-order.png" width="90" height="100"/>
+					<p>您还没有订单</p>
+				</div>
 			</div>
 		</div>
 	</body>

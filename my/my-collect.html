@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="../assets/css/amazeui.css">
 		<link rel="stylesheet" href="../assets/css/common.css" />
 		<link rel="stylesheet" href="../assets/css/style.css">
-		
+
 	</head>
 
 	<body>
@@ -23,68 +23,76 @@
 			</div>
 			<h1 class="am-header-title">
 		        <a href="javascript:;" class="">
-		           我的申论批改
+		           我的收藏
 		        </a>
 		    </h1>
+		    <div class="am-header-right am-header-nav">
+				<a href="javascript:;" class="">
+					<i class="compltet" style="color:#fff" id="empty" data ="0">编辑</i>
+				</a>
+			</div>
 		</header>
-		<div class="msc-container">
-			<ul class="msc-nav clearfix">
-				<li class="list-item active">
-					<a href="javascript:;">全部</a>
-				</li>
-				<li class="list-item">
-					<a href="javascript:;">待批改</a>
-				</li>
-				<li class="list-item">
-					<a href="javascript:;">已批改</a>
-				</li>
-			</ul>
-			<div class="line"></div>
-			<div class="msc-list-content">
-				<ul class="mac-list">
+		<div class="mc-container">
+			<div class="mc-box">
+				<ul class="mc-list">
 					<li class="list-item">
-						<a href="sl-correct-details.html">
-							<div class="item-top">
-								<span class="order-num">订单号：12345</span>
-								<span class = "correct n-correct">待批改</span>
-								<!--<span class="correct y-correct">已批改</span>-->
+						<a href="javascript:;" class="item-href">
+							<div class="mc-Left">
+								<input type="checkbox" class="mt"/>
 							</div>
-							<div class="item-content">
+							<div class="mc-Right">
 								<h1 class="title">2017年国家公务员考试申论模拟试卷</h1>
 								<span class="time">2012-1-1</span>
-								<div class="sur-time">剩余批改时间：<span>7天2小时22分钟</span></div>
 							</div>
 						</a>
 					</li>
 					<li class="list-item">
-						<a href="sl-correct-details.html">
-							<div class="item-top">
-								<span class="order-num">订单号：12345</span>
-								<!--<span class = "correct n-correct">待批改</span>-->
-								<span class="correct y-correct">已批改</span>
+						<a href="javascript:;" class="item-href">
+							<div class="mc-Left">
+								<input type="checkbox" class="mt"/>
 							</div>
-							<div class="item-content">
+							<div class="mc-Right">
 								<h1 class="title">2017年国家公务员考试申论模拟试卷</h1>
 								<span class="time">2012-1-1</span>
-								<div class="sur-time">剩余批改时间：<span>7天2小时22分钟</span></div>
 							</div>
 						</a>
 					</li>
-				</ul>
+				</ul>	
 			</div>
 		</div>
+		<footer class="sc-foot mc-footer">
+			<ul class="sc-box clearfix">
+				<li class = "actual-pay choose-all"><input type="checkbox" class="mt" style="margin-top: -2px;"/><span style="margin-left: 10px;">全选</span></li>
+				<li class = "go-pay">
+					<a href="javascript:;" id="del">删除</a>
+				</li>
+			</ul>
+		</footer>
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
 	<script type="text/javascript" src="../assets/js/template.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
-	<script type="text/javascript" src="../assets/js/iscroll.js" ></script>
+	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
 		$(function() {
 			$('body').addClass('bg-color');
-			$('.msc-nav li').on('click',function(){
-				$(this).addClass('active').siblings().removeClass('active');
-			})
+			$('#empty').click(function() {
+				var data = parseInt($(this).attr('data'));
+				console.log(data)
+				if(data == 0) {
+					$('.mc-list').css('marginLeft', '0px');
+					$('.mc-footer').show();
+					$(this).html('保存').attr('data', 1);
+
+				} else {
+					$('.mc-list').css('marginLeft', '-55px');
+					$('.mc-footer').hide();
+					$(this).html('编辑').attr('data', '0');
+					
+				};
+
+			});
 		});
 	</script>
 
