@@ -28,17 +28,18 @@
 		    </h1>
 		</header>
 		<div class="container">
+			<script type="text/html" id="content">
 			<div class="td-infor">
 				<div class="content">
-					<div class="infor-left"><img src="../assets/i/teacher.png" alt="" width="165" height="105"/></div>
+					<div class="infor-left"><img src="{{infor[0].avatar}}" alt="" width="165" height="105"/></div>
 					<div class="infor-right">
-						<h1 class="title">王雄安</h1>
+						<h1 class="title">{{infor[0].name}}</h1>
 						<div class="limit">本周限额：<span><i>10</i>篇</span></div>
-						<div class="surplus">剩余限额：<span><i>10</i>篇</span></div>
-						<div class="price">批改价格：<span>￥59</span></div>
+						<div class="surplus">剩余限额：<span><i>{{infor[0].shengyu_num}}</i>篇</span></div>
+						<div class="price">批改价格：<span>￥{{infor[0].pigai_price}}</span></div>
 					</div>
 				</div>
-				<div class="correct"><a href="correct.html">让TA批改</a></div>
+				<div class="correct"><a href="correct.html?fid={{infor[0].id}}&type=2">让TA批改</a></div>
 			</div>
 			<div class="line"></div>
 			<div class="td-intro">
@@ -47,6 +48,7 @@
 					<p> 毕业于北京985高校法学专业，从教多年，积累了丰富的教学实践经验，授课严谨，思路清晰，对申论理论、申论课程研发以及面试实战技</p>
 				</div>
 			</div>
+			</script>
 		</div>
 		
 	</body>
@@ -57,8 +59,26 @@
 	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
 		$(function() {
-			
 			$('body').addClass('bg-color').height($(window).height);
+			//获取老师信息
+			var id = GetQueryString('id')
+			$.ajax({
+				type: 'post',
+				url: reqUrl('famousteacher_info'),
+				dataType: "json",
+				data:{id:id},
+				xhrFields: {
+					withCredentials: true
+				},
+				async: false, //同步
+				success: function(data) {
+					if(data.success) {
+						var html = template('content', data);
+						$('.container').html(html);
+					}
+
+				}
+			});
 		});
 	</script>
 

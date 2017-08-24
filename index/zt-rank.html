@@ -9,9 +9,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<title>联创世华</title>
 		<link rel="stylesheet" href="../assets/css/amazeui.css">
+		<link rel="stylesheet" href="../assets/css/dropload.css" />
 		<link rel="stylesheet" href="../assets/css/common.css" />
 		<link rel="stylesheet" href="../assets/css/style.css">
-		
+
 	</head>
 
 	<body>
@@ -39,47 +40,93 @@
 			</div>
 		</div>
 		<div class="ztr-wrapper">
-			<ul class = "ztr-list">
-				<li class = "list-item">
-					<a href="zt-details.html" class = "item-href">
-						<div class="content">
-							<div class="item-left">
-								<span class="rank active">1</span>
-								<span class="title">两学一做专题教育</span>
+			<ul class="ztr-list">
+				<script type="text/html" id="ztrlist">
+					{{each listItems as item index}}
+					<li class="list-item">
+						<a href="zt-details.html?id={{item.id}}" class="item-href">
+							<div class="content">
+								<div class="item-left">
+									{{if item.hot_paiming < 4}}
+									<span class="rank active">{{item.hot_paiming}}</span>
+									{{else}}
+									<span class="rank">{{item.hot_paiming}}</span>
+									{{/if}}
+									<span class="title">{{item.title}}</span>
+								</div>
+								<div class="item-right">
+									<span class="eye"></span>
+									<span class="num">{{item.read_count}}</span>
+								</div>
 							</div>
-							<div class="item-right">
-								<span class="eye"></span>
-								<span class="num">1234</span>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class = "list-item">
-					<a href="zt-details.html" class = "item-href">
-						<div class="content">
-							<div class="item-left">
-								<span class="rank">1</span>
-								<span class="title">两学一做专题教育</span>
-							</div>
-							<div class="item-right">
-								<span class="eye"></span>
-								<span class="num">1234</span>
-							</div>
-						</div>
-					</a>
-				</li>
+						</a>
+					</li>
+					{{/each}}
+				</script>
 			</ul>
 		</div>
-		
+
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
 	<script type="text/javascript" src="../assets/js/template.js"></script>
+	<script type="text/javascript" src="../assets/js/dropload.min.js" ></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
-	<script type="text/javascript" src="../assets/js/iscroll.js" ></script>
+	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
 		$(function() {
-			
+			//获取真题列表
+			var token = getCookie('token');
+			goodsList()
+			function goodsList() {
+				var page = 0;
+				var $dropload = $('.ztr-wrapper').dropload({
+					scrollArea: window,
+					threshold: 50,
+					domDown: {
+						domNoData: '<div class="dropload-noData">没有更多</div>'
+					},
+					loadDownFn: function(me) {
+						$.ajax({
+							type: 'post',
+							url: reqUrl('hotquestion_list'),
+							dataType: "json",
+							data: {
+								page: page
+							},
+							async: false, //同步
+							success: function(data) {
+							 if(data.success) {
+									page++;
+									var html = '';
+									var arrLen = data.infor.listItems.length;
+									console.log(data)
+									if(arrLen > 0) {
+										//预编译模板
+										html = template('ztrlist', data.infor);
+
+									} else {
+										// 锁定
+										me.lock();
+										// 无数据
+										me.noData();
+									}
+
+									if(page == 1) {
+										$('.ztr-list').html(html);
+									} else {
+										$('.ztr-list').append(html);
+									}
+
+									me.resetload();
+								} else {
+									mask(data.msg);
+								}
+							}
+						});
+					}
+				});
+			}
 		});
 	</script>
 

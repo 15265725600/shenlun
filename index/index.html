@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="../assets/css/amazeui.css">
 		<link rel="stylesheet" href="../assets/css/common.css" />
 		<link rel="stylesheet" href="../assets/css/style.css">
+		<link rel="shortcut icon" href="../assets/i/favicon.ico" />
 	</head>
 
 	<body>
@@ -62,54 +63,31 @@
 		<div class="line"></div>
 		<div class="zt-wrapper">
 			<div class="list-header">
-				<a href="zt-rank.html" class = "item-href">
+				<a href="zt-rank.html" class="item-href">
 					<span class="title">真题排行榜</span>
 					<span class="card"><img src="../assets/i/hot.png" alt="" width="24" height="12"/></span>
 					<i class="arrow-left"></i>
 				</a>
 			</div>
 			<div class="list-content">
-				<ul>
-					<li class="list-item">
-						<a href="zt-details.html" class="item-href">
-							<div class="item-left">
-								<span class="rank"><img src="../assets/i/hot1.png" alt="" width="18" height="18"/></span>
-								<span class="title">两学一做专题教育</span>
-							</div>
-							<div class="item-right">
-								<span class="eye"></span>
-								<span class="num">1234</span>
-							</div>
-						</a>
+				<ul class="zt-list">
+					<script type="text/html" id="ztrlist">
+						{{each listItems as item index}}
+						<li class="list-item">
+							<a href="zt-details.html?id={{item.id}}" class="item-href">
+								<div class="item-left">
+									<span class="rank active">{{item.hot_paiming}}</span>
+									<span class="title">{{item.title}}</span>
+								</div>
+								<div class="item-right">
+									<span class="eye"></span>
+									<span class="num">{{item.read_count}}</span>
+								</div>
+							</a>
 
-					</li>
-					<li class="list-item">
-						<a href="zt-details.html" class="item-href">
-							<div class="item-left">
-								<span class="rank"><img src="../assets/i/hot2.png" alt="" width="18" height="18"/></span>
-								<span class="title">两学一做专题教育</span>
-							</div>
-							<div class="item-right">
-								<span class="eye"></span>
-								<span class="num">1234</span>
-							</div>
-						</a>
-
-					</li>
-					<li class="list-item">
-						<a href="javascript:;" class="item-href">
-							<div class="item-left">
-								<span class="rank"><img src="../assets/i/hot3.png" alt="" width="18" height="18"/></span>
-								<span class="title">两学一做专题教育</span>
-							</div>
-							<div class="item-right">
-								<span class="eye"></span>
-								<span class="num">1234</span>
-							</div>
-						</a>
-
-					</li>
-
+						</li>
+						{{/each}}
+					</script>
 				</ul>
 			</div>
 		</div>
@@ -143,6 +121,26 @@
 	<script type="text/javascript" src="../assets/js/template.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript">
+		var token = getCookie('token');
+		//获取热门真题
+		$.ajax({
+			type: 'post',
+			url: reqUrl('hotquestion_list'),
+			dataType: "json",
+			data: {
+				page: 0
+			},
+			async: false, //同步
+			success: function(data) {
+				if(data.success) {
+					var html = template('ztrlist', data.infor);
+					$('.zt-list').html(html);
+
+				} else {
+					mask(data.msg);
+				}
+			}
+		});
 	</script>
 
 </html>

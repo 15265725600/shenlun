@@ -28,63 +28,57 @@
 		    </h1>
 		</header>
 		<div class="ssc-container">
+			<script type="text/html" id="content">
 			<div class="sl-order">
-				<div class="order-num">订单号：<span>1123</span></div>
-				<div class="order-num">考试项目：<span>1123</span></div>
-				<div class="order-num">提交时间：<span>1123</span></div>
-				<div class="order-num sur-time">剩余批改时间：<span>1123</span></div>
-				<div class="order-num">剩批改时间：<span>1123</span></div>
+				<div class="order-num">订单号：<span>{{infor[0].order_no}}</span></div>
+				<div class="order-num">考试项目：<span>{{infor[0].style}}</span></div>
+				<div class="order-num">提交时间：<span>{{infor[0].date}}</span></div>
+				{{if infor[0].is_pigai == 0}}
+				<div class="order-num sur-time">剩余批改时间：<span>{{infor[0].shengyu_time}}</span></div>
+				{{else if infor[0].is_pigai == 1}}
+				<div class="order-num">批改时间：<span></span></div>
+				{{/if}}
+				{{if infor[0].is_pigai == 0}}
 				<div class="n-correct">待批改</div>
+				{{else if infor[0].is_pigai == 1}}
+				<div class="y-correct">已批改</div>
+				{{/if}}
 				<div class="batch">详批</div>
 			</div>
 			<div class="sl-result">
 				<h1 class="title">不打算大部分的你说的</h1>
 				<ul class="answer-nav">
-					<li class="list-item" style="padding:11px 11px">
-						<a href="../index/all-reapondence.html" class="item-href">
-							<div class="item-left">
-								<div class="item-img">
-									<img class="picture" src="../assets/i/add-pic.png" alt="" width="68" height="68" />
-									<!--<input type="file" name="temp_file" class="choose-img" />-->
-								</div>
-								<div class="content">
-									<h1 class="name">第一题</h1>
-									<span class="status">未作答</span>
-								</div>
+					{{each infor[0].question as item index}}
+					<li class="list-item">
+						<div class="item-left">
+							<div class="item-img">
+								{{if item.is_answer == 0}}
+								<img class="picture" src="../assets/i/add-pic.png" alt="" width="68" height="68" /> {{else if item.is_answer == 1}}
+								<img class="picture" src="{{item.answer.split(',')[0]}}" alt="" width="68" height="68" /> {{/if}}
 							</div>
-							<div class="item-right">
-								<span href="javascript:;" class="item-answer">查看作答</span>
+							<div class="content">
+								<h1 class="name">{{item.title}}</h1> {{if item.is_answer == 0}}
+								<span class="status">未作答</span> {{else if item.is_answer == 1}}
+								<span class="status">已作答</span> {{/if}}
 							</div>
-						</a>
+						</div>
+						<div class="item-right">
+							<a href="../index/look-answer.html?id={{item.id}}" class="item-answer">查看作答</a>
+						</div>
 					</li>
-					<li class="list-item" style="padding:11px 11px">
-						<a href="all-reapondence.html" class="item-href">
-							<div class="item-left">
-								<div class="item-img">
-									<img class="picture" src="../assets/i/teacher.png" alt="" width="68" height="68" />
-									<!--<input type="file" name="temp_file" class="choose-img" />-->
-								</div>
-								<div class="content">
-									<h1 class="name">第一题</h1>
-									<span class="status">未作答</span>
-								</div>
-							</div>
-							<div class="item-right">
-								<span href="javascript:;" class="item-answer">查看作答</span>
-							</div>
-						</a>
-					</li>
+					{{/each}}
 				</ul>
 			</div>
 			<div class="ssc-message">
-				<textarea name="" rows="3" cols="" class="text" style= "border:none">留言：请好好批改</textarea>
+				<textarea name="" rows="3" cols="" class="text" style="border:none">{{infor[0].message}}</textarea>
 			</div>
+			</script>
 		</div>
 		<footer class="scd-footer">
-			<a href="sl-correct.html">马上批改</a>
-			<a href="correct-details.html">查看批改详情</a>
+			<!--<a href="sl-correct.html">马上批改</a>
+			<a href="correct-details.html">查看批改详情</a>-->
 		</footer>
-		
+
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
@@ -93,7 +87,47 @@
 	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
 		$(function() {
-//			$('body').addClass('bg-color');
+			var token = getCookie('token');
+			var id = GetQueryString('id');
+			var para = window.location.search;
+			$.ajax({
+				url: reqUrl('pigai_info'),
+				type: 'post',
+				dataType: 'json',
+				data: {
+					token: token,
+					id: id
+				},
+				xhrFields: {
+					withCredentials: true
+				},
+				success: function(data) {
+					if(data.error_code == 200) {
+						window.location.href = preUrl('log/login.html'+para+'&path=index/sl-correct-details.html');
+					} else if(data.success) {
+						var content = template('content',data);
+						$('.ssc-container').html(content);
+						var status = data.infor[0].is_pigai;
+						var pid = data.infor[0].pigai_id;
+						console.log(pid)
+						if(status == 0){
+							var con = '<a href="sl-correct.html?id='+pid+'">马上批改</a>';
+							$('.scd-footer').html(con);
+						}
+						else if(status == 1){
+							var con = '<a href="correct-details.html?id='+pid+'">查看批改详情</a>';
+							$('.scd-footer').html(con);
+						}
+					} else {
+						mask(data.msg);
+					}
+
+				},
+				error: function(e, request, settings) {
+					alert(settings);
+				}
+			});
+			
 		});
 	</script>
 

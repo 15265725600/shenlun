@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="../assets/css/amazeui.css">
 		<link rel="stylesheet" href="../assets/css/common.css" />
 		<link rel="stylesheet" href="../assets/css/style.css">
-		
+
 	</head>
 
 	<body>
@@ -28,54 +28,196 @@
 		    </h1>
 		</header>
 		<div class="container">
-			<div class="de-top">
-				<div class="top">
-					<h1 class = "title">两学一做专题</h1>
-					<span class = "hot-rank red-bg">热门排行：第一名</span><span class = "readed blue-bg">已有<i>1234</i>人阅读</span>
-				</div>
-				<div class="word">
-					<p>中共中央总书记、国家主席、中央军委主席习近平日前作出重要指示强调，在全党开展“两学一做”学习教育，取得了显著成效。实践证明中共中央总书记、国家主席、中央军委主席习近平日前作出重要指示强调，在全党开展“两学一做”学习教育，取得了显</p>
-				</div>
-				<div class="function">
-					<div class="collect">
-						<span class = "c-img"></span>
-						<span class = "c-num">收藏<i>123</i></span>
+			<script type="text/html" id="content">
+				<div class="de-top">
+					<div class="top">
+						<h1 class="title">{{infor[0].title}}</h1>
+						<span class="hot-rank red-bg">热门排行：第{{infor[0].hot_paiming}}名</span><span class="readed blue-bg">已有<i>{{infor[0].shoucang_count}}</i>人阅读</span>
 					</div>
-					<div class="good">
-						<span class = "g-img"></span>
-						<span class = "g-num">点赞<i>123</i></span>
+					<div class="word">
+						<p>{{infor[0].read_count}}</p>
+					</div>
+					<div class="function">
+						<div class="collect">
+							{{if infor[0].shoucang_status == 1}}
+							<span class="c-img active" id="collect"></span> {{else if infor[0].shoucang_status == 0}}
+							<span class="c-img" id="collect"></span> {{/if}}
+							<span class="c-num">收藏<i class="collect-num">{{infor[0].shoucang_count}}</i></span>
+						</div>
+						<div class="good">
+							{{if infor[0].dianzan_status == 1}}
+							<span class="g-img active" id="give-up"></span> {{else if infor[0].dianzan_status == 0}}
+							<span class="g-img" id="give-up"></span>{{/if}}
+							<span class="g-num">点赞<i class="give-up">{{infor[0].dianzan_count}}</i></span>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="line"></div>
-			<div class="de-about">
-				<div class="top-title">
-					<a href="javascript:;" class = "item-href">
-						<h1>相关文章</h1>
-						<i class = "arrow-right"></i>
-					</a>
-				</div>
-				<ul class = "article-list">
-					<li class = "list-item">
-						<a href="me-details.html" class = "item-href">
-							<div class="content">
-								<h1 class = "title">上班族复习之路，扬长避短，行测77分，申论…</h1>
-								<span class = "read">已有<i>1234</i>人阅读</span>
-							</div>
+				<div class="line"></div>
+				<div class="de-about">
+					<div class="top-title">
+						<a href="javascript:;" class="item-href">
+							<h1>相关文章</h1>
+							<i class="arrow-right"></i>
 						</a>
-					</li>
-				</ul>
-			</div>
+					</div>
+					<ul class="article-list">
+						{{each infor[0].list as item index}}
+						<li class="list-item">
+							<a href="zt-details.html?id={{item.id}}" class="item-href">
+								<div class="content">
+									<h1 class="title">{{item.title}}</h1>
+									<span class="read">已有<i>{{item.read_count}}</i>人阅读</span>
+								</div>
+							</a>
+						</li>
+						{{/each}}
+					</ul>
+				</div>
+			</script>
 		</div>
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
 	<script type="text/javascript" src="../assets/js/template.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
-	<script type="text/javascript" src="../assets/js/iscroll.js" ></script>
+	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
 		$(function() {
-			
+			//获取真题详情
+			var id = GetQueryString('id');
+			var token = getCookie('token');
+			var para = window.location.search;
+			$.ajax({
+				type: 'post',
+				url: reqUrl('question_info'),
+				dataType: "json",
+				data: {
+					token: token,
+					id: id
+				},
+				xhrFields: {
+					withCredentials: true
+				},
+				async: false, //同步
+				success: function(data) {
+					if(data.error_code == 200) {
+						window.location.href = preUrl('log/login.html' + para + '&path=index/zt-details.html');
+					} else if(data.success) {
+						var html = template('content', data);
+						$('.container').html(html);
+					}
+
+				}
+			});
+
+			$('#collect').on('click', function() {
+				console.log(0)
+				$(this).toggleClass('active');
+				if($(this).hasClass('active')) {
+					$.ajax({
+						url: reqUrl('shoucang_click_hotquestion'),
+						type: 'post',
+						dataType: 'json',
+						data: {
+							token: token,
+							id: id
+						},
+						xhrFields: {
+							withCredentials: true
+						},
+						success: function(data) {
+							if(data.error_code == 200) {
+								window.location.href = preUrl('log/login.html' + para + '&path=index/zt-details.html');
+							} else if(data.success) {
+								var collectNum = data.infor[0].shoucang_count;
+								$('.collect-num').html(collectNum);
+							}
+						},
+						error: function(e, request, settings) {
+							alert(settings);
+						}
+					});
+				} else {
+					$.ajax({
+						url: reqUrl('shoucang_cancel_hotquestion'),
+						type: 'post',
+						dataType: 'json',
+						data: {
+							token: token,
+							id: id
+						},
+						xhrFields: {
+							withCredentials: true
+						},
+						success: function(data) {
+							if(data.error_code == 200) {
+								window.location.href = preUrl('log/login.html?path=index/zt-details.html');
+							} else if(data.success) {
+								var collectNum = data.infor[0].shoucang_count;
+								$('.collect-num').html(collectNum);
+							}
+						},
+						error: function(e, request, settings) {
+							alert(settings);
+						}
+					});
+				}
+
+			})
+
+			$('#give-up').on('click', function() {
+				$(this).toggleClass('active');
+				if($(this).hasClass('active')) { //点赞
+					$.ajax({
+						url: reqUrl('dianzan_click_hotquestion'),
+						type: 'post',
+						dataType: 'json',
+						data: {
+							token: token,
+							id: id
+						},
+						xhrFields: {
+							withCredentials: true
+						},
+						success: function(data) {
+							if(data.error_code == 200) {
+								window.location.href = preUrl('log/login.html' + para + '&path=index/zt-details.html');
+							} else if(data.success) {
+								var collectNum = data.infor[0].dianzan_count;
+								$('.give-up').html(collectNum);
+							}
+						},
+						error: function(e, request, settings) {
+							alert(settings);
+						}
+					});
+				} else { //取消点赞
+					$.ajax({
+						url: reqUrl('dianzan_cancel_hotquestion'),
+						type: 'post',
+						dataType: 'json',
+						data: {
+							token: token,
+							id: id
+						},
+						xhrFields: {
+							withCredentials: true
+						},
+						success: function(data) {
+							if(data.error_code == 200) {
+								window.location.href = preUrl('log/login.html?path=index/zt-details.html');
+							} else if(data.success) {
+								var collectNum = data.infor[0].dianzan_count;
+								$('.give-up').html(collectNum);
+							}
+						},
+						error: function(e, request, settings) {
+							alert(settings);
+						}
+					});
+				}
+
+			})
 		});
 	</script>
 

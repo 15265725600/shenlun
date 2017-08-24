@@ -4,6 +4,7 @@
 .blue-bg {
   background-color: #329bde;
 }
+/*单行省略*/
 /*border-1px 实现*/
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
   .border-1px::after {
@@ -162,6 +163,16 @@
   height: 18px;
   vertical-align: top;
   margin-top: 5px;
+  font-size: 12px;
+}
+.zt-wrapper .list-content .list-item .item-left .rank.active {
+  width: 18px;
+  height: 18px;
+  background-image: url("../i/circle.png");
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  text-align: center;
+  line-height: 18px;
 }
 .zt-wrapper .list-content .list-item .item-left .title {
   font-size: 16px;
@@ -273,7 +284,10 @@
   width: 100%;
   background: #329bde;
   padding: 9px 0px;
-  position: relative;
+  position: fixed;
+  z-index: 12;
+  top: 49px;
+  left: 0;
   /*申论范文nav*/
 }
 .header-nav .nav-wrapper {
@@ -288,10 +302,12 @@
   background: #fff;
   border-radius: 14px;
   padding: 3px 0;
+  font-size: 14px;
 }
 .header-nav .nav-item.active {
   background: #0680ce;
   text-align: center;
+  color: #fff;
 }
 .header-nav .nav-item.active .title {
   color: #fff;
@@ -360,6 +376,7 @@
 .lcs-wrapper {
   width: 100%;
   background: #fff;
+  padding-top: 49px;
 }
 .lcs-wrapper .lcs-list {
   padding-left: 20px;
@@ -420,6 +437,7 @@
 .lcm-wrapper {
   width: 100%;
   background: #fff;
+  padding-top: 49px;
 }
 .lcm-wrapper .lcm-list {
   padding-left: 18px;
@@ -558,7 +576,7 @@
   top: 2px;
 }
 .de-top .function .collect .c-img.active {
-  background-image: url("../i/collect.png");
+  background-image: url("../i/collet.png");
   background-repeat: no-repeat;
   background-size: 17px 16px;
 }
@@ -1147,6 +1165,9 @@
 .answer-nav .list-item {
   position: relative;
   padding: 11px 22px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 .answer-nav .list-item:after {
   display: block;
@@ -1160,24 +1181,19 @@
 .answer-nav .list-item::last-child:after {
   display: none;
 }
-.answer-nav .list-item .item-href {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-.answer-nav .list-item .item-href .item-left {
+.answer-nav .list-item .item-left {
   flex: 1;
   -webkit-flex: 1;
   -ms-flex: 1;
   display: block;
 }
-.answer-nav .list-item .item-href .item-left .item-img {
+.answer-nav .list-item .item-left .item-img {
   display: inline-block;
   background: #fff;
   position: relative;
   vertical-align: top;
 }
-.answer-nav .list-item .item-href .item-left .item-img .choose-img {
+.answer-nav .list-item .item-left .item-img .choose-img {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -1185,28 +1201,28 @@
   left: 0;
   opacity: 0;
 }
-.answer-nav .list-item .item-href .item-left .content {
+.answer-nav .list-item .item-left .content {
   display: inline-block;
   margin-left: 8px;
   padding-top: 10px;
 }
-.answer-nav .list-item .item-href .item-left .content .name {
+.answer-nav .list-item .item-left .content .name {
   color: #000;
   font-size: 16px;
   font-weight: 100;
 }
-.answer-nav .list-item .item-href .item-left .content .status {
+.answer-nav .list-item .item-left .content .status {
   color: #8f8f8f;
   font-size: 14px;
 }
-.answer-nav .list-item .item-href .item-right {
+.answer-nav .list-item .item-right {
   flex: 0 0 93px;
   width: 93px;
   -webkit-flex: 0 0 93px;
   -ms-flex: 0 0 93px;
   padding-top: 20px;
 }
-.answer-nav .list-item .item-href .item-right .item-answer {
+.answer-nav .list-item .item-right .item-answer {
   display: block;
   border: 1px solid #525252;
   height: 31px;
@@ -1224,7 +1240,7 @@
 .ar-container .ar-title {
   background: #FFF;
   text-align: center;
-  padding: 20px 0;
+  padding: 10px 0;
   color: #329bde;
   font-size: 18px;
   font-weight: 100;
@@ -1735,7 +1751,7 @@
   width: 100%;
   padding: 15px 10px;
   background: #F6F6F6;
-  color: #b2b2b2;
+  color: #353535;
   font-size: 16px;
   border: none;
 }
@@ -1826,6 +1842,9 @@
   padding-right: 15px;
   color: #b2b2b2;
 }
+.pi-container .pi-list .list-item .item-right img {
+  border-radius: 50%;
+}
 .pi-container .pi-list .list-item .item-right input {
   border: 0;
   outline: 0;
@@ -1865,6 +1884,7 @@
 }
 .my-content img {
   margin: auto;
+  border-radius: 50%;
 }
 .my-content .name {
   color: #fff;
@@ -2094,6 +2114,7 @@
   color: #000;
   width: 92px;
   box-sizing: border-box;
+  margin-right: 10px;
 }
 .sscd-footer .pay {
   display: inline-block;
@@ -2104,6 +2125,18 @@
   color: #fff;
   width: 92px;
   background: #329bde;
+}
+.sscd-footer .look {
+  width: 90%;
+  height: 45px;
+  line-height: 45px;
+  background: #329bde;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 20px;
+  margin: auto;
+  display: block;
 }
 /*申论批改页面*/
 .sl-container {
@@ -2208,7 +2241,7 @@
   width: 100%;
 }
 .cd-container .cd-img {
-  margin-top: 20px ;
+  margin-top: 20px;
 }
 .cd-container .cd-img .cd-list {
   padding: 0 15px;
@@ -2219,6 +2252,10 @@
 .cd-container .cd-img .cd-list .list-item {
   width: 80px;
   height: 80px;
+}
+.cd-container .cd-img .cd-list .list-item img {
+  width: 70px;
+  height: 70px;
 }
 @media only screen and (max-width: 320px) {
   .cd-container .cd-img .cd-list .list-item {

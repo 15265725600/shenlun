@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
-	  <meta charset="UTF-8">
-	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	  <meta name="description" content="">
-	  <meta name="keywords" content="">
-	  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	  <title>完善信息</title>
-	  <!--<link rel="stylesheet" href="../assets/css/reset.css" />-->
-	  <link rel="stylesheet" href="../assets/css/amazeui.css">
-	  <link rel="stylesheet" href="../assets/css/common.css" />
-	  <link rel="stylesheet" href="../assets/css/style.css">
-	 
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>完善信息</title>
+		<!--<link rel="stylesheet" href="../assets/css/reset.css" />-->
+		<link rel="stylesheet" href="../assets/css/amazeui.css">
+		<link rel="stylesheet" href="../assets/css/common.css" />
+		<link rel="stylesheet" href="../assets/css/style.css">
+
 	</head>
+
 	<body>
 		<!--header部分-->
 		<header data-am-widget="header" class="am-header index-header am-header-fixed">
@@ -26,78 +28,386 @@
 		          完善个人信息
 		        </a>
 		    </h1>
-		     <div class="am-header-right am-header-nav">
+			<div class="am-header-right am-header-nav">
 				<a href="javascript:;" class="">
-					<i class="compltet" style="color:#fff" id="empty" data ="0">完成</i>
+					<i class="compltet" style="color:#fff" id="empty" data="0">完成</i>
 				</a>
 			</div>
 		</header>
-	  <div class="pi-container">
-	  	<ul class = "pi-list">
-	  		<li class="list-item">
-	  			<a href="javascript:;" class = "item-href clearfix">
-	  				<span class = "item-left">头像</span>
-	  				<div class="item-right am-fr">
-	  					<img src="../assets/i/avatar.png" alt="" width="42" height="42"/>
-	  					<input type="file" name = 'temp_file' id="name-fils" value="" class="file"/>
-	  				</div>
-	  			</a>
-	  		</li>
-	  		<li class="list-item">
-	  			<a href="javascript:;" class = "item-href clearfix">
-	  				<span class = "item-left">姓名</span>
-	  				<div class="item-right am-fr">
-	  					<input type="text" placeholder="请输入姓名"/>
-	  				</div>
-	  			</a>
-	  		</li>
-	  		<li class="list-item">
-	  			<a href="javascript:;" class = "item-href clearfix">
-	  				<span class = "item-left">昵称</span>
-	  				<div class="item-right am-fr">
-	  					<input type="text" placeholder="请输入您的昵称"/>
-	  				</div>
-	  			</a>
-	  		</li>
-	  		<li class="list-item">
-	  			<a href="javascript:;" class = "item-href clearfix" id = "choose-addr">
-	  				<span class = "item-left">地址</span>
-	  				<div class="item-right am-fr">
-	  					选择<i class="arrow-right"></i>
-	  				</div>
-	  			</a>
-	  		</li>
-	  		<li class="list-item">
-	  			<a href="javascript:;" class = "item-href clearfix">
-	  				<span class = "item-left">毕业院校</span>
-	  				<div class="item-right am-fr">
-	  					<input type="text" placeholder="请输入您的毕业院校"/>
-	  				</div>
-	  			</a>
-	  		</li>
-	  		<li class="list-item">
-	  			<a href="javascript:;" class = "item-href clearfix">
-	  				<span class = "item-left">邮箱</span>
-	  				<div class="item-right am-fr">
-	  					<input type="text" placeholder="请输入您的邮箱"/>
-	  				</div>
-	  			</a>
-	  		</li>
-	  		<li class="list-item">
-	  			<a href="javascript:;" class = "item-href clearfix" id = "choose-type">
-	  				<span class = "item-left">考试类型</span>
-	  				<div class="item-right am-fr">
-	  					选择<i class="arrow-right"></i>
-	  				</div>
-	  			</a>
-	  		</li>
-	  	</ul>
-	  </div>
+		<div class="pi-container">
+			<ul class="pi-list">
+				<script type="text/html" id="content">
+					<li class="list-item">
+					<a href="javascript:;" class="item-href clearfix">
+						<span class="item-left">头像</span>
+						<div class="item-right am-fr" id="top-pdc">
+							<img src="{{infor[0].avatar}}" alt="" width="42" height="42" />
+							<input type="file" name='temp_file' value="" class="file" />
+						</div>
+					</a>
+				</li>
+				<li class="list-item">
+					<a href="javascript:;" class="item-href clearfix">
+						<span class="item-left">姓名</span>
+						<div class="item-right am-fr">
+							<input type="text" value="{{infor[0].name}}" id="name" />
+						</div>
+					</a>
+				</li>
+				<li class="list-item">
+					<a href="javascript:;" class="item-href clearfix">
+						<span class="item-left">昵称</span>
+						<div class="item-right am-fr">
+							<input type="text" value="{{infor[0].nickname}}" id="nickname" />
+						</div>
+					</a>
+				</li>
+				<li class="list-item" id="choose-addr">
+					<a href="javascript:;" class="item-href clearfix" id="choose-addr">
+						<span class="item-left">地址</span>
+						<div class="item-right am-fr">
+							<span id="address" style="font-size: 15px;color: #353535;">{{infor[0].address}}</span><i class="arrow-right"></i>
+						</div>
+					</a>
+				</li>
+				<li class="list-item">
+					<a href="javascript:;" class="item-href clearfix">
+						<span class="item-left">毕业院校</span>
+						<div class="item-right am-fr">
+							<input type="text" value="{{infor[0].gradute}}" id="school" />
+						</div>
+					</a>
+				</li>
+				<li class="list-item">
+					<a href="javascript:;" class="item-href clearfix">
+						<span class="item-left">邮箱</span>
+						<div class="item-right am-fr">
+							<input type="text" value="{{infor[0].email}}" id="mailbox" />
+						</div>
+					</a>
+				</li>
+				<li class="list-item">
+					<a href="javascript:;" class="item-href clearfix" id="choose-type">
+						<span class="item-left">考试类型</span>
+						<div class="item-right am-fr">
+							<span id="type-text" style="font-size: 15px;color: #353535;">{{infor[0].exam}}</span><i class="arrow-right"></i>
+						</div>
+					</a>
+				</li>
+				</script>
+			</ul>
+		</div>
 	</body>
-	<script src = "../assets/js/jquery.min.js"></script>
-	<script src = "../assets/js/amazeui.js"></script>
-	<script src = "../assets/js/picker.min.js"></script>
-	<script src = '../assets/js/exif.min.js'></script>
-	<script type="text/javascript" src="../assets/js/template.js" ></script>	
-	
+	<script src="../assets/js/jquery.min.js"></script>
+	<script src="../assets/js/amazeui.js"></script>
+	<script src="../assets/js/common.js"></script>
+	<script src="../assets/js/picker.min.js"></script>
+	<script src='../assets/js/exif.min.js'></script>
+	<script src="../assets/js/template.js"></script>
+	<script>
+		//获取用户信息
+		var token = getCookie('token');
+		$.ajax({
+			url: reqUrl('student_get'),
+			type: 'post',
+			dataType: 'json',
+			data: {
+				token: token,
+				id: 1
+			},
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function(data) {
+				if(data.success) {
+					var content = template('content', data);
+					$('.pi-list').html(content);
+					//上传头像
+					$('.file').on('change', function(e) {
+						if(!window.FileReader) return;
+
+						e.stopPropagation();
+						e.preventDefault();
+
+						var file = e.target.files[0];
+						var content = '';
+						if(!file.type.match('image.*')) {
+							alert('文件' + f.name + '不是图片')
+							return;
+						}
+
+						var orientation;
+						//EXIF js 可以读取图片的元信息 https://github.com/exif-js/exif-js
+						EXIF.getData(file, function() {
+							orientation = EXIF.getTag(this, 'Orientation');
+						});
+
+						var reader = new FileReader();
+
+						reader.onload = function(e) {
+							getImgData(this.result, orientation, function(data) {
+								$.ajax({
+									type: 'POST',
+									url: reqUrl("web_file_upload_return_url"),
+									data: {
+										token: token,
+										keytype: 1,
+										img: data
+									},
+									dataType: 'JSON',
+									xhrFields: {
+										withCredentials: true
+									},
+									//async: false,
+									success: function(data) {
+										console.log(data);
+										content = ' <img class="avatar" width="42" height="42" src="' + data.infor[0].item1 + '">';
+										$('#top-pdc').find('img').replaceWith(content);
+									}
+								});
+							});
+
+						}
+						reader.readAsDataURL(file);
+
+					});
+					//获取考试类型
+					var examStyle = [];
+					$.ajax({
+						type: 'POST',
+						url: reqUrl("style_list"),
+						dataType: 'JSON',
+						data: {
+							token: token
+						},
+						async: false,
+						xhrFields: {
+							withCredentials: true
+						},
+						success: function(data) {
+							//				examStyle = data.infor.listItems;
+							if(data.success) {
+								var shopCla = document.getElementById('choose-type');
+								var shopval = document.getElementById('type-text')
+								var arrLen = data.infor.listItems;
+								for(var i = 1; i <= arrLen.length; i++) {
+									var item = {
+										text: data.infor.listItems[i - 1].style,
+										value: i
+									}
+									examStyle.push(item);
+								}
+								pickerShow([examStyle], shopCla, shopval, 1, "")
+							} else {
+								mask(data.msg)
+							}
+						},
+						error: function(e, request, settings) {
+							alert(settings);
+						}
+					});
+
+					//获取城市列表
+					var city = [];
+					$.ajax({
+						type: 'POST',
+						url: reqUrl("district_list_sanji"),
+						dataType: 'JSON',
+						async: false,
+						xhrFields: {
+							withCredentials: true
+						},
+						success: function(data) {
+							city = data.infor.listItems;
+							console.log(city)
+						},
+						error: function(e, request, settings) {
+							alert(settings);
+						}
+					});
+					//获取地址
+					//店铺地址
+					var cityId = [];
+					var nameEl = document.getElementById('choose-addr');
+					var addr = document.getElementById('address');
+
+					var first = []; /* 省，直辖市 */
+					var second = []; /* 市 */
+					var third = []; /* 镇 */
+
+					var checked = [0, 0, 0]; /* 已选选项 */
+
+					function creatList(obj, list) {
+						obj.forEach(function(item, index, arr) {
+							var temp = new Object();
+							temp.text = item.name;
+							temp.value = item.id;
+							list.push(temp);
+						})
+					}
+
+					creatList(city, first); // 省
+
+					if(city[0].hasOwnProperty('children')) {
+						creatList(city[0].children, second); //市
+					} else {
+						second = [{
+							text: '',
+							value: 0
+						}];
+					}
+
+					if(city[0].children[0].hasOwnProperty('children')) {
+						creatList(city[0].children[0].children, third); //区
+					} else {
+						third = [{
+							text: '',
+							value: 0
+						}];
+					}
+
+					var picker = new Picker({
+						data: [first, second, third],
+						selectedIndex: [0, 0, 0],
+						title: ''
+					});
+
+					picker.on('picker.select', function(selectedVal, selectedIndex) {
+						var text1 = first[selectedIndex[0]].text;
+						var text2 = second[selectedIndex[1]].text;
+						var text3 = third[selectedIndex[2]] ? third[selectedIndex[2]].text : '';
+
+						addr.innerHTML = text1 + ' ' + text2 + ' ' + text3;
+					});
+
+					picker.on('picker.change', function(index, selectedIndex) {
+						if(index === 0) {
+							firstChange();
+						} else if(index === 1) {
+							secondChange();
+						}
+
+						function firstChange() {
+							second = [];
+							third = [];
+							checked[0] = selectedIndex;
+							var firstCity = city[selectedIndex];
+							if(firstCity.hasOwnProperty('children')) {
+								creatList(firstCity.children, second);
+
+								var secondCity = city[selectedIndex].children[0]
+								if(secondCity.hasOwnProperty('children')) {
+									creatList(secondCity.children, third);
+								} else {
+									third = [{
+										text: '',
+										value: 0
+									}];
+									checked[2] = 0;
+								}
+							} else {
+								second = [{
+									text: '',
+									value: 0
+								}];
+								third = [{
+									text: '',
+									value: 0
+								}];
+								checked[1] = 0;
+								checked[2] = 0;
+							}
+
+							picker.refillColumn(1, second);
+							picker.refillColumn(2, third);
+							picker.scrollColumn(1, 0)
+							picker.scrollColumn(2, 0)
+						}
+
+						function secondChange() {
+							third = [];
+							checked[1] = selectedIndex;
+							var first_index = checked[0];
+							if(city[first_index].children[selectedIndex].hasOwnProperty('children')) {
+								var secondCity = city[first_index].children[selectedIndex];
+								creatList(secondCity.children, third);
+								picker.refillColumn(2, third);
+								picker.scrollColumn(2, 0)
+							} else {
+								third = [{
+									text: '',
+									value: 0
+								}];
+								checked[2] = 0;
+								picker.refillColumn(2, third);
+								picker.scrollColumn(2, 0)
+							}
+						}
+
+					});
+
+					picker.on('picker.valuechange', function(selectedVal, selectedIndex) {
+						cityId = selectedVal;
+					});
+					nameEl.addEventListener('click', function() {
+						picker.show();
+					});
+					//点击保存
+					$('.compltet').click(function(e) {
+						e.stopPropagation();
+						e.preventDefault();
+						var img = $('.avatar').attr('src');
+						var name = $('#name').val();
+						var nickname = $('#nickname').val();
+						var addr = $('#address').text();
+						var replaceStr = ' '; //要替换的字符串
+						var address = addr.replace(new RegExp(replaceStr, 'gm'), ','); //逗号替换成空
+						var school = $('#school').val();
+						var mailbox = $('#mailbox').val();
+						var examstyle = $('#type-text').text();
+						var pwd = GetQueryString('pwd');
+						var username = GetQueryString('username');
+						$.ajax({
+							type: 'POST',
+							url: reqUrl("student_save"),
+							dataType: 'JSON',
+							async: false,
+							data: {
+								token: token,
+								nickname: nickname,
+								name: name,
+								gradute: school,
+								shoptype: 1,
+								img: img,
+								exam: examstyle,
+								address: address,
+								email: mailbox
+							},
+							xhrFields: {
+								withCredentials: true
+							},
+							success: function(data) {
+								if(data.success) {
+									window.location.href = preUrl("my/my.html");
+								} else {
+									mask(data.msg)
+								}
+							},
+							error: function(e, request, settings) {
+								alert(settings)
+							}
+						});
+					})
+
+				} else {
+					mask(data.msg);
+				}
+
+			},
+			error: function(e, request, settings) {
+				alert(settings);
+			}
+		});
+	</script>
+
 </html>

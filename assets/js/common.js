@@ -1,4 +1,11 @@
 
+var para = window.location.search;
+//页面地址前缀
+function preUrl(path) {
+	var fUrl = 'http://127.0.0.1:8020/hm_slpg/';
+	return fUrl + path;
+}
+
 /*
  *  获取地址栏中的参数
  *   GetQueryString('参数名1')
@@ -13,13 +20,13 @@ function GetQueryString(name) {
 
 //ajax 传参url
 function reqUrl(path) {
-	var frontUrl = 'http://124.128.23.74:8010/hmapi_jintai/v100/';
-
+	var frontUrl = 'http://192.168.2.146:8008/group19/hm_shenlun/index.php/Webservice/V100/';
+	return frontUrl + path;
 }
 
-function netUrl(path) {
-	var frontUrl = 'http://124.128.23.74:8010/hmapi_jintai/plugins/';
-}
+//function netUrl(path) {
+//	var frontUrl = 'http://124.128.23.74:8010/hmapi_jintai/plugins/';
+//}
 var token;
 
 //设置cookie

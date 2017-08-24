@@ -13,6 +13,18 @@
 }
 
 
+/*单行省略*/
+
+.text-overflow(@display: block) {
+    display: @display;
+    word-wrap: normal;
+    /* for IE */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
 /*border-1px 实现*/
 
 .border-1px(@color) {
@@ -138,7 +150,7 @@
                 width: 100%;
             }
         }
-        @media only screen and (max-width:320px){
+        @media only screen and (max-width:320px) {
             a {
                 display: block;
                 width: 43px;
@@ -221,6 +233,16 @@
                     height: 18px;
                     vertical-align: top;
                     margin-top: 5px;
+                    font-size: 12px;
+                    &.active {
+                        width: 18px;
+                        height: 18px;
+                        .bg-image('circle',
+                        18px,
+                        18px);
+                        text-align: center;
+                        line-height: 18px;
+                    }
                 }
                 .title {
                     font-size: 16px;
@@ -333,7 +355,10 @@
     width: 100%;
     background: @blue;
     padding: 9px 0px;
-    position: relative;
+    position: fixed;
+    z-index: 12;
+    top: 49px;
+    left: 0;
     .nav-wrapper {
         padding: 0 10px;
         margin: auto;
@@ -346,9 +371,12 @@
         background: #fff;
         border-radius: 14px;
         padding: 3px 0;
+        //      color: #fff;
+        font-size: 14px;
         &.active {
             background: #0680ce;
             text-align: center;
+            color: #fff;
             .title {
                 color: #fff;
             }
@@ -418,6 +446,7 @@
 .lcs-wrapper {
     width: 100%;
     background: #fff;
+    padding-top: 49px;
     .lcs-list {
         padding-left: 20px;
         .list-item {
@@ -469,6 +498,7 @@
 .lcm-wrapper {
     width: 100%;
     background: #fff;
+    padding-top: 49px;
     .lcm-list {
         padding-left: 18px;
         .list-item {
@@ -589,7 +619,7 @@
                 position: relative;
                 top: 2px;
                 &.active {
-                    .bg-image('collect',
+                    .bg-image('collet',
                     17px,
                     16px);
                 }
@@ -1178,64 +1208,62 @@
     .list-item {
         .border-1px(@line);
         padding: 11px 22px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
         &::last-child {
             .border-none();
         }
-        .item-href {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            .item-left {
-                flex: 1;
-                -webkit-flex: 1;
-                -ms-flex: 1;
-                display: block;
-                .item-img {
-                    display: inline-block;
-                    background: #fff;
-                    position: relative;
-                    vertical-align: top;
-                    .choose-img {
-                        width: 100%;
-                        height: 100%;
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        opacity: 0;
-                    }
-                }
-                .content {
-                    display: inline-block;
-                    margin-left: 8px;
-                    padding-top: 10px;
-                    .name {
-                        color: #000;
-                        font-size: 16px;
-                        font-weight: 100;
-                    }
-                    .status {
-                        color: #8f8f8f;
-                        font-size: 14px;
-                    }
+        .item-left {
+            flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            display: block;
+            .item-img {
+                display: inline-block;
+                background: #fff;
+                position: relative;
+                vertical-align: top;
+                .choose-img {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    opacity: 0;
                 }
             }
-            .item-right {
-                flex: 0 0 93px;
-                width: 93px;
-                -webkit-flex: 0 0 93px;
-                -ms-flex: 0 0 93px;
-                padding-top: 20px;
-                .item-answer {
-                    display: block;
-                    border: 1px solid #525252;
-                    height: 31px;
-                    line-height: 28px;
-                    border-radius: 20px;
+            .content {
+                display: inline-block;
+                margin-left: 8px;
+                padding-top: 10px;
+                .name {
                     color: #000;
-                    background: #FFF;
-                    text-align: center;
                     font-size: 16px;
+                    font-weight: 100;
                 }
+                .status {
+                    color: #8f8f8f;
+                    font-size: 14px;
+                }
+            }
+        }
+        .item-right {
+            flex: 0 0 93px;
+            width: 93px;
+            -webkit-flex: 0 0 93px;
+            -ms-flex: 0 0 93px;
+            padding-top: 20px;
+            .item-answer {
+                display: block;
+                border: 1px solid #525252;
+                height: 31px;
+                line-height: 28px;
+                border-radius: 20px;
+                color: #000;
+                background: #FFF;
+                text-align: center;
+                font-size: 16px;
             }
         }
     }
@@ -1249,7 +1277,7 @@
     .ar-title {
         background: #FFF;
         text-align: center;
-        padding: 20px 0;
+        padding: 10px 0;
         color: @blue;
         font-size: 18px;
         font-weight: 100;
@@ -1340,11 +1368,13 @@
     }
 }
 
-.vd-container{
+.vd-container {
     padding: 20px 15px;
-    color:#000;
+    color: #000;
     font-size: 14px;
 }
+
+
 /*提交申论批改*/
 
 .ssc-container {
@@ -1387,7 +1417,7 @@
         font-size: 14px;
         width: 70px;
     }
-    .n-pay{
+    .n-pay {
         display: block;
         padding: 0px 7px;
         background: @yellow;
@@ -1398,9 +1428,9 @@
         right: 23px;
         border-radius: 3px;
         font-size: 14px;
-        width: 70px; 
+        width: 70px;
     }
-    .y-correct{
+    .y-correct {
         display: block;
         padding: 0px 7px;
         background: @red;
@@ -1411,7 +1441,7 @@
         right: 23px;
         border-radius: 3px;
         font-size: 14px;
-        width: 70px; 
+        width: 70px;
     }
     .batch {
         display: block;
@@ -1755,7 +1785,7 @@
                 width: 100%;
                 padding: 15px 10px;
                 background: #F6F6F6;
-                color: #b2b2b2;
+                color: #353535;
                 font-size: 16px;
                 border: none;
             }
@@ -1825,6 +1855,9 @@
                 text-align: right;
                 padding-right: 15px;
                 color: #b2b2b2;
+                img {
+                    border-radius: 50%;
+                }
                 input {
                     border: 0;
                     outline: 0;
@@ -1870,6 +1903,7 @@
     text-align: center;
     img {
         margin: auto;
+        border-radius: 50%;
     }
     .name {
         color: #fff;
@@ -1959,7 +1993,8 @@
         }
     }
 }
-.ssc-nav{
+
+.ssc-nav {
     display: -webkit-box;
     display: -ms-flexbox;
     -ms-flex-pack: distribute;
@@ -1984,6 +2019,7 @@
         }
     }
 }
+
 .msc-list-content {
     padding: 0 8px;
     .mac-list {
@@ -2014,7 +2050,7 @@
                     &.y-correct {
                         background: @red;
                     }
-                    &.n-pay{
+                    &.n-pay {
                         background: @yellow;
                     }
                 }
@@ -2036,13 +2072,13 @@
             }
         }
     }
-    .no-order{
+    .no-order {
         padding: 50px 0;
         display: none;
-        img{
+        img {
             margin: auto;
         }
-        p{
+        p {
             text-align: center;
             color: #888888;
             font-size: 16px;
@@ -2068,7 +2104,8 @@
         display: block;
     }
 }
-.sscd-footer{
+
+.sscd-footer {
     background: #FFF;
     width: 100%;
     padding: 10px 0;
@@ -2079,9 +2116,9 @@
     -moz-box-shadow: 10px 10px 5px #333;
     text-align: right;
     padding-right: 20px;
-    .remove{
+    .remove {
         display: inline-block;
-        padding:2px 0;
+        padding: 2px 0;
         text-align: center;
         font-size: 16px;
         border-radius: 20px;
@@ -2089,10 +2126,12 @@
         color: #000;
         width: 92px;
         box-sizing: border-box;
-    } 
-    .pay{
+        margin-right: 10px;
+
+    }
+    .pay {
         display: inline-block;
-        padding:2px 0;
+        padding: 2px 0;
         text-align: center;
         font-size: 16px;
         border-radius: 20px;
@@ -2100,7 +2139,12 @@
         width: 92px;
         background: @blue;
     }
+    .look{
+        .common-btn(90%);
+        display: block;
+    }
 }
+
 
 /*申论批改页面*/
 
@@ -2147,17 +2191,17 @@
         padding-left: 35px;
         color: #353535;
         font-size: 16px;
-         position: relative;
+        position: relative;
     }
-    .tip{
+    .tip {
         display: block;
-        width:10px;
-        height:10px;
+        width: 10px;
+        height: 10px;
         background: #ff3608;
         border-radius: 50%;
-        position:absolute;
-        top:10px;
-        right:-20px;
+        position: absolute;
+        top: 10px;
+        right: -20px;
     }
 }
 
@@ -2187,72 +2231,82 @@
         }
     }
 }
+
+
 /*批改详情*/
-.cd-container{
-    .message{
-       padding: 22px; 
-       padding-bottom: 0px;
-       p{
-           color:#000;
-           font-size:16px;
-           padding-bottom: 20px;
-           .border-1px(@line);
-       }
+
+.cd-container {
+    .message {
+        padding: 22px;
+        padding-bottom: 0px;
+        p {
+            color: #000;
+            font-size: 16px;
+            padding-bottom: 20px;
+            .border-1px(@line);
+        }
     }
-    .cd-img{
-        margin-top:20px ;
-        .cd-list{
+    .cd-img {
+        margin-top: 20px;
+        .cd-list {
             padding: 0 15px;
             display: flex;
             justify-content: space-between;
             flex-wrap: nowrap;
-            .list-item{
+            .list-item {
                 width: 80px;
-                height:80px;
+                height: 80px;
+                img{
+                     width: 70px;
+                     height: 70px;
+                }
             }
-            @media only screen and (max-width:320px){
-                .list-item{
+            @media only screen and (max-width:320px) {
+                .list-item {
                     width: 70px;
-                    height:70px;
-                    img{
+                    height: 70px;
+                    img {
                         width: 70px;
-                        height:70px;
+                        height: 70px;
                     }
                 }
             }
         }
     }
 }
+
+
 /*我要抢批*/
-.gb-container{
-    padding:10px;
-    .gb-list{
-        .list-item{
+
+.gb-container {
+    padding: 10px;
+    .gb-list {
+        .list-item {
             background: #fff;
-            padding:0 10px;
-            .item-top{
+            padding: 0 10px;
+            .item-top {
                 padding: 15px 0;
                 .border-1px(@line);
-                .title{
+                .title {
                     color: #000;
                     font-size: 17px;
                 }
             }
-            .item-bottom{
-                padding:15px 0;
+            .item-bottom {
+                padding: 15px 0;
                 position: relative;
-                .time{
+                .time {
                     color: #888888;
                     font-size: 14px;
                 }
-                .batch{
+                .batch {
                     display: inline-block;
                     position: absolute;
-                    top:15px;
-                    right:0;
-                    padding:3px 10px;
+                    top: 15px;
+                    right: 0;
+                    padding: 3px 10px;
                     background: @blue;
-                    color:#fff;
+                    color: #fff;
                     border-radius: 20px;
                     font-size: 16px;
                 }
@@ -2260,38 +2314,40 @@
         }
     }
 }
+
+
 /*我的收藏*/
-.mc-container{
-    .mc-box{
+
+.mc-container {
+    .mc-box {
         overflow-x: hidden;
-        .mc-list{
-            margin-left:-55px;
-            .list-item{
-                
-                padding-left:20px;
+        .mc-list {
+            margin-left: -55px;
+            .list-item {
+                padding-left: 20px;
                 background: #FFF;
                 position: relative;
-                .item-href{
+                .item-href {
                     position: relative;
                     width: 100%;
-                    height:100%;
+                    height: 100%;
                 }
-                .title{
+                .title {
                     font-size: 17px;
-                    color:#000;
+                    color: #000;
                 }
-                .time{
+                .time {
                     color: #888888;
                     font-size: 14px;
                 }
-                .mc-Left{
+                .mc-Left {
                     position: absolute;
-                    top:25px;
-                    left:10px;
+                    top: 25px;
+                    left: 10px;
                 }
-                .mc-Right{
+                .mc-Right {
                     .border-1px(@line);
-                    padding:15px 0;
+                    padding: 15px 0;
                     margin-left: 55px;
                     display: inline-block;
                     width: 100%;
@@ -2300,89 +2356,100 @@
         }
     }
 }
-.mc-footer{
+
+.mc-footer {
     display: none;
 }
+
+
 /*常见问题*/
-.cp-container{
+
+.cp-container {
     width: 100%;
-    .content{
+    .content {
         background: #fff;
-         padding:20px 15px 15px 15px;
-        .title{
+        padding: 20px 15px 15px 15px;
+        .title {
             margin-bottom: 10px;
             color: #000;
             font-size: 17px;
         }
-        .word{
-            color:#353535;
+        .word {
+            color: #353535;
             font-size: 15px;
             text-indent: 20px;
         }
     }
 }
+
+
 /*联系电话*/
-.cu-container{
+
+.cu-container {
     background: #fff;
-    margin-top:10px;
+    margin-top: 10px;
     padding: 20px 15px;
     font-size: 16px;
-    .child{
+    .child {
         margin-bottom: 15px;
     }
-    span{
-        color:#888888;
+    span {
+        color: #888888;
         display: inline-block;
         vertical-align: top;
         width: 76px;
     }
-    .addr{
+    .addr {
         color: #000;
         display: inline-block;
-       width: 71%;
+        width: 71%;
     }
 }
+
+
 /*设置*/
-.set-container{
-    .set-list{
-        padding-left:15px;
+
+.set-container {
+    .set-list {
+        padding-left: 15px;
         background: #fff;
-        .list-item{
+        .list-item {
             .border-1px(@line);
             padding: 20px 0;
-            &:last-child{
+            &:last-child {
                 .border-none();
             }
-            .item-href{
+            .item-href {
                 position: relative;
                 font-size: 17px;
-                .arrow-right{
+                .arrow-right {
                     position: absolute;
-                    top:7px;
-                    right:15px;
+                    top: 7px;
+                    right: 15px;
                     display: block;
-                    width:7px;
-                    height:13px;
-                    .bg-image('arrow-right',7px,13px);
+                    width: 7px;
+                    height: 13px;
+                    .bg-image('arrow-right',
+                    7px,
+                    13px);
                 }
-                .phone{
+                .phone {
                     display: inline-block;
                     text-align: right;
-                    float:right;
+                    float: right;
                     margin-right: 30px;
                     color: #888888;
                 }
             }
         }
     }
-    .out-log{
-        padding:15px;
+    .out-log {
+        padding: 15px;
         text-align: center;
         background: #fff;
-        color:#000;
+        color: #000;
         font-size: 17px;
-       .border-1px(@line);
-       .border-top-1px(@line);
+        .border-1px(@line);
+        .border-top-1px(@line);
     }
 }
-

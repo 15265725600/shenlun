@@ -17,7 +17,7 @@
 	<body>
 		<header data-am-widget="header" class="am-header am-header-fixed index-header">
 			<div class="am-header-left am-header-nav">
-				<a href="javascript:history.back()" class="">
+				<a href="javascript:history.back()" class="back">
 					<i class="arrow-left"></i>
 				</a>
 			</div>
@@ -30,44 +30,52 @@
 		<div class="container">
 			<div class="cou-top">
 				不使用优惠券
-				<input type="checkbox" class = "mt"/>
+				<input type="checkbox" class="mt" id="noUse" />
 			</div>
 			<div class="cou-wrapper">
 				<div class="cou-use">
 					<h1>可用优惠券</h1>
-					<ul class = "cou-list">
-						<li class = "list-item">
-							<div class="item-price">
-								￥<span>8.0</span>
-							</div>
-							<div class="item-content">
-								<div class="name">优惠券</div>
-								<div class="time">金达当日使用</div>
-								<div class="condition">满￥100使用</div>
-							</div>
-							<input type="radio" name="radio" class = "mt"/>
-						</li>
+					<ul class="cou-list" id="useList">
+						<script type="text/html" id="use-list">
+							{{each listItems as item index}} {{if item.use_may == 1}}
+							<li class="list-item">
+								<div class="item-price">
+									￥<span class="aPrice">{{item.name}}</span>
+								</div>
+								<div class="item-content">
+									<div class="name">优惠券</div>
+									<div class="time"><i class="sTime">{{item.start_time_ymd}}</i>至<i class="eTime">{{item.end_time_ymd}}</i></div>
+									<div class="condition">满￥<i class="couPrice">{{item.use_price}}</i>使用</div>
+								</div>
+								<input type="radio" name="radio" class="mt aa" data="{{item.id}}" />
+							</li>
+							{{/if}} {{/each}}
+						</script>
 					</ul>
 				</div>
 				<div class="cou-unuse">
 					<h1>已失效</h1>
-					<ul class = "cou-list">
-						<li class = "list-item">
-							<div class="item-price">
-								￥<span>8.0</span>
-							</div>
-							<div class="item-content">
-								<div class="name">优惠券</div>
-								<div class="time">金达当日使用</div>
-								<div class="condition">满￥100使用</div>
-							</div>
-							<span class = "overdue"></span>
-						</li>
+					<ul class="cou-list" id="mayList">
+						<script type="text/html" id="useMay-list">
+							{{each listItems as item index}} {{if item.use_may == 0}}
+							<li class="list-item">
+								<div class="item-price">
+									￥<span>{{item.name}}</span>
+								</div>
+								<div class="item-content">
+									<div class="name">优惠券</div>
+									<div class="time"><i class="sTime">{{item.start_time_ymd}}</i>至<i class="eTime">{{item.end_time_ymd}}</i></div>
+									<div class="condition">满￥<i>{{item.use_price}}</i>使用</div>
+								</div>
+								<span class="overdue"></span>
+							</li>
+							{{/if}} {{/each}}
+						</script>
 					</ul>
 				</div>
 			</div>
 		</div>
-		
+
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
@@ -77,6 +85,102 @@
 	<script type="text/javascript">
 		$(function() {
 			$('body').css('backgroundColor', '#f4f4f4');
+			var token = getCookie('token');
+			var id = GetQueryString('id');
+			var fid = GetQueryString('fid');
+			var type = GetQueryString('type');
+			var price = GetQueryString('price');
+			var couPrice = "";
+			var couID = "";
+			var aPrice = "";
+			var para = window.location.search;
+			$.ajax({
+				url: reqUrl('coupon_list'),
+				type: 'post',
+				dataType: 'json',
+				data: {
+					token: token
+				},
+				xhrFields: {
+					withCredentials: true
+				},
+				success: function(data) {
+					if(data.error_code == 200) {
+						window.location.href = preUrl('log/login.html' + para + '&path=index/coupon.html');
+					} else if(data.success) {
+						var useList = template('use-list', data.infor);
+						$('#useList').html(useList);
+						var mayList = template('useMay-list', data.infor);
+						$('#mayList').html(mayList);
+						$('.aa').on('click', function() {
+							couPrice = parseInt($(this).parent('li').find('.couPrice').text());
+							var startTime = $(this).parent('li').find('.sTime').text();
+							var endTime = $(this).parent('li').find('.eTime').text();
+							aPrice = parseInt($(this).parent('li').find('.aPrice').text())
+							if(price < couPrice) {
+								mask('您不满足使用条件');
+								return false;
+							} else {
+								mask('选取成功');
+							}
+							JudgeTime(startTime, endTime);
+							couID = $(this).attr('data');
+							setTimeout(function() {
+								if(fid == null) { //返回申论简批
+									window.location.href = preUrl('index/submit-sl-correct.html?id=' + id + '&couID=' + couID + '&aPrice=' + aPrice + '');
+								} else{ //返回申论详批
+									window.location.href = preUrl('index/submit-slx-correct.html?id=' + id + '&couID=' + couID + '&aPrice=' + aPrice + '&fid=' + fid + '')
+								}
+							}, 1000)
+
+						});
+					} else {
+						mask(data.msg);
+					}
+
+				},
+				error: function(e, request, settings) {
+					alert(settings);
+				}
+			});
+
+			//			$('.back').click('click',function(){
+			//				
+			//			})
+
+			//判断过期时间
+			function JudgeTime(stime, etime) {
+				//将计划开始时间转成以秒为单位：
+				var planStartTime = stime;
+				var startTime = new Array();
+				startTime = planStartTime.split('-');
+				planStartTime = Date.UTC(parseInt(startTime[0]), parseInt(startTime[1]), parseInt(startTime[2]));
+
+				//将计划结束时间转成以秒为单位：
+				var planStopTime = etime;
+
+				var stopTime = new Array();
+				stopTime = planStopTime.split('-');
+				planStopTime = Date.UTC(parseInt(stopTime[0]), parseInt(stopTime[1]), parseInt(stopTime[2]));
+				//将当前系统时间转化成以秒为单位：
+				//获取当前时间
+				var nowDate = new Date();
+				//当前年
+				var nowYear = nowDate.getFullYear();
+				//当前月，记得要加1
+				var nowMonth = (nowDate.getMonth() + 1);
+				//当前日
+				var nowDay = nowDate.getDate();
+				nowTime = Date.UTC(nowYear, nowMonth, nowDay);
+				//判断： 如果当前系统时间大于等于开始时间以及小于等于结束时间则登记成功
+				if(nowTime >= planStartTime && nowTime <= planStopTime) {
+					mask('选取成功');
+				} else {
+					mask('还未到使用时间');
+					return false;
+				}
+			}
+
 		});
 	</script>
 

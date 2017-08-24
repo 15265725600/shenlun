@@ -28,49 +28,27 @@
 		    </h1>
 		</header>
 		<div class="tl-wrapper">
-			<ul class = "tl-list">
-				<li class = "list-item">
-					<a href="teacher-details.html" class = "item-href">
-						<div class="content">
-							<div class="top-img"><img src="../assets/i/teacher.png" alt="" /></div>
-							<div class="bottom">
-								<h1 class = "title">往后</h1>
-								<div class="limit">本周限额：<span><i>10</i>篇</span></div>
-								<div class="surplus">剩余限额：<span><i>10</i>篇</span></div>
+			<ul class="tl-list">
+				<script type="text/html" id="content">
+					{{each listItems as item index}}
+					<li class="list-item">
+						<a href="teacher-details.html?id={{item.id}}" class="item-href">
+							<div class="content">
+								<div class="top-img"><img src="{{item.avatar}}" alt="" /></div>
+								<div class="bottom">
+									<h1 class="title">{{item.name}}</h1>
+									<div class="limit">本周限额：<span><i>10</i>篇</span></div>
+									<div class="surplus">剩余限额：<span><i>{{item.shengyu_num}}</i>篇</span></div>
+								</div>
 							</div>
-						</div>
-					</a>
-					<div class="price">￥30</div>
-				</li>
-				<li class = "list-item">
-					<a href="javascript:;" class = "item-href">
-						<div class="content">
-							<div class="top-img"><img src="../assets/i/teacher.png" alt="" /></div>
-							<div class="bottom">
-								<h1 class = "title">往后</h1>
-								<div class="limit">本周限额：<span><i>10</i>篇</span></div>
-								<div class="surplus">剩余限额：<span><i>10</i>篇</span></div>
-							</div>
-						</div>
-					</a>
-					<div class="price">￥30</div>
-				</li>
-				<li class = "list-item">
-					<a href="javascript:;" class = "item-href">
-						<div class="content">
-							<div class="top-img"><img src="../assets/i/teacher.png" alt="" /></div>
-							<div class="bottom">
-								<h1 class = "title">往后</h1>
-								<div class="limit">本周限额：<span><i>10</i>篇</span></div>
-								<div class="surplus">剩余限额：<span><i>10</i>篇</span></div>
-							</div>
-						</div>
-					</a>
-					<div class="price">￥30</div>
-				</li>
+						</a>
+						<div class="price">￥{{item.pigai_price}}</div>
+					</li>
+					{{/each}}
+				</script>
 			</ul>
 		</div>
-		
+
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
@@ -79,7 +57,23 @@
 	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
 		$(function() {
+			//名师列表
+			$.ajax({
+				type: 'post',
+				url: reqUrl('famousteacher_list'),
+				dataType: "json",
+				xhrFields: {
+					withCredentials: true
+				},
+				async: false, //同步
+				success: function(data) {
+					if(data.success) {
+						var html = template('content', data.infor);
+						$('.tl-list').html(html);
+					}
 
+				}
+			});
 		});
 	</script>
 

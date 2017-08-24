@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class = "height">
+<html class="height">
 
 	<head>
 		<meta charset="utf-8">
@@ -14,7 +14,7 @@
 
 	</head>
 
-	<body class = "height">
+	<body class="height">
 		<header data-am-widget="header" class="am-header index-header">
 			<div class="am-header-left am-header-nav">
 				<a href="javascript:history.back()" class="">
@@ -45,15 +45,82 @@
 			</div>
 			<div class="com-logo"><img src="../assets/i/logo.png" alt="" /></div>
 		</div>
-
+		
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
 	<script type="text/javascript" src="../assets/js/template.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
+	<script type="text/javascript" src="../assets/js/md5.js"></script>
 	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
 		$(function() {
+			//当前页面进入注册页面，当登录成功返回当前页面
+			var para = window.location.search;
+			console.log(para)
+			if(para != '') {
+				var index = para.indexOf('&path');
+				var subPara = para.substring(0, index);
+				var path = GetQueryString('path') + subPara;
+				console.log(path)
+			}
+			$('.log-btn').click(function() {
+				var phone = $('#phone').val();
+				var numbers = /^[1][34578][0-9]{9}$/;
+//				var pwd = hex_md5('c9455b4619ab407b3fbb055b127c432e' + hex_md5($("#pwd").val()));
+				var pwd = $("#pwd").val();
+				console.log(pwd)
+				if($('#phone').val() == "") {
+					$('#phone').focus();
+					mask('手机号不能为空');
+					return false;
+				}
+				var sMobile = /^[1][34578][0-9]{9}$/;
+				if(!sMobile.exec($("#phone").val())) {
+					mask('手机号格式不正确');
+					$('#phone').focus();
+					return false;
+				}
+
+				if($('#pwd').val() == "") {
+					$('#pwd').focus();
+					mask('密码不能为空');
+					return false;
+				}
+
+				$.ajax({
+					type: 'POST',
+					url: reqUrl("student_login"),
+					data: {
+						username: phone,
+						password: pwd,
+					},
+					dataType: 'JSON',
+					async: false,
+					xhrFields: {
+						withCredentials: true
+					},
+					success: function(data) {
+
+						if(data.success) {
+							setCookie('token', data.infor[0].token, 365);
+							setInfo('role',data.infor[0].role);
+							if(path) {
+								window.location.href = preUrl(path);
+							} else {
+								window.location.href = preUrl('index/index.html');
+							}
+
+						} else {
+							mask(data.msg);
+						}
+					},
+					error: function(e, request, settings) {
+						alert(settings);
+					}
+				})
+
+			})
 		});
 	</script>
 
