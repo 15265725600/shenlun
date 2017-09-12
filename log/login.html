@@ -33,6 +33,11 @@
 					<div class="log-phone log-item"><input type="text" placeholder="请输入手机号" id="phone" class="text" /></div>
 					<div class="log-password log-item"><input type="password" placeholder="请输入密码" id="pwd" class="text" /></div>
 					<div class="log-btn">登录</div>
+					<div class="wx-log">
+						<a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe5e8f70efc47d1b8&redirect_uri=http://slpg.lgwy.net/hm_shenlun/index.php/Webservice/Wechat/weichat_login&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect" class="href-item">
+							<span class="wx-img"></span>微信登录
+						</a>
+					</div>
 					<div class="go-for">
 						<div class="forget">
 							<a href="forget-password.html">忘记密码</a>
@@ -45,7 +50,7 @@
 			</div>
 			<div class="com-logo"><img src="../assets/i/logo.png" alt="" /></div>
 		</div>
-		
+
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
@@ -53,6 +58,8 @@
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript" src="../assets/js/md5.js"></script>
 	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script type="text/javascript">
 		$(function() {
 			//当前页面进入注册页面，当登录成功返回当前页面
@@ -67,7 +74,7 @@
 			$('.log-btn').click(function() {
 				var phone = $('#phone').val();
 				var numbers = /^[1][34578][0-9]{9}$/;
-//				var pwd = hex_md5('c9455b4619ab407b3fbb055b127c432e' + hex_md5($("#pwd").val()));
+				//				var pwd = hex_md5('c9455b4619ab407b3fbb055b127c432e' + hex_md5($("#pwd").val()));
 				var pwd = $("#pwd").val();
 				console.log(pwd)
 				if($('#phone').val() == "") {
@@ -101,10 +108,10 @@
 						withCredentials: true
 					},
 					success: function(data) {
-
 						if(data.success) {
 							setCookie('token', data.infor[0].token, 365);
-							setInfo('role',data.infor[0].role);
+							setInfo('role', data.infor[0].role);
+							setInfo('mobile', data.infor[0].mobile);
 							if(path) {
 								window.location.href = preUrl(path);
 							} else {

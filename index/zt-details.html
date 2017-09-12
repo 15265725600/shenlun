@@ -32,10 +32,10 @@
 				<div class="de-top">
 					<div class="top">
 						<h1 class="title">{{infor[0].title}}</h1>
-						<span class="hot-rank red-bg">热门排行：第{{infor[0].hot_paiming}}名</span><span class="readed blue-bg">已有<i>{{infor[0].shoucang_count}}</i>人阅读</span>
+						<span class="hot-rank red-bg">热门排行：第<i class="paiming"></i>名</span><span class="readed blue-bg">已有<i>{{infor[0].read_count}}</i>人阅读</span>
 					</div>
 					<div class="word">
-						<p>{{infor[0].read_count}}</p>
+						<p>{{infor[0].content}}</p>
 					</div>
 					<div class="function">
 						<div class="collect">
@@ -86,6 +86,7 @@
 			//获取真题详情
 			var id = GetQueryString('id');
 			var token = getCookie('token');
+			var paiming = GetQueryString('hot_paiming');
 			var para = window.location.search;
 			$.ajax({
 				type: 'post',
@@ -105,6 +106,7 @@
 					} else if(data.success) {
 						var html = template('content', data);
 						$('.container').html(html);
+						$('.paiming').text(paiming);
 					}
 
 				}

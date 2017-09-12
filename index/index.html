@@ -22,13 +22,14 @@
 		</header>
 		<div class="banner">
 			<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{"directionNav":false}'>
-				<ul class="am-slides">
-					<li>
-						<img src="../assets/i/banner.png">
-					</li>
-					<li>
-						<img src="../assets/i/banner.png">
-					</li>
+				<ul class="am-slides" id="banner-list">
+					<script type="text/html" id="template">
+						{{each listItems as item index}}
+						<li>
+							<img src="{{item.img}}">
+						</li>
+						{{/each}}
+					</script>
 				</ul>
 			</div>
 		</div>
@@ -43,7 +44,7 @@
 					<span>申论详批</span>
 				</li>
 				<li class="index-item">
-					<a href="teacher-correct.html"><img src="../assets/i/t3.png" alt="" /></a>
+					<a href="teacher-correct.html" class="nt"><img src="../assets/i/t3.png" alt="" /></a>
 					<span>名师批改</span>
 				</li>
 				<li class="index-item">
@@ -74,10 +75,10 @@
 					<script type="text/html" id="ztrlist">
 						{{each listItems as item index}}
 						<li class="list-item">
-							<a href="zt-details.html?id={{item.id}}" class="item-href">
+							<a href="zt-details.html?id={{item.id}}&hot_paiming={{item.hot_paiming}}" class="item-href">
 								<div class="item-left">
 									<span class="rank active">{{item.hot_paiming}}</span>
-									<span class="title">{{item.title}}</span>
+									<span class="title one-truncate">{{item.title}}</span>
 								</div>
 								<div class="item-right">
 									<span class="eye"></span>
@@ -122,19 +123,41 @@
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript">
 		var token = getCookie('token');
+		var role = getInfo('role');
+
+		$('.nt').on('click', function() {
+			if(role == 2 || role == 3) {
+				$(this).attr('href', 'javascript:;');
+				mask('你暂无权限进入此页面');
+			}
+		});
 		//获取热门真题
 		$.ajax({
 			type: 'post',
-			url: reqUrl('hotquestion_list'),
+			url: reqUrl('hotquestion_index'),
 			dataType: "json",
-			data: {
-				page: 0
-			},
 			async: false, //同步
 			success: function(data) {
 				if(data.success) {
 					var html = template('ztrlist', data.infor);
 					$('.zt-list').html(html);
+
+				} else {
+					mask(data.msg);
+				}
+			}
+		});
+		//轮播图
+		$.ajax({
+			type: 'post',
+			url: reqUrl('img_lunbo'),
+			dataType: "json",
+			async: false, //同步
+			success: function(data) {
+				if(data.success) {
+					console.log(data)
+					var html = template('template', data.infor);
+					$('#banner-list').html(html);
 
 				} else {
 					mask(data.msg);

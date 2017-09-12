@@ -31,10 +31,10 @@
 			<script type="text/html" id="content">
 			<div class="td-infor">
 				<div class="content">
-					<div class="infor-left"><img src="{{infor[0].avatar}}" alt="" width="165" height="105"/></div>
+					<div class="infor-left"><img src="{{infor[0].avatar}}" alt=""/></div>
 					<div class="infor-right">
 						<h1 class="title">{{infor[0].name}}</h1>
-						<div class="limit">本周限额：<span><i>10</i>篇</span></div>
+						<div class="limit">本周限额：<span><i>{{infor[0].week_number}}</i>篇</span></div>
 						<div class="surplus">剩余限额：<span><i>{{infor[0].shengyu_num}}</i>篇</span></div>
 						<div class="price">批改价格：<span>￥{{infor[0].pigai_price}}</span></div>
 					</div>

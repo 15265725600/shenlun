@@ -250,11 +250,15 @@
 							url: reqUrl('yeartest_list'),
 							dataType: "json",
 							data: {
-								type:1,
+								token: token,
+								type: 1,
 								year: year,
 								region: region,
 								style: style,
 								page: page
+							},
+							xhrFields: {
+								withCredentials: true
 							},
 							async: false, //同步
 							success: function(data) {

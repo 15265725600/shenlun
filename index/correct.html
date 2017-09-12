@@ -24,10 +24,10 @@
 			</div>
 			<ul class="correct-nav">
 				<li class="nav-item">
-					<a href="sl-correct.html?type=2" class = "b_back">全真模拟</a>
+					<a href="correct.html?type=2" class="b_back">全真模拟</a>
 				</li>
 				<li class="nav-item">
-					<a href="sl-correct.html?type=1" class = "b_back">历年真题</a>
+					<a href="correct.html?type=1" class="b_back">历年真题</a>
 				</li>
 			</ul>
 		</header>
@@ -73,7 +73,7 @@
 			<ul class="lcs-list">
 				<script type="text" id="exam-list">
 					{{each listItems as item index}}
-					<li class="list-item">
+					<li class="list-item list">
 						<a href="javascript:;" class="item-href" id="href">
 							<div class="content">
 								<h1 class="title">{{item.title}}</h1> {{if item.is_do == 1}}
@@ -104,7 +104,7 @@
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
 	<script type="text/javascript" src="../assets/js/template.js"></script>
-	<script type="text/javascript" src="../assets/js/dropload.min.js" ></script>
+	<script type="text/javascript" src="../assets/js/dropload.min.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
@@ -258,9 +258,10 @@
 				}
 			});
 			goodsList("", "", "", type);
-			$('#href').on('click',function(){
-				window.location.href = preUrl('index/slx-paper-details.html?fid='+fid+'&id='+id+'');
-			});
+			//			$('#href').on('click', function() {
+			//				window.location.href = preUrl('index/slx-paper-details.html?fid=' + fid + '&id=' + id + '');
+			//			});
+
 			function goodsList(year, region, style, type) {
 				var page = 0;
 				var $dropload = $('.lcs-wrapper').dropload({
@@ -275,11 +276,15 @@
 							url: reqUrl('yeartest_list'),
 							dataType: "json",
 							data: {
+								token: token,
 								type: type,
 								year: year,
 								region: region,
 								style: style,
 								page: page
+							},
+							xhrFields: {
+								withCredentials: true
 							},
 							async: false, //同步
 							success: function(data) {
@@ -287,9 +292,8 @@
 									page++;
 									var html = '';
 									var arrLen = data.infor.listItems.length;
-									for(var i = 0;i<arrLen;i++){
-										id = data.infor.listItems[i].id;
-									}
+									var item = data.infor.listItems;
+									console.log()
 									if(arrLen > 0) {
 										//预编译模板
 										html = template('exam-list', data.infor);
@@ -303,8 +307,21 @@
 
 									if(page == 1) {
 										$('.lcs-list').html(html);
+										$('.lcs-list li').each(function(i) {
+											var that = $(this);
+											that.on('click', function() {
+												window.location.href = preUrl('index/slx-paper-details.html?fid=' + fid + '&id=' + item[i].id + '')
+											})
+										})
+
 									} else {
 										$('.lcs-list').append(html);
+										$('.lcs-list li').each(function(i) {
+											var that = $(this);
+											that.on('click', function() {
+												window.location.href = preUrl('index/slx-paper-details.html?fid=' + fid + '&id=' + item[i].id + '')
+											})
+										})
 									}
 
 									me.resetload();

@@ -3,6 +3,8 @@ var para = window.location.search;
 //页面地址前缀
 function preUrl(path) {
 	var fUrl = 'http://127.0.0.1:8020/hm_slpg/';
+//	var fUrl = 'http://wxly123.duapp.com/hm_slpg/';
+//	var fUrl = 'http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/';
 	return fUrl + path;
 }
 
@@ -20,13 +22,12 @@ function GetQueryString(name) {
 
 //ajax 传参url
 function reqUrl(path) {
-	var frontUrl = 'http://192.168.2.146:8008/group19/hm_shenlun/index.php/Webservice/V100/';
+//	var frontUrl = 'http://192.168.2.146:8008/group19/hm_shenlun/index.php/Webservice/V100/';
+	var frontUrl = 'http://slpg.lgwy.net/hm_shenlun/index.php/Webservice/V100/';
 	return frontUrl + path;
 }
 
-//function netUrl(path) {
-//	var frontUrl = 'http://124.128.23.74:8010/hmapi_jintai/plugins/';
-//}
+
 var token;
 
 //设置cookie

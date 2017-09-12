@@ -15,12 +15,19 @@
 
 /*单行省略*/
 
-.text-overflow(@display: block) {
-    display: @display;
+.text-overflow() {
     word-wrap: normal;
     /* for IE */
     text-overflow: ellipsis;
     white-space: nowrap;
+    overflow: hidden;
+}
+
+.two-truncate (@num) {
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: @num;
     overflow: hidden;
 }
 
@@ -249,6 +256,8 @@
                     display: inline-block;
                     margin-left: 8px;
                     color: #000000;
+                    width: 80%;
+                    .text-overflow();
                 }
             }
             .item-right {
@@ -446,7 +455,7 @@
 .lcs-wrapper {
     width: 100%;
     background: #fff;
-    padding-top: 49px;
+    padding-top: 40px;
     .lcs-list {
         padding-left: 20px;
         .list-item {
@@ -458,6 +467,8 @@
                     font-size: 16px;
                     color: #000;
                     font-weight: 100;
+                    width: 93%;
+                    .text-overflow();
                 }
                 .infor {
                     font-size: 0;
@@ -576,6 +587,7 @@
             padding: 0 7px;
             line-height: 18px;
             height: 18px;
+            height: 18px;
             color: #fff;
             text-align: center;
             border-radius: 2px;
@@ -606,8 +618,10 @@
         .collect {
             display: inline-block;
             font-size: 0;
-            padding-right: 20px;
+            padding-right: 32px;
             border-right: 1px solid @line;
+            text-align: center;
+            padding-left: 10px;
             .c-img {
                 display: inline-block;
                 width: 17px;
@@ -825,6 +839,9 @@
                 display: inline-block;
                 margin-left: 18px;
                 color: #000000;
+                width: 70%;
+                vertical-align: top;
+                .text-overflow();
             }
         }
         .item-right {
@@ -923,8 +940,8 @@
             padding-bottom: 35px;
             .top-img {
                 width: 100%;
-                height: 106px;
-                overflow: hidden;
+                //              height: 106px;
+                //              overflow: hidden;
                 img {
                     width: 100%;
                 }
@@ -974,14 +991,16 @@
         .infor-left {
             display: inline-block;
             vertical-align: top;
-            @media only screen and (max-width: 320px) {
-                img {
-                    width:155px;
-                    height: 105px;
-                }
-            }
+            width: 105px;
+            //          @media only screen and (max-width: 320px) {
+            //              img {
+            //                  width:155px;
+            //                  height: 105px;
+            //              }
+            //          }
             img {
                 border-radius: 2px;
+                width: 100%;
             }
         }
         .infor-right {
@@ -1378,7 +1397,7 @@
 /*提交申论批改*/
 
 .ssc-container {
-    padding: 0 10px;
+    padding: 0 10px 49px 12px;
     background: #fff;
     .list-item:last-child {
         .border-none();
@@ -1400,7 +1419,7 @@
         text-align: center;
         position: absolute;
         top: 13px;
-        right: 23px;
+        right: 0px;
         border-radius: 3px;
         font-size: 14px;
     }
@@ -1411,8 +1430,8 @@
         color: #FFF;
         text-align: center;
         position: absolute;
-        top: 23px;
-        right: 23px;
+        top: 15px;
+        right: 0px;
         border-radius: 3px;
         font-size: 14px;
         width: 70px;
@@ -1424,8 +1443,8 @@
         color: #FFF;
         text-align: center;
         position: absolute;
-        top: 23px;
-        right: 23px;
+        top: 15px;
+        right: 0px;
         border-radius: 3px;
         font-size: 14px;
         width: 70px;
@@ -1437,8 +1456,8 @@
         color: #FFF;
         text-align: center;
         position: absolute;
-        top: 23px;
-        right: 23px;
+        top: 15px;
+        right: 0px;
         border-radius: 3px;
         font-size: 14px;
         width: 70px;
@@ -1450,8 +1469,8 @@
         color: #FFF;
         text-align: center;
         position: absolute;
-        top: 52px;
-        right: 23px;
+        top: 40px;
+        right: 0px;
         border-radius: 3px;
         font-size: 14px;
         width: 70px;
@@ -1563,7 +1582,7 @@
 
 .cou-wrapper {
     width: 100%;
-    padding: 0 15px;
+    padding: 15px;
     h1 {
         font-size: 15px;
         color: #929292;
@@ -1594,7 +1613,7 @@
             @media only screen and (max-width:320px) {
                 .item-price {
                     display: inline-block;
-                    padding: 16px 14px;
+                    padding: 16px 10px;
                     text-align: center;
                     font-size: 24px;
                     color: #d43c33;
@@ -1609,7 +1628,7 @@
                 display: inline-block;
                 vertical-align: baseline;
                 padding-top: 3px;
-                padding-left: 23px;
+                padding-left: 10px;
                 .name {
                     font-size: 15px;
                     color: #000;
@@ -1664,6 +1683,7 @@
         }
         .bullutin {
             position: relative;
+            width: 100%;
             img {
                 width: 100%;
             }
@@ -1676,7 +1696,6 @@
                 color: #fff;
                 font-size: 15px;
                 padding: 10px 15px;
-                height: 64px;
                 line-height: 22px;
             }
         }
@@ -1728,6 +1747,23 @@
     .log-btn {
         .common-btn(96%);
         margin-top: 30px;
+    }
+    .wx-log {
+        .common-btn(96%);
+        margin-top: 30px;
+        background: none;
+        color: #000;
+        border: 1px solid #818181;
+        text-align: center;
+        .wx-img {
+            display: inline-block;
+            width: 30px;
+            height: 20px;
+            .bg-image('wx',
+            24px,
+            20px);
+            vertical-align: middle;
+        }
     }
     .go-for {
         width: 94%;
@@ -2127,7 +2163,6 @@
         width: 92px;
         box-sizing: border-box;
         margin-right: 10px;
-
     }
     .pay {
         display: inline-block;
@@ -2139,7 +2174,7 @@
         width: 92px;
         background: @blue;
     }
-    .look{
+    .look {
         .common-btn(90%);
         display: block;
     }
@@ -2206,30 +2241,49 @@
 }
 
 .voice-wrapper {
-    margin: -64px auto 40px;
-    clear: both;
-    position: relative;
-    width: 121px;
-    height: 121px;
-    border-radius: 50%;
-    background: #d6ebf8;
-    padding: 13px;
-    .voice1 {
-        border-radius: 50%;
-        background: #64b3e6;
-        padding: 10px;
-        width: 95px;
-        height: 95px;
-        .voice2 {
-            width: 75px;
-            height: 75px;
-            border-radius: 50%;
-            background: #349bde;
-            color: #fff;
-            text-align: center;
-            padding-top: 9px;
-        }
+    padding-bottom: 30px;
+    .voice1{
+        width: 119px;
+        height: 119px;
+        background: url(../i/speak.png) no-repeat center;
+        background-size: 119px 119px;
+        margin: auto;
+        color: #fff;
+        font-size: 14px;
+        text-align: center;
+        padding-top: 38px;
     }
+    .voice2{
+        display: none;
+        width: 119px;
+        height: 119px;
+        background: url(../i/speak-w.png) no-repeat center;
+        background-size: 119px 119px;
+        margin: auto;
+        color: #fff;
+        font-size: 14px;
+        text-align: center;
+        padding-top: 38px;
+    }
+    .voice3{
+        display: none;
+        width: 119px;
+        height: 119px;
+        background: url(../i/send.png) no-repeat center;
+        background-size: 119px 119px;
+        margin: auto;
+        color: #fff;
+        font-size: 14px;
+        text-align: center;
+        padding-top: 38px;
+    }
+}
+
+.w-word {
+    font-size: 16px;
+    color: #000;
+    margin: 10px auto 20px;
+    text-align: center;
 }
 
 
@@ -2256,9 +2310,9 @@
             .list-item {
                 width: 80px;
                 height: 80px;
-                img{
-                     width: 70px;
-                     height: 70px;
+                img {
+                    width: 70px;
+                    height: 70px;
                 }
             }
             @media only screen and (max-width:320px) {
@@ -2284,6 +2338,7 @@
         .list-item {
             background: #fff;
             padding: 0 10px;
+            margin-top: 10px;
             .item-top {
                 padding: 15px 0;
                 .border-1px(@line);

@@ -9,6 +9,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<title>联创世华</title>
 		<link rel="stylesheet" href="../assets/css/amazeui.css">
+		<link rel="stylesheet" type="text/css" href="../assets/css/dropload.css" />
 		<link rel="stylesheet" href="../assets/css/common.css" />
 		<link rel="stylesheet" href="../assets/css/style.css">
 
@@ -29,40 +30,27 @@
 		</header>
 		<div class="find-wrapper">
 			<ul class="find-list">
-				<li class="list-item">
-					<a href="find-details.html" class="item-href">
-						<div class="time"><span>2323-23-23-22</span></div>
-						<div class="content">
-							<div class="bullutin">
-								<img src="../assets/i/picture.png" alt="" />
-								<div class="text two-truncate">2017山东省考笔试151.5面试89，心得 分享2017</div>
-							</div>
-							<div class="word">
-								<p class="two-truncate">山东省考逐渐落下帷幕，我以笔面第一的成绩晋级下 一环节，下面谈谈备考中的一些经验，希望对大家...</p>
-								<div class="read">
-									阅读全文&gt;
+				<script type="text" id="template">
+					{{each listItems as item index}}
+					<li class="list-item">
+						<a href="find-details.html?id={{item.id}}" class="item-href">
+							<div class="time"><span>{{item.date}}</span></div>
+							<div class="content">
+								<div class="bullutin">
+									<img src="{{item.img}}" alt="" />
+									<div class="text two-truncate">{{item.title}}</div>
+								</div>
+								<div class="word">
+									<p class="two-truncate">{{item.content}}</p>
+									<div class="read">
+										阅读全文&gt;
+									</div>
 								</div>
 							</div>
-						</div>
-					</a>
-				</li>
-				<li class="list-item">
-					<a href="find-details.html" class="item-href">
-						<div class="time"><span>2323-23-23-22</span></div>
-						<div class="content">
-							<div class="bullutin">
-								<img src="../assets/i/picture.png" alt="" />
-								<div class="text">2017山东省考笔试151.5面试89，心得 分享</div>
-							</div>
-							<div class="word">
-								<p>山东省考逐渐落下帷幕，我以笔面第一的成绩晋级下 一环节，下面谈谈备考中的一些经验，希望对大家...</p>
-								<div class="read">
-									阅读全文&gt;
-								</div>
-							</div>
-						</div>
-					</a>
-				</li>
+						</a>
+					</li>
+					{{/each}}
+				</script>
 			</ul>
 		</div>
 		<footer>
@@ -92,12 +80,61 @@
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
+	<script type="text/javascript" src="../assets/js/dropload.min.js"></script>
 	<script type="text/javascript" src="../assets/js/template.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
 		$(function() {
 			$('body').css('backgroundColor', '#ebebeb');
+			var page = 0;
+			var $dropload = $('.find-wrapper').dropload({
+				scrollArea: window,
+				threshold: 50,
+				domDown: {
+					domNoData: '<div class="dropload-noData">没有更多</div>'
+				},
+				loadDownFn: function(me) {
+					$.ajax({
+						type: 'post',
+						url: reqUrl('find_list'),
+						dataType: "json",
+						data: {
+							page: page
+						},
+						async: false, //同步
+						success: function(data) {
+							if(data.success) {
+								page++;
+								var html = '';
+								var arrLen = data.infor.listItems.length;
+								console.log(arrLen)
+								if(arrLen > 0) {
+									//预编译模板
+									html = template('template', data.infor);
+
+								} else {
+									// 锁定
+									me.lock();
+									// 无数据
+									me.noData();
+								}
+
+								if(page == 1) {
+									$('.find-list').html(html);
+
+								} else {
+									$('.find-list').append(html);
+								}
+
+								me.resetload();
+							} else {
+								mask(data.msg);
+							}
+						}
+					});
+				}
+			});
 		});
 	</script>
 

@@ -238,7 +238,14 @@ input.rt[type=checkbox] {
     overflow: hidden;
     
 }
-
+.one-truncate {
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    
+}
 /*上传图片*/
 
 .upload-wrap {
@@ -254,7 +261,7 @@ input.rt[type=checkbox] {
 
 .upload-wrap .upload li {
 	float: left;
-	margin-right: 6px;
+	margin-right: 5px;
 	position: relative;
 	/*width:66px;
     height:66px;*/
