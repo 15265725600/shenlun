@@ -17,7 +17,7 @@
 	<body>
 		<header data-am-widget="header" class="am-header am-header-fixed index-header">
 			<div class="am-header-left am-header-nav">
-				<a href="javascript:history.back()" class="">
+				<a href="javascript:history.back()" class="backUrl">
 					<i class="arrow-left"></i>
 				</a>
 			</div>
@@ -35,7 +35,7 @@
 						<span class="hot-rank red-bg">热门排行：第<i class="paiming"></i>名</span><span class="readed blue-bg">已有<i>{{infor[0].read_count}}</i>人阅读</span>
 					</div>
 					<div class="word">
-						<p>{{infor[0].content}}</p>
+						<p class="zt-word"></p>
 					</div>
 					<div class="function">
 						<div class="collect">
@@ -63,7 +63,7 @@
 					<ul class="article-list">
 						{{each infor[0].list as item index}}
 						<li class="list-item">
-							<a href="zt-details.html?id={{item.id}}" class="item-href">
+							<a href="zt-details.html?id={{item.id}}&hot_paiming={{item.hot_paiming}}" class="item-href">
 								<div class="content">
 									<h1 class="title">{{item.title}}</h1>
 									<span class="read">已有<i>{{item.read_count}}</i>人阅读</span>
@@ -88,6 +88,11 @@
 			var token = getCookie('token');
 			var paiming = GetQueryString('hot_paiming');
 			var para = window.location.search;
+			if(token == ""){
+				window.location.href = preUrl('log/login.html' + para + '&path=index/zt-details.html');
+			}
+			backUrl();
+			
 			$.ajax({
 				type: 'post',
 				url: reqUrl('question_info'),
@@ -107,11 +112,20 @@
 						var html = template('content', data);
 						$('.container').html(html);
 						$('.paiming').text(paiming);
+						$('.zt-word').html(data.infor[0].content);
 					}
 
 				}
 			});
+			//点击的时候链接不进入历史记录堆栈
+			$('.article-list a').on('click', function(event) {
+				if(event && event.preventDefault) {
+					event.preventDefault();
+				}
+				fnUrlReplace(this);
 
+				return false;
+			});
 			$('#collect').on('click', function() {
 				console.log(0)
 				$(this).toggleClass('active');

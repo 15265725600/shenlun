@@ -98,6 +98,7 @@
 		$(function() {
 			$('body').addClass('bg-color');
 			var token = getCookie('token');
+			
 			console.log(token);
 			var id = GetQueryString('id'); //试题id
 			var fid = GetQueryString('fid');
@@ -110,6 +111,7 @@
 			var nid = ""; //获取下一题的id
 			var num = parseInt(GetQueryString('num'));
 			var have = "";
+			var answerID = "";
 			//获取试题详情
 			$.ajax({
 				url: reqUrl('yeartest_amend'),
@@ -132,6 +134,7 @@
 						anwerImg = data.infor[0].answer;
 						nid = data.infor[0].id;
 						have = data.infor[0].is_have;
+						answerID = data.infor[0].answer_id;
 						$('.am-gallery').pureview();
 						if(have == 1) {
 							$('#nextExam').on('click', function() {
@@ -151,7 +154,7 @@
 										if(data.success) {
 											var ID = data.infor[0].id;
 											var ansWer = data.infor[0].is_have;
-											window.location.href = preUrl('index/exam-answer.html?id=' + ID + '&pid='+pid+'');
+											window.location.href = preUrl('index/exam-answer.html?id=' + ID + '&pid=' + pid + '');
 										} else {
 											mask(data.msg);
 										}
@@ -162,9 +165,9 @@
 									}
 								});
 							});
-						}else if(have == 0){
+						} else if(have == 0) {
 							$('#nextExam').html('结束作答');
-							$('#nextExam').on('click',function(){
+							$('#nextExam').on('click', function() {
 								window.location.href = preUrl('index/sl-paper-details.html?id=' + pid + '');
 							})
 						}
@@ -194,7 +197,6 @@
 					alert(settings);
 				}
 			});
-			
 
 			//上传图片
 			function uploadImg() {
@@ -225,6 +227,7 @@
 
 						reader.onload = function(e) {
 							getImgData(this.result, orientation, function(data) {
+								console.log(data);
 								$.ajax({
 									type: 'POST',
 									url: reqUrl("web_file_upload_return_url"),
@@ -270,6 +273,7 @@
 						count = 4;
 						return false;
 					}
+					e.target.value='';
 
 				});
 			};
@@ -300,6 +304,8 @@
 							success: function(data) {
 								if(data.success) {
 									mask('上传成功');
+									
+
 								} else {
 									mask(data.msg);
 								}
@@ -316,7 +322,7 @@
 							dataType: 'json',
 							data: {
 								token: token,
-								id: id,
+								id: answerID,
 								img: imgString
 							},
 							xhrFields: {

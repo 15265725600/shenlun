@@ -215,7 +215,7 @@
     }
     .list-content {
         width: 100%;
-        padding-left: 28px;
+        padding-left: 20px;
         .list-item {
             .border-1px(@line);
             padding: 18px 0;
@@ -223,16 +223,20 @@
                 .border-none();
             }
             .item-href {
-                display: block;
+                display: inline-block;
                 width: 100%;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
+                font-size: 0;
+//              display: -webkit-box;
+//              display: -ms-flexbox;
+//              display: flex;
             }
             .item-left {
-                -webkit-box-flex: 1;
-                -ms-flex: 1;
-                flex: 1;
+                display: inline-block;
+                width: 80%;
+                vertical-align: top;
+//              -webkit-box-flex: 1;
+//              -ms-flex: 1;
+//              flex: 1;
                 font-size: 0;
                 .rank {
                     display: inline-block;
@@ -261,10 +265,11 @@
                 }
             }
             .item-right {
-                flex: 0 0 83px;
-                -webkit-box-flex: 0 0 83px;
-                -ms-flex: 0 0 83px;
-                width: 83px;
+//              flex: 0 0 83px;
+//              -webkit-box-flex: 0 0 83px;
+//              -ms-flex: 0 0 83px;
+                display: inline-block;
+                width: 20%;
                 font-size: 0;
                 padding-top: 5px;
                 padding-left: 2px;
@@ -565,7 +570,7 @@
 
 .de-top {
     width: 100%;
-    padding-left: 15px;
+    padding: 0 15px;
     padding-bottom: 52px;
     position: relative;
     .top {
@@ -791,19 +796,22 @@
         //      }
         .content {
             width: 100%;
-            display: flex;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
+            font-size: 0;
+//          display: flex;
+//          display: -webkit-box;
+//          display: -ms-flexbox;
+//          display: flex;
         }
         .item-left {
-            -webkit-box-flex: 1;
-            /* OLD - iOS 6-, Safari 3.1-6 */
-            -moz-box-flex: 1;
-            -webkit-box-flex: 1;
-            -ms-flex: 1;
-            -webkit-flex: 1;
-            flex: 1;
+//          -webkit-box-flex: 1;
+//          /* OLD - iOS 6-, Safari 3.1-6 */
+//          -moz-box-flex: 1;
+//          -webkit-box-flex: 1;
+//          -ms-flex: 1;
+//          -webkit-flex: 1;
+//          flex: 1;
+            display: inline-block;
+            width: 80%;
             font-size: 0;
             .rank {
                 width: 22px;
@@ -845,13 +853,15 @@
             }
         }
         .item-right {
-            flex: 0 0 83px;
-            -webkit-box-flex: 0 0 83px;
-            -ms-flex: 0 0 83px;
-            width: 83px;
-            font-size: 0;
-            padding-top: 5px;
-            padding-left: 14px;
+//          flex: 0 0 83px;
+//          -webkit-box-flex: 0 0 83px;
+//          -ms-flex: 0 0 83px;
+//          width: 83px;
+//          font-size: 0;
+//          padding-top: 5px;
+//          padding-left: 14px;
+            display: inline-block;
+            width: 20%;
             position: relative;
             text-align: center;
             &::after {
@@ -1256,10 +1266,13 @@
                 display: inline-block;
                 margin-left: 8px;
                 padding-top: 10px;
+                width: 46%;
                 .name {
                     color: #000;
                     font-size: 16px;
                     font-weight: 100;
+                    .text-overflow();
+                    width: 100%;
                 }
                 .status {
                     color: #8f8f8f;
@@ -1492,6 +1505,7 @@
         color: #000;
         font-size: 16px;
         font-weight: 100;
+        .text-overflow();
     }
 }
 
@@ -1882,7 +1896,7 @@
             padding: 20px 15px 20px 0;
             .item-left {
                 display: inline-block;
-                font-size: 17px;
+                font-size: 15px;
                 color: #353535;
             }
             .item-right {
@@ -2242,7 +2256,9 @@
 
 .voice-wrapper {
     padding-bottom: 30px;
+    text-align: center;
     .voice1{
+        display: inline-block;
         width: 119px;
         height: 119px;
         background: url(../i/speak.png) no-repeat center;
@@ -2254,7 +2270,7 @@
         padding-top: 38px;
     }
     .voice2{
-        display: none;
+        display: inline-block;
         width: 119px;
         height: 119px;
         background: url(../i/speak-w.png) no-repeat center;
@@ -2397,7 +2413,7 @@
                 }
                 .mc-Left {
                     position: absolute;
-                    top: 25px;
+                    top: 13px;
                     left: 10px;
                 }
                 .mc-Right {

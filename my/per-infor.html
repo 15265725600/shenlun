@@ -38,62 +38,62 @@
 			<ul class="pi-list">
 				<script type="text/html" id="content">
 					<li class="list-item">
-					<a href="javascript:;" class="item-href clearfix">
-						<span class="item-left">头像</span>
-						<div class="item-right am-fr" id="top-pdc">
-							<img src="{{infor[0].avatar}}" alt="" width="42" height="42" />
-							<input type="file" name='temp_file' value="" class="file" />
-						</div>
-					</a>
-				</li>
-				<li class="list-item">
-					<a href="javascript:;" class="item-href clearfix">
-						<span class="item-left">姓名</span>
-						<div class="item-right am-fr">
-							<input type="text" value="{{infor[0].name}}" id="name" />
-						</div>
-					</a>
-				</li>
-				<li class="list-item">
-					<a href="javascript:;" class="item-href clearfix">
-						<span class="item-left">昵称</span>
-						<div class="item-right am-fr">
-							<input type="text" value="{{infor[0].nickname}}" id="nickname" />
-						</div>
-					</a>
-				</li>
-				<li class="list-item" id="choose-addr">
-					<a href="javascript:;" class="item-href clearfix" id="choose-addr">
-						<span class="item-left">地址</span>
-						<div class="item-right am-fr">
-							<span id="address" style="font-size: 15px;color: #353535;">{{infor[0].address}}</span><i class="arrow-right"></i>
-						</div>
-					</a>
-				</li>
-				<li class="list-item">
-					<a href="javascript:;" class="item-href clearfix">
-						<span class="item-left">毕业院校</span>
-						<div class="item-right am-fr">
-							<input type="text" value="{{infor[0].gradute}}" id="school" />
-						</div>
-					</a>
-				</li>
-				<li class="list-item">
-					<a href="javascript:;" class="item-href clearfix">
-						<span class="item-left">邮箱</span>
-						<div class="item-right am-fr">
-							<input type="text" value="{{infor[0].email}}" id="mailbox" />
-						</div>
-					</a>
-				</li>
-				<li class="list-item">
-					<a href="javascript:;" class="item-href clearfix" id="choose-type">
-						<span class="item-left">考试类型</span>
-						<div class="item-right am-fr">
-							<span id="type-text" style="font-size: 15px;color: #353535;">{{infor[0].exam}}</span><i class="arrow-right"></i>
-						</div>
-					</a>
-				</li>
+						<a href="javascript:;" class="item-href clearfix">
+							<span class="item-left">头像</span>
+							<div class="item-right am-fr" id="top-pdc">
+								<img src="{{infor[0].avatar}}" alt="" width="42" height="42" />
+								<input type="file" name='temp_file' value="" class="file" />
+							</div>
+						</a>
+					</li>
+					<li class="list-item">
+						<a href="javascript:;" class="item-href clearfix">
+							<span class="item-left">姓名</span>
+							<div class="item-right am-fr">
+								<input type="text" value="{{infor[0].name}}" id="name" />
+							</div>
+						</a>
+					</li>
+					<li class="list-item">
+						<a href="javascript:;" class="item-href clearfix">
+							<span class="item-left">昵称</span>
+							<div class="item-right am-fr">
+								<input type="text" value="{{infor[0].nickname}}" id="nickname" />
+							</div>
+						</a>
+					</li>
+					<li class="list-item" id="choose-addr">
+						<a href="javascript:;" class="item-href clearfix" id="choose-addr">
+							<span class="item-left">地址</span>
+							<div class="item-right am-fr">
+								<span id="address" style="font-size: 15px;color: #353535;">{{infor[0].address}}</span><i class="arrow-right"></i>
+							</div>
+						</a>
+					</li>
+					<li class="list-item">
+						<a href="javascript:;" class="item-href clearfix">
+							<span class="item-left">毕业院校</span>
+							<div class="item-right am-fr">
+								<input type="text" value="{{infor[0].gradute}}" id="school" />
+							</div>
+						</a>
+					</li>
+					<li class="list-item">
+						<a href="javascript:;" class="item-href clearfix">
+							<span class="item-left">邮箱</span>
+							<div class="item-right am-fr">
+								<input type="text" value="{{infor[0].email}}" id="mailbox" />
+							</div>
+						</a>
+					</li>
+					<li class="list-item">
+						<a href="javascript:;" class="item-href clearfix" id="choose-type">
+							<span class="item-left">考试类型</span>
+							<div class="item-right am-fr">
+								<span id="type-text" style="font-size: 15px;color: #353535;">{{infor[0].exam}}</span><i class="arrow-right"></i>
+							</div>
+						</a>
+					</li>
 				</script>
 			</ul>
 		</div>
@@ -107,6 +107,7 @@
 	<script>
 		//获取用户信息
 		var token = getCookie('token');
+		var imgArr = "";
 		$.ajax({
 			url: reqUrl('student_get'),
 			type: 'post',
@@ -161,8 +162,10 @@
 									//async: false,
 									success: function(data) {
 										console.log(data);
+										imgArr = data.infor[0].item1;
 										content = ' <img class="avatar" width="42" height="42" src="' + data.infor[0].item1 + '">';
 										$('#top-pdc').find('img').replaceWith(content);
+										
 									}
 								});
 							});
@@ -356,7 +359,7 @@
 					$('.compltet').click(function(e) {
 						e.stopPropagation();
 						e.preventDefault();
-						var img = $('.avatar').attr('src');
+						var img = $('#top-pdc').find('img').attr('src');
 						var name = $('#name').val();
 						var nickname = $('#nickname').val();
 						var addr = $('#address').text();
@@ -367,6 +370,31 @@
 						var examstyle = $('#type-text').text();
 						var pwd = GetQueryString('pwd');
 						var username = GetQueryString('username');
+						var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+						if(name == "") {
+							mask('姓名不能为空');
+							return false;
+						}
+						if(nickname == "") {
+							mask('昵称不能为空');
+							return false;
+						}
+						if(school == "") {
+							mask('学校不能为空');
+							return false;
+						}
+						if(examstyle == "") {
+							mask('考试类型不能为空');
+							return false;
+						}
+						if(mailbox == "") {
+							mask('邮箱不能为空');
+							return false;
+						}
+						if(!reg.test(mailbox)) {
+							mask('您输入的邮箱格式不正确');
+							return false;
+						}
 						$.ajax({
 							type: 'POST',
 							url: reqUrl("student_save"),

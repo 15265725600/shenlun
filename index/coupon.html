@@ -34,9 +34,9 @@
 			</div>
 			<div class="cou-wrapper">
 				<div class="cou-use">
-					<h1>可用优惠券</h1>
 					<ul class="cou-list" id="useList">
 						<script type="text/html" id="use-list">
+							<!--<h1>可用优惠券</h1>-->
 							{{each listItems as item index}} {{if item.use_may == 1}}
 							<li class="list-item">
 								<div class="item-price">
@@ -53,10 +53,10 @@
 						</script>
 					</ul>
 				</div>
-				<div class="cou-unuse">
-					<h1>已失效</h1>
+				<!--<div class="cou-unuse">
 					<ul class="cou-list" id="mayList">
 						<script type="text/html" id="useMay-list">
+							<h1>已失效</h1>
 							{{each listItems as item index}} {{if item.use_may == 0}}
 							<li class="list-item">
 								<div class="item-price">
@@ -72,7 +72,7 @@
 							{{/if}} {{/each}}
 						</script>
 					</ul>
-				</div>
+				</div>-->
 			</div>
 		</div>
 
@@ -110,8 +110,8 @@
 					} else if(data.success) {
 						var useList = template('use-list', data.infor);
 						$('#useList').html(useList);
-						var mayList = template('useMay-list', data.infor);
-						$('#mayList').html(mayList);
+//						var mayList = template('useMay-list', data.infor);
+//						$('#mayList').html(mayList);
 						$('.aa').on('click', function() {
 							couPrice = parseInt($(this).parent('li').find('.couPrice').text());
 							var startTime = $(this).parent('li').find('.sTime').text();

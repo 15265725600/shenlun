@@ -92,7 +92,7 @@
 										if(data.success) {
 											$('.reg-mask').show();
 										} else {
-											mask(data.mask);
+											mask(data.msg);
 										}
 									}
 								});
@@ -117,7 +117,7 @@
 								var timer = setInterval(timeCountDown, 1000);
 
 							} else {
-								mask(data.mask);
+								mask(data.msg);
 							}
 						}
 					})

@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿<?php
+require_once "jssdk.php";
+$jssdk = new JSSDK("wxe5e8f70efc47d1b8", "ecb3d8ca57dc4f4ff24c4a3e1b0ed702");
+$signPackage = $jssdk->GetSignPackage();
+?>
+<!DOCTYPE html>
 <html class="height">
 
 	<head>
@@ -13,7 +18,7 @@
 		<link rel="stylesheet" href="../assets/css/style.css">
 
 	</head>
-
+   
 	<body class="height">
 		<header data-am-widget="header" class="am-header am-header-fixed index-header">
 			<div class="am-header-left am-header-nav">
@@ -52,17 +57,15 @@
 						</div>
 					</div>
 					<div class="voice-word">
-						<div class="voice" id="play">
-							1分50秒
-						</div>
+						<div class="voice" id="play" style="display: none;"></div>
 					</div>
 				</div>
 			</div>
-			<!--<div class="voice-wrapper">
-				<div class="voice1" id="sbtn">开始</br>说话</div>
-				<div class="voice2" id="dbtn">停止</br>说话</div>
+			<div class="voice-wrapper">
+				<div class="voice1" id="sbtn" style="display: block;">开始</br>说话</div>
+				<div class="voice2" id="dbtn" style="display: block;">停止</br>说话</div>
 				<div class="voice3">点击</br>发送</div>
-			</div>-->
+			</div>
 		</div>
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
@@ -78,167 +81,112 @@
 			var token = getCookie('token');
 			var imgArr = [];
 			var para = window.location.search;
-			//点击说话
-//			$('.voice1').on('click', function() {
-//				$(this).hide().next('.voice2').show();
-//			});
-//			//停止录音
-//			$('.voice2').on('click', function() {
-				//				$(this).hide().next('.voice3').show();
-//			});
-			//			//发送录音
-			//			$('.voice3').on('click', function() {
-			//				$(this).hide().siblings('.voice1').show();
-			//			});
+		
 			//获取微信签名等一系列参数
-//			$.ajax({
-//				url: 'http://slpg.lgwy.net/hm_shenlun/index.php/Webservice/Wechat/getSignPackage',
-//				type: 'post',
-//				dataType: 'json',
-//				xhrFields: {
-//					withCredentials: true
-//				},
-//				success: function(data) {
-//					var de = data.infor;
-//					wx.config({
-//						debug: true,
-//						appId: de.appId,
-//						timestamp: de.timestamp,
-//						nonceStr: de.nonceStr,
-//						signature: de.signature,
-//						jsApiList: [
-//							"onMenuShareTimeline",
-//							"onMenuShareAppMessage",
-//							"onMenuShareQQ",
-//							"onMenuShareWeibo",
-//							"onMenuShareQZone",
-//							"startRecord",
-//							"stopRecord",
-//							"onVoiceRecordEnd",
-//							"playVoice",
-//							"pauseVoice",
-//							"stopVoice",
-//							"onVoicePlayEnd",
-//							"uploadVoice",
-//							"downloadVoice",
-//							"chooseImage",
-//							"previewImage",
-//							"uploadImage",
-//							"downloadImage",
-//							"translateVoice",
-//							"getNetworkType",
-//							"openLocation",
-//							"getLocation",
-//							"hideOptionMenu",
-//							"showOptionMenu",
-//							"hideMenuItems",
-//							"showMenuItems",
-//							"hideAllNonBaseMenuItem",
-//							"showAllNonBaseMenuItem",
-//							"closeWindow",
-//							"scanQRCode",
-//							"chooseWXPay",
-//							"openProductSpecificView",
-//							"addCard",
-//							"chooseCard",
-//							"openCard"
-//						]
-//					});
-//					wx.ready(function() {
-//						var START;
-//						var END;
-//						var recordTimer;
-//						var voice = {
-//							localId: ""
-//						}
-//						sbtn.onclick = function(event) {
-//							event.preventDefault();
-//							START = new Date().getTime();
-//
-//							recordTimer = setTimeout(function() {
-//								wx.startRecord({
-//									success: function() {
-//										localStorage.rainAllowRecord = 'true';
-//									},
-//									cancel: function() {
-//										alert('用户拒绝授权录音');
-//									}
-//								});
-//							}, 300);
-//						}
-//						dbtn.onclick = function(evevt) {
-//							event.preventDefault();
-//							END = new Date().getTime();
-//							if((END - START) < 300) {
-//								END = 0;
-//								START = 0;
-//								//小于300ms，不录音
-//								clearTimeout(recordTimer);
-//							} else {
-//								wx.stopRecord({
-//									success: function(res) {
-//										voice.localId = res.localId;
-//										uploadVoice();
-//										$('.play').show();
-//									},
-//									fail: function(res) {
-//										alert(JSON.stringify(res));
-//									}
-//								});
-//							}
-//
-//						};
-//						//播放语音
-//						play.onclick = function(event) {
-//							event.preventDefault();
-//							wx.playVoice({
-//								localId: voice.localId // 需要播放的音频的本地ID，由stopRecord接口获得
-//							});
-//						}
-//						//上传录音
-//						function uploadVoice() {
-//							//调用微信的上传录音接口把本地录音先上传到微信的服务器
-//							//不过，微信只保留3天，而我们需要长期保存，我们需要把资源从微信服务器下载到自己的服务器
-//							wx.uploadVoice({
-//								localId: voice.localId, // 需要上传的音频的本地ID，由stopRecord接口获得
-//								isShowProgressTips: 1, // 默认为1，显示进度提示
-//								success: function(res) {
-//									//把录音在微信服务器上的id（res.serverId）发送到自己的服务器供下载。
-//									//		            $.ajax({
-//									//		                url: '后端处理上传录音的接口',
-//									//		                type: 'post',
-//									//		                data: JSON.stringify(res),
-//									//		                dataType: "json",
-//									//		                success: function (data) {
-//									//		                    alert('文件已经保存到七牛的服务器');//这回，我使用七牛存储
-//									//		                },
-//									//		                error: function (xhr, errorType, error) {
-//									//		                    console.log(error);
-//									//		                }
-//									//		            });
-//								}
-//							});
-//						};
-//
-//						//		wx.playVoice({
-//						//	    localId: '' // 需要播放的音频的本地ID，由stopRecord接口获得
-//						//	});
-//						//注册微信播放录音结束事件【一定要放在wx.ready函数内】
-//						wx.onVoicePlayEnd({
-//							success: function(res) {
-//								stopWave();
-//							}
-//						});
-//
-//					});
-//
-//				},
-//				error: function(e, request, settings) {
-//					alert(settings);
-//				}
-//			});
+			
+					wx.config({
+						debug: false,
+						//appId: de.appId,
+						 appId: '<?php echo $signPackage["appId"];?>',
+                         timestamp: <?php echo $signPackage["timestamp"];?>,
+                         nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+                        signature: '<?php echo $signPackage["signature"];?>',
+						jsApiList: [
+							"onMenuShareTimeline",
+							"onMenuShareAppMessage",
+							"onMenuShareQQ",
+							"onMenuShareWeibo",
+							"onMenuShareQZone",
+							"startRecord",
+							"stopRecord",
+							"onVoiceRecordEnd",
+							"playVoice",
+							"pauseVoice",
+							"stopVoice",
+							"onVoicePlayEnd",
+							"uploadVoice",
+							"downloadVoice",
+							"chooseImage",
+							"previewImage",
+							"uploadImage",
+							"downloadImage",
+							"translateVoice",
+							"getNetworkType",
+							"openLocation",
+							"getLocation",
+							"hideOptionMenu",
+							"showOptionMenu",
+							"hideMenuItems",
+							"showMenuItems",
+							"hideAllNonBaseMenuItem",
+							"showAllNonBaseMenuItem",
+							"closeWindow",
+							"scanQRCode",
+							"chooseWXPay",
+							"openProductSpecificView",
+							"addCard",
+							"chooseCard",
+							"openCard"
+						]
+					});
+					wx.ready(function() {
+						var START;
+						var END;
+						var recordTimer;
+						var voice = {
+							localId: ""
+						}
+						sbtn.onclick = function(event) {
+							event.preventDefault();
+							START = new Date().getTime();
 
-			//上传图片
+							recordTimer = setTimeout(function() {
+								wx.startRecord({
+									success: function() {
+										localStorage.rainAllowRecord = 'true';
+									},
+									cancel: function() {
+										alert('用户拒绝授权录音');
+									}
+								});
+							}, 300);
+						}
+						dbtn.onclick = function(evevt) {
+							event.preventDefault();
+							END = new Date().getTime();
+							if((END - START) < 300) {
+								END = 0;
+								START = 0;
+								//小于300ms，不录音
+								clearTimeout(recordTimer);
+							} else {
+								wx.stopRecord({
+									success: function(res) {
+										voice.localId = res.localId;
+										uploadVoice();
+										$('#play').show();
+									},
+									fail: function(res) {
+										alert(JSON.stringify(res));
+									}
+								});
+							}
+
+						};
+						//播放语音
+						play.onclick = function(event) {
+							event.preventDefault();
+							wx.playVoice({
+								localId: voice.localId // 需要播放的音频的本地ID，由stopRecord接口获得
+							});
+						}
+						//注册微信播放录音结束事件【一定要放在wx.ready函数内】
+						wx.onVoicePlayEnd({
+							success: function(res) {
+								stopWave();
+							}
+						});
+						//上传图片
 			var count = 0;
 			$('.j-file-cert').on('change', function(e) {
 				count++;
@@ -330,14 +278,15 @@
 						token: token,
 						pigai_id: id,
 						pigai: imgString,
-						pigai_word: message
+						pigai_word: message,
+						pigai_sound:voice.localId
 					},
 					xhrFields: {
 						withCredentials: true
 					},
 					success: function(data) {
 						if(data.error_code == 200) {
-							window.location.href = preUrl('log/login.html' + para + '&path=index/sl-correct.html');
+							window.location.href = preUrl('log/login.html' + para + '&path=index/sl-correct.php');
 						} else if(data.success) {
 							//							mask('ok')
 							window.location.href = document.referrer;
@@ -362,6 +311,12 @@
 					}
 				}
 			}
+
+					});
+
+				
+
+			
 		});
 	</script>
 

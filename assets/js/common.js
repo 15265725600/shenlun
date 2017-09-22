@@ -1,13 +1,18 @@
-
 var para = window.location.search;
 //页面地址前缀
 function preUrl(path) {
 	var fUrl = 'http://127.0.0.1:8020/hm_slpg/';
-//	var fUrl = 'http://wxly123.duapp.com/hm_slpg/';
-//	var fUrl = 'http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/';
+	//	var fUrl = 'http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/';
 	return fUrl + path;
 }
-
+//重新登录后点击返回键
+function backUrl() {
+	var prevUrl = document.referrer.split('?')[0];
+	var Url = "http://127.0.0.1:8020/hm_slpg/log/login.html";
+	if(prevUrl == Url) {
+		$('.backUrl').attr('href', 'javascript:history.go(-2);');
+	}
+}
 /*
  *  获取地址栏中的参数
  *   GetQueryString('参数名1')
@@ -22,11 +27,10 @@ function GetQueryString(name) {
 
 //ajax 传参url
 function reqUrl(path) {
-//	var frontUrl = 'http://192.168.2.146:8008/group19/hm_shenlun/index.php/Webservice/V100/';
+	//	var frontUrl = 'http://192.168.2.146:8008/group19/hm_shenlun/index.php/Webservice/V100/';
 	var frontUrl = 'http://slpg.lgwy.net/hm_shenlun/index.php/Webservice/V100/';
 	return frontUrl + path;
 }
-
 
 var token;
 

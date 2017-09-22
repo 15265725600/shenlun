@@ -45,6 +45,7 @@
 				<ul class="mac-list">
 					<script type="text/html" id="shopOrder_list">
 						{{each listItems as item index}}
+						{{if item.is_pay == 1}}
 						<li class="list-item">
 							<a href="sl-correct-details.html?id={{item.id}}">
 								<div class="item-top">
@@ -62,6 +63,7 @@
 								</div>
 							</a>
 						</li>
+						{{/if}}
 						{{/each}}
 					</script>
 				</ul>
@@ -123,7 +125,9 @@
 								window.location.href = preUrl('log/login.html' + para + '&path=my/my-sl-correct.html');
 							} else if(data.success) {
 								page++;
-								var arrLen = data.infor.listItems.length;
+								if(data.infor.listItems != null){
+									var arrLen = data.infor.listItems.length;
+								}
 								if(arrLen > 0) {
 									//预编译模板
 									var content = template('shopOrder_list', data.infor);

@@ -129,8 +129,8 @@
 					</div>
 					<div class="line"></div>
 					<div class="slx-message">
-						<textarea name="" rows="5" cols="" class="word" placeholder="请输入给老师的留言"></textarea>
-						<span class="text">0/50</span>
+						<textarea name="" rows="5" cols="" class="word" placeholder="请输入给老师的留言" onkeyup="checkLength(this);"></textarea>
+						<span class="text">0/<i id="txtnumber">50</i></span>
 					</div>
 				</div>
 			</div>
@@ -146,6 +146,14 @@
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
+		//限制留言字数
+		function checkLength(which) {
+			var maxChars = 50;
+			if(which.value.length > maxChars)
+			which.value = which.value.substring(0, maxChars);
+			var curr = maxChars - which.value.length;
+			document.getElementById("txtnumber").innerHTML = curr.toString();
+		}
 		$(function() {
 			$('body').css('backgroundColor', '#ebebeb');
 			var token = getCookie('token');
@@ -153,7 +161,11 @@
 			var testID = "";
 			var fid = GetQueryString('fid');
 			var para = window.location.search;
-			console.log(fid)
+			var role = getInfo('role');
+			if(role == "2" || role == "3") {
+				$('.test-submit').hide();
+			}
+			
 			//改变折叠面板样式
 			function collapse(id, el) {
 				$(id).on('open.collapse.amui', function() {
@@ -162,6 +174,8 @@
 					$(el).removeClass('active').parent().removeClass('active');
 				});
 			};
+			
+			
 			//试卷详情
 			$.ajax({
 				url: reqUrl('yeartest_get'),
@@ -188,7 +202,6 @@
 						var respon = '';
 						for(var i = 0; i < list.length; i++) {
 							if(list[i].is_answer == 0) {
-								console.log(list[i].id)
 								respon = "<a href=\"f-exam-answer.html?id=" + list[i].id + "&fid=" + fid + "&pid=" + testID + "\" class=\"item-answer\">立即作答</a>";
 							} else if(list[i].is_answer == 1) {
 								respon = "<a href=\"f-exam-answer.html?id=" + list[i].id + "&fid=" + fid + "&pid=" + testID + "\" class=\"item-answer\">修改作答</a>";
@@ -275,7 +288,7 @@
 					});
 				}
 
-			})
+			});
 
 		});
 	</script>

@@ -38,7 +38,7 @@
 					<script type="text/html" id="respon">
 						{{each listItems as item index}} {{if item.content == 0}}
 						<li class="list-item">
-							<a href="javascript:location.href = perUrl('index/me-details.html?id={{item.modelessay_id}}')" class="item-href">
+							<a href="../index/me-details.html?id={{item.modelessay_id}}" class="item-href">
 								<div class="mc-Left">
 									<input type="checkbox" class="mt goods" value="{{item.id}}" />
 								</div>
@@ -50,7 +50,7 @@
 						</li>
 						{{else if item.content == 1}}
 						<li class="list-item">
-							<a href="javascript:location.href = preUrl('index/zt-details.html?id={{item.hotquestion_id}}')" class="item-href">
+							<a href="../index/zt-details.html?id={{item.hotquestion_id}}" class="item-href">
 								<div class="mc-Left">
 									<input type="checkbox" class="mt goods" value="{{item.id}}" />
 								</div>
@@ -82,6 +82,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('body').addClass('bg-color');
+			var idString = "";
 			$('#empty').click(function() {
 				var data = parseInt($(this).attr('data'));
 				console.log(data)

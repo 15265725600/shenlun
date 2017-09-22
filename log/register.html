@@ -66,7 +66,7 @@
 					//验证用户是否存在
 					$.ajax({
 						type: 'POST',
-						url: reqUrl('client_verify'),
+						url: reqUrl('student_verify'),
 						data: {
 							username: phone
 						},
@@ -93,7 +93,8 @@
 										if(data.success) {
 											$('.reg-mask').show();
 										} else {
-											mask(data.mask);
+											mask(data.msg);
+											console.log(data.msg);
 										}
 									}
 								});
@@ -118,7 +119,8 @@
 								var timer = setInterval(timeCountDown, 1000);
 
 							} else {
-								mask(data.mask);
+								mask(data.msg);
+								return;
 							}
 						}
 					})

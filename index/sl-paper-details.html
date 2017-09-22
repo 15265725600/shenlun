@@ -150,6 +150,10 @@
 			var para = window.location.search;
 			var id = GetQueryString('id');
 			var testID = "";
+			var role = getInfo('role');
+			if(role == "2" || role == "3") {
+				$('.test-submit').hide();
+			}
 			//改变折叠面板样式
 			function collapse(id, el) {
 				$(id).on('open.collapse.amui', function() {

@@ -17,7 +17,7 @@
 	<body>
 		<header data-am-widget="header" class="am-header am-header-fixed index-header">
 			<div class="am-header-left am-header-nav">
-				<a href="javascript:history.back()" class="">
+				<a href="javascript:history.back()" class="backUrl">
 					<i class="arrow-left"></i>
 				</a>
 			</div>
@@ -35,7 +35,7 @@
 						<span class="read">已有<i>{{infor[0].read_count}}</i>人阅读</span>
 					</div>
 					<div class="word">
-						<p>{{infor[0].content}}</p>
+						<p class="word-txt"></p>
 					</div>
 					<div class="function">
 						<div class="collect">
@@ -87,6 +87,10 @@
 			var id = GetQueryString('id');
 			var token = getCookie('token');
 			var para = window.location.search;
+			if(token == "") {
+				window.location.href = preUrl('log/login.html' + para + '&path=index/me-details.html');
+			}
+			backUrl();
 			$.ajax({
 				type: 'post',
 				url: reqUrl('modelessay_info'),
@@ -105,15 +109,24 @@
 					} else if(data.success) {
 						var html = template('content', data);
 						$('.container').html(html);
+						$('.word-txt').html(data.infor[0].content);
 					}
 
 				}
 			});
-			
+			//点击的时候链接不进入历史记录堆栈
+			$('.article-list a').on('click', function(event) {
+				if(event && event.preventDefault) {
+					event.preventDefault();
+				}
+				fnUrlReplace(this);
+
+				return false;
+			});
 			$('#collect').on('click', function() {
 				console.log(0)
 				$(this).toggleClass('active');
-				if($(this).hasClass('active')) {//收藏
+				if($(this).hasClass('active')) { //收藏
 					$.ajax({
 						url: reqUrl('shoucang_click_modelessay'),
 						type: 'post',
@@ -137,7 +150,7 @@
 							alert(settings);
 						}
 					});
-				} else {//取消收藏
+				} else { //取消收藏
 					$.ajax({
 						url: reqUrl('shoucang_cancel_modelessay'),
 						type: 'post',

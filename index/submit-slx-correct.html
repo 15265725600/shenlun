@@ -60,7 +60,7 @@
 				</script>
 			</div>
 			<div class="ssc-message">
-				<textarea name="" rows="3" cols="" class="text">留言：请好好批改</textarea>
+				<textarea name="" rows="3" cols="" class="text" readonly='readonly'>留言：请好好批改</textarea>
 			</div>
 			<div class="correct-price">
 				<div class="price">批改价格：<span class="cprice">100</span>元</div>
@@ -71,7 +71,7 @@
 		</div>
 		<footer class="sc-foot">
 			<ul class="sc-box clearfix">
-				<li class="actual-pay"><span>实付款：100元</span></li>
+				<li class="actual-pay">实付款：<span class="aPrice">100</span>元</li>
 				<li class="go-pay">
 					<a href="javascript:;" id="payment">立即支付</a>
 				</li>
@@ -114,8 +114,7 @@
 						} else if(data.success) {
 							var examDetail = template('order', data);
 							$('.sl-result').html(examDetail);
-							var orderNo = data.infor[0].order_sn;
-							console.log(orderNo)
+							orderNo = data.infor[0].order_sn;
 							var price = data.infor[0].pigai_price;
 							var message = data.infor[0].message;
 							$('.cprice').text(price);
@@ -174,14 +173,14 @@
 			}
 			if(aPrice != null) {
 				$('.discount a').html('-￥' + aPrice + '&gt;');
-				var price = parseInt($('.aPrice').text()) - aPrice;
+				var price = parseInt($('.aPrice').text()) - parseInt(aPrice);
 				$('.aPrice').text(price);
+				
 			}
 			//提交提单页面
 			$('#payment').click(function() {
-				
-				var price = "0.01";
-                window.location.href = 'http://slpg.lgwy.net/hm_shenlun/plugins/OnlinePay/WeixinWeb/trade.php?token='+token+'&total_fee='+price+'&paytype=3&keytype=2&keyid=0&out_trade_no='+orderNo+'';
+				var price = $('.aPrice').text();
+                window.location.href = 'http://slpg.lgwy.net/hm_shenlun/plugins/OnlinePay/WeixinWeb/trade.php?token='+token+'&total_fee='+price+'&couid='+couID+'&paytype=3&keytype=2&keyid=0&out_trade_no='+orderNo+'';
 			})
 
 		});

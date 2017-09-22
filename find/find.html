@@ -33,6 +33,7 @@
 				<script type="text" id="template">
 					{{each listItems as item index}}
 					<li class="list-item">
+						{{if item.url == null}}
 						<a href="find-details.html?id={{item.id}}" class="item-href">
 							<div class="time"><span>{{item.date}}</span></div>
 							<div class="content">
@@ -41,13 +42,30 @@
 									<div class="text two-truncate">{{item.title}}</div>
 								</div>
 								<div class="word">
-									<p class="two-truncate">{{item.content}}</p>
+									<p class="two-truncate find-title"></p>
 									<div class="read">
 										阅读全文&gt;
 									</div>
 								</div>
 							</div>
 						</a>
+						{{else if item.url != null}}
+						<a href="{{item.url}}" class="item-href">
+							<div class="time"><span>{{item.date}}</span></div>
+							<div class="content">
+								<div class="bullutin">
+									<img src="{{item.img}}" alt="" />
+									<div class="text two-truncate">{{item.title}}</div>
+								</div>
+								<div class="word">
+									<p class="two-truncate find-title"></p>
+									<div class="read">
+										阅读全文&gt;
+									</div>
+								</div>
+							</div>
+						</a>
+						{{/if}}
 					</li>
 					{{/each}}
 				</script>
@@ -112,6 +130,8 @@
 								if(arrLen > 0) {
 									//预编译模板
 									html = template('template', data.infor);
+									var arrLen = data.infor.listItems.length;
+									var list = data.infor.listItems;
 
 								} else {
 									// 锁定
@@ -122,9 +142,16 @@
 
 								if(page == 1) {
 									$('.find-list').html(html);
+									for(var i = 0;i<arrLen;i++){
+										$('.find-list li').eq(i).find('.find-title').html(list[i].content);
+									}
 
 								} else {
 									$('.find-list').append(html);
+									for(var i = 0;i<arrLen;i++){
+										$('.find-list li').eq(i).find('.find-title').html(list[i].content);
+									}
+
 								}
 
 								me.resetload();

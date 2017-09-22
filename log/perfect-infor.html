@@ -35,7 +35,7 @@
 					<a href="javascript:;" class="item-href clearfix">
 						<span class="item-left">头像</span>
 						<div class="item-right am-fr" id="top-pdc">
-							<img src="../assets/i/avatar.png" alt="" width="42" height="42" />
+							<img src="../assets/i/avatar.png" alt="" width="42" height="42" class="avatar"/>
 							<input type="file" name='temp_file' value="" class="file" />
 						</div>
 					</a>
@@ -335,7 +335,9 @@
 		$('.pi-submit').click(function(e) {
 			e.stopPropagation();
 			e.preventDefault();
-			var img = $('.avatar').attr('src');
+			var examstyle = "";
+			var img = $('#top-pdc').find('.avatar').attr('src');
+			console.log(img)
 			var name = $('#name').val();
 			var nickname = $('#nickname').val();
 			var addr = $('#address').text();
@@ -343,9 +345,41 @@
 			var address = addr.replace(new RegExp(replaceStr, 'gm'), ','); //逗号替换成空
 			var school = $('#school').val();
 			var mailbox = $('#mailbox').val();
-			var examstyle = $('#type-text').text();
+			examstyle = $('#type-text').text();
+			if(examstyle == "选择"){
+				examstyle = "";
+			}
 			var pwd = GetQueryString('pwd');
 			var username = GetQueryString('username');
+			var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+			if(name == ""){
+				mask('姓名不能为空');
+				return false;
+			}
+			if(nickname == ""){
+				mask('昵称不能为空');
+				return false;
+			}
+			if(school == ""){
+				mask('学校不能为空');
+				return false;
+			}
+//			if(examstyle == ""){
+//				mask('考试类型不能为空');
+//				return false;
+//			}
+			if(mailbox == ""){
+				mask('邮箱不能为空');
+				return false;
+			}
+			if(!reg.test(mailbox)){
+				mask('您输入的邮箱格式不正确');
+				return false;
+			}
+//			if(address == ""){
+//				mask('地址不能为空');
+//				return false;
+//			}
 			$.ajax({
 				type: 'POST',
 				url: reqUrl("student_save"),

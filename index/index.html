@@ -26,7 +26,7 @@
 					<script type="text/html" id="template">
 						{{each listItems as item index}}
 						<li>
-							<img src="{{item.img}}">
+							<img src="{{item.imgurl}}">
 						</li>
 						{{/each}}
 					</script>
@@ -52,7 +52,7 @@
 					<span>全真模拟</span>
 				</li>
 				<li class="index-item">
-					<a href="old-exam.html"><img src="../assets/i/t5.png" alt="" /></a>
+					<a href="old-exam.html?id=1"><img src="../assets/i/t5.png" alt="" /></a>
 					<span>历年真题</span>
 				</li>
 				<li class="index-item">
@@ -122,9 +122,9 @@
 	<script type="text/javascript" src="../assets/js/template.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript">
-		var token = getCookie('token');
-		var role = getInfo('role');
-
+		
+			var token = getCookie('token');
+			var role = getInfo('role');
 		$('.nt').on('click', function() {
 			if(role == 2 || role == 3) {
 				$(this).attr('href', 'javascript:;');
@@ -136,9 +136,15 @@
 			type: 'post',
 			url: reqUrl('hotquestion_index'),
 			dataType: "json",
+			xhrFields: {
+				withCredentials: true
+			},
 			async: false, //同步
 			success: function(data) {
-				if(data.success) {
+				if(data.error_code == 200) {
+					window.location.href = preUrl('log/login.html?path=index/index.html');
+				} else if(data.success) {
+
 					var html = template('ztrlist', data.infor);
 					$('.zt-list').html(html);
 
@@ -158,6 +164,7 @@
 					console.log(data)
 					var html = template('template', data.infor);
 					$('#banner-list').html(html);
+//					$('.am-slider').flexslider('play');
 
 				} else {
 					mask(data.msg);

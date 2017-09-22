@@ -18,7 +18,7 @@
 	<body>
 		<header data-am-widget="header" class="am-header am-header-fixed index-header">
 			<div class="am-header-left am-header-nav">
-				<a href="javascript:history.back()" class="">
+				<a href="javascript:history.back()" class="backUrl">
 					<i class="arrow-left"></i>
 				</a>
 			</div>
@@ -34,7 +34,7 @@
 					<span class="title">年份</span>
 					<i class="arrow-down"></i>
 				</li>
-				<li class="nav-item" id="city-item" data-flag="0">
+				<li class="nav-item one-truncate" id="city-item" data-flag="0">
 					<span class="title">地区</span>
 					<i class="arrow-down"></i>
 				</li>
@@ -110,7 +110,11 @@
 			$('body').height($(window).height());
 			$('body').addClass('bg-color');
 			var token = getCookie('token');
-			console.log(token)
+			var para = window.location.search;
+			if(token == ""){
+				window.location.href = preUrl('log/login.html?path=index/old-exam.html');
+			}
+			backUrl();
 			//区域滚动
 			var myScroll = new IScroll('#nav-wrapper', {
 				click: true
@@ -153,7 +157,7 @@
 			//获取考试年份
 			var myDate = new Date();
 			var startYear = myDate.getFullYear() - 16; //起始年份
-			var endYear = myDate.getFullYear(); //结束年份 
+			var endYear = myDate.getFullYear() + 1; //结束年份 
 			var html = '';
 			for(var i = endYear; i >= startYear; i--) {
 				html += "<li class = \"list-item\">" + i + "</li>";
@@ -165,8 +169,13 @@
 				var text = $(this).text();
 				$('#year-item').text(text);
 				hide();
-				Year = text;
-				$('.dropload-down').remove();
+				if(text == "全部") {
+					Year = "";
+				} else {
+					Year = text;
+				}
+				$('.lcs-wrapper').find('.dropload-down').remove();
+				$('.lcs-list').html('');
 				goodsList(Year, City, Style);
 			});
 			//获取地区列表
@@ -183,14 +192,19 @@
 				success: function(data) {
 					var city_list = template('city-nav', data.infor);
 					$('#cityNav').html(city_list);
-					$('#cityNav').prepend('<li class = "list-item">全部</li>');
+					$('#cityNav').prepend('<li class = "list-item">全部</li><li class = "list-item">全国</li>');
 					$('#cityNav li').click(function() {
 						$('#city-item').toggleClass('active');
 						var text = $(this).text();
 						$('#city-item').text(text);
 						hide();
-						City = text;
-						$('.dropload-down').remove();
+						if(text == "全部") {
+							City = "";
+						} else {
+							City = text;
+						}
+						$('.lcs-wrapper').find('.dropload-down').remove();
+						$('.lcs-list').html('');
 						goodsList(Year, City, Style);
 					});
 				},
@@ -199,7 +213,7 @@
 				}
 			});
 			//获取考试类型
-
+			console.log(token)
 			$.ajax({
 				url: reqUrl('style_list'),
 				type: 'post',
@@ -222,8 +236,14 @@
 							var text = $(this).text();
 							$('#exam-item').text(text);
 							hide();
-							Style = text;
-							$('.dropload-down').remove();
+							if(text == "全部") {
+								Style = "";
+							} else {
+								Style = text;
+							}
+							console.log(text);
+							$('.lcs-wrapper').find('.dropload-down').remove();
+							$('.lcs-list').html('');
 							goodsList(Year, City, Style);
 						});
 					} else {
@@ -234,11 +254,12 @@
 					alert(settings);
 				}
 			});
+			
 			goodsList("", "", "");
-
+			var $dropload;
 			function goodsList(year, region, style) {
 				var page = 0;
-				var $dropload = $('.lcs-wrapper').dropload({
+				$dropload = $('.lcs-wrapper').dropload({
 					scrollArea: window,
 					threshold: 50,
 					domDown: {

@@ -17,7 +17,7 @@
 	<body>
 		<header data-am-widget="header" class="am-header am-header-fixed index-header">
 			<div class="am-header-left am-header-nav">
-				<a href="javascript:history.back()" class="">
+				<a href="javascript:history.back()" class="backUrl">
 					<i class="arrow-left"></i>
 				</a>
 			</div>
@@ -50,11 +50,13 @@
 					</ul>
 				</div>
 				<div class="cou-unuse">
-					<h1>已失效</h1>
+					
 					<ul class="cou-list" id="mayList">
 						<script type="text/html" id="useMay-list">
+							<h1 class="usemat">已失效</h1>
 							{{each listItems as item index}}
 							{{if item.use_may == 0}}
+							
 							<li class="list-item">
 								<div class="item-price">
 									￥<span>{{item.name}}</span>
@@ -84,6 +86,7 @@
 		$(function() {
 			$('body').css('backgroundColor', '#f4f4f4');
 			var token = getCookie('token');
+			backUrl();
 			$.ajax({
 				url: reqUrl('coupon_list'),
 				type: 'post',
@@ -102,6 +105,10 @@
 						$('#useList').html(useList);
 						var mayList = template('useMay-list', data.infor);
 						$('#mayList').html(mayList);
+						var arrLen = data.infor.listItems;
+						if(arrLen.length == 0){
+							$('.usemat').hide();
+						}
 						
 					} else {
 						mask(data.msg);
