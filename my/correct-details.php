@@ -65,7 +65,7 @@ $signPackage = $jssdk->GetSignPackage();
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
 	<script type="text/javascript" src="../assets/js/template.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
-	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
+	<script type="text/javascript" src="../assets/js/hidpi-canvas.min.js"></script>
     <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 	<script type="text/javascript">
 		$(function() {

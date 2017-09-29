@@ -34,7 +34,7 @@
 					<div class="order-num">考试项目：<span>{{infor[0].style}}</span></div>
 					<div class="order-num">提交时间：<span>{{infor[0].date}}</span></div>
 					{{if infor[0].is_pigai == 0}}
-					<div class="order-num sur-time">剩余批改时间：<span>{{infor[0].shengyu_time}}</span></div>
+					<div class="order-num sur-time">剩余批改时间：<span class="stime"></span></div>
 					{{else if infor[0].is_pigai == 1}}
 					<div class="order-num">批改时间：<span>{{infor[0].pigai_time}}</span></div>
 					{{/if}} {{if infor[0].is_pigai == 0}}
@@ -114,7 +114,34 @@
 						$('.ssc-container').html(content);
 						var status = data.infor[0].is_pigai;
 						var pid = data.infor[0].pigai_id;
-						console.log(pid)
+						var leftTime = data.infor[0].shengyu_time;
+						//倒计时
+						function ShowCountDown(divname, leftTime) {
+							var dd = parseInt(leftTime / 60 / 60 / 24, 10); //计算剩余的天数
+							var hh = parseInt(leftTime / 60 / 60 % 24, 10); //计算剩余的小时数
+							var mm = parseInt(leftTime / 60 % 60, 10); //计算剩余的分钟数
+							var ss = parseInt(leftTime % 60, 10); //计算剩余的秒数
+							dd = checkTime(dd);
+							hh = checkTime(hh);
+							mm = checkTime(mm);
+							ss = checkTime(ss); //小于10的话加0
+							divname.html(dd + "天" + hh + "时" + mm + "分" + ss + "秒" +"");
+						}
+
+						function checkTime(i) {
+							if(i < 10) {
+								i = "0" + i;
+							}
+							return i;
+						}
+						var timer = setInterval(function() {
+							ShowCountDown($('.stime'), leftTime);
+							leftTime -= 1;
+							if(leftTime == 0){
+								clearInterval(timer);
+							}
+						}, 1000);
+
 						if(status == 0) {
 							var con = '<a href="sl-correct.php?id=' + pid + '">马上批改</a>';
 							$('.scd-footer').html(con);

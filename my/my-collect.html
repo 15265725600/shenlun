@@ -60,6 +60,18 @@
 								</div>
 							</a>
 						</li>
+						{{else if item.content == 2}}
+						<li class="list-item">
+							<a href="../index/sl-paper-details.html?id={{item.test_id}}" class="item-href">
+								<div class="mc-Left">
+									<input type="checkbox" class="mt goods" value="{{item.id}}" />
+								</div>
+								<div class="mc-Right">
+									<h1 class="title">{{item.title}}</h1>
+									<span class="time">{{item.data}}</span>
+								</div>
+							</a>
+						</li>
 						{{/if}} {{/each}}
 					</script>
 				</ul>
@@ -83,6 +95,7 @@
 		$(function() {
 			$('body').addClass('bg-color');
 			var idString = "";
+			var token = getCookie('token');
 			$('#empty').click(function() {
 				var data = parseInt($(this).attr('data'));
 				console.log(data)

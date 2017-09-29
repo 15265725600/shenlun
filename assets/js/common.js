@@ -2,13 +2,13 @@ var para = window.location.search;
 //页面地址前缀
 function preUrl(path) {
 	var fUrl = 'http://127.0.0.1:8020/hm_slpg/';
-	//	var fUrl = 'http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/';
+//		var fUrl = 'http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/';
 	return fUrl + path;
 }
 //重新登录后点击返回键
 function backUrl() {
 	var prevUrl = document.referrer.split('?')[0];
-	var Url = "http://127.0.0.1:8020/hm_slpg/log/login.html";
+	var Url = "http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/log/login.html";
 	if(prevUrl == Url) {
 		$('.backUrl').attr('href', 'javascript:history.go(-2);');
 	}
@@ -169,8 +169,10 @@ function getImgData(img, dir, next) {
 			}
 		}
 		var canvas = document.createElement('canvas');
+		console.log(canvas);
 		canvas.width = width = drawWidth;
 		canvas.height = height = drawHeight;
+		
 		var context = canvas.getContext('2d');
 		//判断图片方向，重置canvas大小，确定旋转角度，iphone默认的是home键在右方的横屏拍摄方式
 		switch(dir) {
@@ -197,11 +199,33 @@ function getImgData(img, dir, next) {
 				drawHeight = height;
 				break;
 		}
+		
 		//使用canvas旋转校正
 		context.rotate(degree * Math.PI / 180);
+		var ratio = getPixelRatio(context);
 		context.drawImage(this, 0, 0, drawWidth, drawHeight);
+		context.drawImage(this, 0, 0, drawWidth * ratio, drawHeight * ratio);
 		//返回校正图片
-		next(canvas.toDataURL("image/jpeg", .8));
+		next(canvas.toDataURL("image/jpeg",0.9));
+		
+	
+		
 	}
 	image.src = img;
 }
+
+var getPixelRatio = function(context) {
+  var backingStore = context.backingStorePixelRatio ||
+    context.webkitBackingStorePixelRatio ||
+    context.mozBackingStorePixelRatio ||
+    context.msBackingStorePixelRatio ||
+    context.oBackingStorePixelRatio ||
+    context.backingStorePixelRatio || 1;
+   return (window.devicePixelRatio || 1) / backingStore;
+};
+
+//调用
+//var ratio = getPixelRatio(context);
+//之后，在调用ctx.drawImage()的时候，给width和height乘以ratio，如下：
+
+//ctx.drawImage(document.querySelector('img'), 10, 10, 300 * ratio, 90 * ratio);

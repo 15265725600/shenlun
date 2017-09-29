@@ -58,8 +58,10 @@
 								</div>
 								<div class="item-content">
 									<h1 class="title">{{item.title}}</h1>
-									<span class="time">{{item.data}}</span>
-									<div class="sur-time">剩余批改时间：<span>7天2小时22分钟</span></div>
+									<span class="time">{{item.date}}</span>
+									{{if item.is_pigai == 0}}
+									<div class="sur-time">剩余批改时间：<span>{{item.shengyu_time}}</span></div>
+									{{/if}}
 								</div>
 							</a>
 						</li>

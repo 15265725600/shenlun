@@ -34,16 +34,15 @@
 					<div class="ar-content">
 						<div class="ar-subject">
 							<div class="title">
-								<p>{{infor[0].question}}</p>
+								<p class="question"></p>
 							</div>
 							<div class="require">
-								<p>
-									{{infor[0].shuoming}}
+								<p class="data">
 								</p>
 							</div>
 							<div class="proposal">
 								<span>*</span> 请在纸质答题卡上作答完成后拍照 上传，建议使用规范方格纸。
-								<a href="view-data.html" class="look-data">查看资料</a>
+								<a href="javascript:;" class="look-data" id="lookData">查看资料</a>
 							</div>
 						</div>
 					</div>
@@ -93,13 +92,11 @@
 	<script type="text/javascript" src="../assets/js/template.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript" src="../assets/js/exif.min.js"></script>
-	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
+	<script type="text/javascript" src="../assets/js/hidpi-canvas.min.js"></script>
 	<script type="text/javascript">
 		$(function() {
 			$('body').addClass('bg-color');
 			var token = getCookie('token');
-			
-			console.log(token);
 			var id = GetQueryString('id'); //试题id
 			var fid = GetQueryString('fid');
 			var pid = GetQueryString('pid'); //试卷id
@@ -112,6 +109,7 @@
 			var num = parseInt(GetQueryString('num'));
 			var have = "";
 			var answerID = "";
+			var Click = false;
 			//获取试题详情
 			$.ajax({
 				url: reqUrl('yeartest_amend'),
@@ -135,9 +133,18 @@
 						nid = data.infor[0].id;
 						have = data.infor[0].is_have;
 						answerID = data.infor[0].answer_id;
+						$('.question').html(data.infor[0].question);
+						$('.data').html(data.infor[0].shuoming);
 						$('.am-gallery').pureview();
+						$('#lookData').on('click', function() {
+							window.location.href = preUrl('index/view-data.html?id=' + id + '');
+						});
 						if(have == 1) {
 							$('#nextExam').on('click', function() {
+								if(Click == false){
+									mask('请上传图片');
+									return false;
+								}
 								$.ajax({
 									url: reqUrl('next_question'),
 									type: 'post',
@@ -168,6 +175,10 @@
 						} else if(have == 0) {
 							$('#nextExam').html('结束作答');
 							$('#nextExam').on('click', function() {
+								if(Click == false){
+									mask('请上传图片');
+									return false;
+								}
 								window.location.href = preUrl('index/sl-paper-details.html?id=' + pid + '');
 							})
 						}
@@ -177,7 +188,6 @@
 								$(this).parent().remove();
 								var tue = $(this).siblings().attr('src');
 								imgArr.removeByValue(tue);
-								console.log(imgArr)
 								if(count > 0) {
 									count--;
 								}
@@ -227,7 +237,6 @@
 
 						reader.onload = function(e) {
 							getImgData(this.result, orientation, function(data) {
-								console.log(data);
 								$.ajax({
 									type: 'POST',
 									url: reqUrl("web_file_upload_return_url"),
@@ -243,7 +252,6 @@
 									async: false,
 									success: function(data) {
 										imgArr.push(data.infor[0].item1);
-										console.log(imgArr)
 										content = '<li>' +
 											'<img class="j-image" src="' + data.infor[0].item1 + '">' +
 											'<i class="icon-close"></i>' +
@@ -273,20 +281,19 @@
 						count = 4;
 						return false;
 					}
-					e.target.value='';
+					e.target.value = '';
 
 				});
 			};
 			//提交答案
 			function subMit(tid) {
 				$('#upImg').on('click', function() {
+					Click = true;
 					var imgString = imgArr.join(",");
-					console.log(imgArr)
 					if(imgString == "") {
 						mask('请上传图片');
 						return false;
 					}
-					console.log(answer)
 					if(answer == 0) {
 						$.ajax({
 							url: reqUrl('yeartest_answer'),
@@ -304,7 +311,6 @@
 							success: function(data) {
 								if(data.success) {
 									mask('上传成功');
-									
 
 								} else {
 									mask(data.msg);
@@ -358,10 +364,10 @@
 					}
 				}
 			};
-			//			var somearray = ["mon", "tue", "wed", "thur"]
-			//			somearray.removeByValue("tue");
-			//			console.log(somearray)
 		});
+		
+		
+	
 	</script>
 
 </html>

@@ -38,10 +38,11 @@ $signPackage = $jssdk->GetSignPackage();
 			</div>
 		</header>
 		<div class="sl-container">
-			<div class="detail-wrapper clearfix" style="min-height: 80%;">
+			<div class="detail-wrapper clearfix" style="min-height: 60%;">
 				<div class="detail-main">
 					<div class="text">
 						<textarea name="" rows="4" cols="" class="message" placeholder="请输入文字"></textarea>
+						<div class="serve">保存</div>
 					</div>
 					<div class="ar-addimg">
 						<div class="infor">
@@ -62,8 +63,8 @@ $signPackage = $jssdk->GetSignPackage();
 				</div>
 			</div>
 			<div class="voice-wrapper">
-				<div class="voice1" id="sbtn" style="display: block;">开始</br>说话</div>
-				<div class="voice2" id="dbtn" style="display: block;">停止</br>说话</div>
+				<div class="voice1" id="sbtn">开始</br>说话</div>
+				<div class="voice2" id="dbtn">停止</br>说话</div>
 				<div class="voice3">点击</br>发送</div>
 			</div>
 		</div>
@@ -81,242 +82,246 @@ $signPackage = $jssdk->GetSignPackage();
 			var token = getCookie('token');
 			var imgArr = [];
 			var para = window.location.search;
-		
+			$('.serve').on('click',function(){
+				var txt = $('.message').val();
+				setCookie('word',txt,1);
+				mask('保存成功');
+			});
+			var word = getCookie('word');
+			if(word != ""){
+				$('.message').val(word);
+			}
+			
 			//获取微信签名等一系列参数
 			
-					wx.config({
-						debug: false,
-						//appId: de.appId,
-						 appId: '<?php echo $signPackage["appId"];?>',
-                         timestamp: <?php echo $signPackage["timestamp"];?>,
-                         nonceStr: '<?php echo $signPackage["nonceStr"];?>',
-                        signature: '<?php echo $signPackage["signature"];?>',
-						jsApiList: [
-							"onMenuShareTimeline",
-							"onMenuShareAppMessage",
-							"onMenuShareQQ",
-							"onMenuShareWeibo",
-							"onMenuShareQZone",
-							"startRecord",
-							"stopRecord",
-							"onVoiceRecordEnd",
-							"playVoice",
-							"pauseVoice",
-							"stopVoice",
-							"onVoicePlayEnd",
-							"uploadVoice",
-							"downloadVoice",
-							"chooseImage",
-							"previewImage",
-							"uploadImage",
-							"downloadImage",
-							"translateVoice",
-							"getNetworkType",
-							"openLocation",
-							"getLocation",
-							"hideOptionMenu",
-							"showOptionMenu",
-							"hideMenuItems",
-							"showMenuItems",
-							"hideAllNonBaseMenuItem",
-							"showAllNonBaseMenuItem",
-							"closeWindow",
-							"scanQRCode",
-							"chooseWXPay",
-							"openProductSpecificView",
-							"addCard",
-							"chooseCard",
-							"openCard"
-						]
-					});
-					wx.ready(function() {
-						var START;
-						var END;
-						var recordTimer;
-						var voice = {
-							localId: ""
-						}
-						sbtn.onclick = function(event) {
-							event.preventDefault();
-							START = new Date().getTime();
+			wx.config({
+				debug: false,
+				//appId: de.appId,
+				 appId: '<?php echo $signPackage["appId"];?>',
+                 timestamp: '<?php echo $signPackage["timestamp"];?>',
+                 nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+                signature: '<?php echo $signPackage["signature"];?>',
+				jsApiList: [
+					"onMenuShareTimeline",
+					"onMenuShareAppMessage",
+					"onMenuShareQQ",
+					"onMenuShareWeibo",
+					"onMenuShareQZone",
+					"startRecord",
+					"stopRecord",
+					"onVoiceRecordEnd",
+					"playVoice",
+					"pauseVoice",
+					"stopVoice",
+					"onVoicePlayEnd",
+					"uploadVoice",
+					"downloadVoice",
+					"chooseImage",
+					"previewImage",
+					"uploadImage",
+					"downloadImage",
+					"translateVoice",
+					"getNetworkType",
+					"openLocation",
+					"getLocation",
+					"hideOptionMenu",
+					"showOptionMenu",
+					"hideMenuItems",
+					"showMenuItems",
+					"hideAllNonBaseMenuItem",
+					"showAllNonBaseMenuItem",
+					"closeWindow",
+					"scanQRCode",
+					"chooseWXPay",
+					"openProductSpecificView",
+					"addCard",
+					"chooseCard",
+					"openCard"
+				]
+			});
+			wx.ready(function() {
+				var START;
+				var END;
+				var recordTimer;
+				var voice = {
+					localId: ""
+				}
+				sbtn.onclick = function(event) {
+					event.preventDefault();
+					START = new Date().getTime();
 
-							recordTimer = setTimeout(function() {
-								wx.startRecord({
-									success: function() {
-										localStorage.rainAllowRecord = 'true';
-									},
-									cancel: function() {
-										alert('用户拒绝授权录音');
-									}
-								});
-							}, 300);
-						}
-						dbtn.onclick = function(evevt) {
-							event.preventDefault();
-							END = new Date().getTime();
-							if((END - START) < 300) {
-								END = 0;
-								START = 0;
-								//小于300ms，不录音
-								clearTimeout(recordTimer);
-							} else {
-								wx.stopRecord({
-									success: function(res) {
-										voice.localId = res.localId;
-										uploadVoice();
-										$('#play').show();
-									},
-									fail: function(res) {
-										alert(JSON.stringify(res));
-									}
-								});
-							}
-
-						};
-						//播放语音
-						play.onclick = function(event) {
-							event.preventDefault();
-							wx.playVoice({
-								localId: voice.localId // 需要播放的音频的本地ID，由stopRecord接口获得
-							});
-						}
-						//注册微信播放录音结束事件【一定要放在wx.ready函数内】
-						wx.onVoicePlayEnd({
-							success: function(res) {
-								stopWave();
+					recordTimer = setTimeout(function() {
+						wx.startRecord({
+							success: function() {
+								localStorage.rainAllowRecord = 'true';
+							},
+							cancel: function() {
+								alert('用户拒绝授权录音');
 							}
 						});
-						//上传图片
-			var count = 0;
-			$('.j-file-cert').on('change', function(e) {
-				count++;
-				if(count < 5) {
-					var that = $(this);
-					if(!window.FileReader) return;
-
-					e.stopPropagation();
-					e.preventDefault();
-
-					var file = e.target.files[0];
-					var content = '';
-
-					if(!file.type.match('image.*')) {
-						alert('文件' + f.name + '不是图片')
-						return;
+					}, 300);
+				}
+				dbtn.onclick = function(evevt) {
+					event.preventDefault();
+					END = new Date().getTime();
+					if((END - START) < 300) {
+						END = 0;
+						START = 0;
+						//小于300ms，不录音
+						clearTimeout(recordTimer);
+					} else {
+						wx.stopRecord({
+							success: function(res) {
+								voice.localId = res.localId;
+								$('.voice').show();
+							},
+							fail: function(res) {
+								alert(JSON.stringify(res));
+							}
+						});
 					}
 
-					var orientation;
-					//EXIF js 可以读取图片的元信息 https://github.com/exif-js/exif-js
-					EXIF.getData(file, function() {
-						orientation = EXIF.getTag(this, 'Orientation');
+				};
+				//播放语音
+				play.onclick = function(event) {
+					event.preventDefault();
+					wx.playVoice({
+						localId: voice.localId // 需要播放的音频的本地ID，由stopRecord接口获得
 					});
-
-					var reader = new FileReader();
-
-					reader.onload = function(e) {
-						getImgData(this.result, orientation, function(data) {
-							$.ajax({
-								type: 'POST',
-								url: reqUrl("web_file_upload_return_url"),
-								data: {
-									token: token,
-									keytype: 3,
-									img: data
-								},
-								dataType: 'JSON',
-								xhrFields: {
-									withCredentials: true
-								},
-								async: false,
-								success: function(data) {
-									imgArr.push(data.infor[0].item1);
-									content = '<li>' +
-										'<img class="j-image" src="' + data.infor[0].item1 + '">' +
-										'<i class="icon-close"></i>' +
-										'</li>'
-
-									that.parent().before(content);
-									//	删除上传图片
-									$('.upload').on('click', '.icon-close', function() {
-										$(this).parent().remove();
-										var tue = $(this).siblings().attr('src');
-										imgArr.removeByValue(tue);
-										if(count > 0) {
-											count--;
-										}
+				}
+				//注册微信播放录音结束事件【一定要放在wx.ready函数内】
+				wx.onVoicePlayEnd({
+					success: function(res) {
+						stopWave();
+					}
+				});
+				//上传图片
+				var count = 0;
+				$('.j-file-cert').on('change', function(e) {
+					count++;
+					if(count < 5) {
+						var that = $(this);
+						if(!window.FileReader) return;
+	
+						e.stopPropagation();
+						e.preventDefault();
+	
+						var file = e.target.files[0];
+						var content = '';
+	
+						if(!file.type.match('image.*')) {
+							alert('文件' + f.name + '不是图片')
+							return;
+						}
+	
+						var orientation;
+						//EXIF js 可以读取图片的元信息 https://github.com/exif-js/exif-js
+						EXIF.getData(file, function() {
+							orientation = EXIF.getTag(this, 'Orientation');
+						});
+	
+						var reader = new FileReader();
+	
+						reader.onload = function(e) {
+							getImgData(this.result, orientation, function(data) {
+								$.ajax({
+									type: 'POST',
+									url: reqUrl("web_file_upload_return_url"),
+									data: {
+										token: token,
+										keytype: 3,
+										img: data
+									},
+									dataType: 'JSON',
+									xhrFields: {
+										withCredentials: true
+									},
+									async: false,
+									success: function(data) {
+										imgArr.push(data.infor[0].item1);
+										content = '<li>' +
+											'<img class="j-image" src="' + data.infor[0].item1 + '">' +
+											'<i class="icon-close"></i>' +
+											'</li>'
+	
+										that.parent().before(content);
+										//	删除上传图片
+										$('.upload').on('click', '.icon-close', function() {
+											$(this).parent().remove();
+											var tue = $(this).siblings().attr('src');
+											imgArr.removeByValue(tue);
+											if(count > 0) {
+												count--;
+											}
+											var length = $('.upload').children('li').length;
+											console.log(length);
+											$('.have').text(length - 1);
+											$('.addhave').text(4 - $('.have').text());
+										});
 										var length = $('.upload').children('li').length;
 										console.log(length);
 										$('.have').text(length - 1);
 										$('.addhave').text(4 - $('.have').text());
-									});
-									var length = $('.upload').children('li').length;
-									console.log(length);
-									$('.have').text(length - 1);
-									$('.addhave').text(4 - $('.have').text());
-
-								}
+	
+									}
+								});
 							});
-						});
-
+	
+						}
+						reader.readAsDataURL(file);
+					} else {
+						mask('最多传4张图片');
+						count = 4;
+						return false;
 					}
-					reader.readAsDataURL(file);
-				} else {
-					mask('最多传4张图片');
-					count = 4;
-					return false;
+	
+				});
+				$('.compltet').click(function() {
+					var message = $('.message').val();
+					var imgString = imgArr.join(",");
+					$.ajax({
+						url: reqUrl('pigai_do'),
+						type: 'post',
+						dataType: 'json',
+						data: {
+							token: token,
+							pigai_id: id,
+							pigai: imgString,
+							pigai_word: message,
+							pigai_sound:voice.localId
+						},
+						xhrFields: {
+							withCredentials: true
+						},
+						success: function(data) {
+							if(data.error_code == 200) {
+								window.location.href = preUrl('log/login.html' + para + '&path=index/sl-correct.php');
+							} else if(data.success) {
+								//							mask('ok')
+								window.location.href = document.referrer;
+							} else {
+								mask(data.msg);
+							}
+	
+						},
+						error: function(e, request, settings) {
+							alert(settings);
+						}
+					});
+	
+				})
+	
+				//删除数组中指定的一项
+				Array.prototype.removeByValue = function(val) {
+					for(var i = 0; i < this.length; i++) {
+						if(this[i] == val) {
+							this.splice(i, 1);
+							break;
+						}
+					}
 				}
 
 			});
-			$('.compltet').click(function() {
-				var message = $('.message').val();
-				var imgString = imgArr.join(",");
-				$.ajax({
-					url: reqUrl('pigai_do'),
-					type: 'post',
-					dataType: 'json',
-					data: {
-						token: token,
-						pigai_id: id,
-						pigai: imgString,
-						pigai_word: message,
-						pigai_sound:voice.localId
-					},
-					xhrFields: {
-						withCredentials: true
-					},
-					success: function(data) {
-						if(data.error_code == 200) {
-							window.location.href = preUrl('log/login.html' + para + '&path=index/sl-correct.php');
-						} else if(data.success) {
-							//							mask('ok')
-							window.location.href = document.referrer;
-						} else {
-							mask(data.msg);
-						}
-
-					},
-					error: function(e, request, settings) {
-						alert(settings);
-					}
-				});
-
-			})
-
-			//删除数组中指定的一项
-			Array.prototype.removeByValue = function(val) {
-				for(var i = 0; i < this.length; i++) {
-					if(this[i] == val) {
-						this.splice(i, 1);
-						break;
-					}
-				}
-			}
-
-					});
-
-				
-
-			
 		});
 	</script>
 

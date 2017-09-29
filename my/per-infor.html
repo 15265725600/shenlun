@@ -62,13 +62,14 @@
 							</div>
 						</a>
 					</li>
-					<li class="list-item" id="choose-addr">
+					<li class="list-item">
 						<a href="javascript:;" class="item-href clearfix" id="choose-addr">
 							<span class="item-left">地址</span>
 							<div class="item-right am-fr">
 								<span id="address" style="font-size: 15px;color: #353535;">{{infor[0].address}}</span><i class="arrow-right"></i>
 							</div>
 						</a>
+						<div class="detail-addr"><span>详细地址</span><input type="text" value = "{{infor[0].address_detail}}" class="de-address" style="color: #000;width: 75%;text-align:right;"/></div>
 					</li>
 					<li class="list-item">
 						<a href="javascript:;" class="item-href clearfix">
@@ -371,6 +372,7 @@
 						var pwd = GetQueryString('pwd');
 						var username = GetQueryString('username');
 						var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+						var deaddr = $('.de-address').val();
 						if(name == "") {
 							mask('姓名不能为空');
 							return false;
@@ -391,6 +393,10 @@
 							mask('邮箱不能为空');
 							return false;
 						}
+						if(deaddr == "") {
+							mask('详细地址不能为空');
+							return false;
+						}
 						if(!reg.test(mailbox)) {
 							mask('您输入的邮箱格式不正确');
 							return false;
@@ -409,7 +415,8 @@
 								img: img,
 								exam: examstyle,
 								address: address,
-								email: mailbox
+								email: mailbox,
+								address_detail:deaddr
 							},
 							xhrFields: {
 								withCredentials: true

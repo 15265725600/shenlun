@@ -56,13 +56,14 @@
 						</div>
 					</a>
 				</li>
-				<li class="list-item" id="choose-addr">
+				<li class="list-item">
 					<a href="javascript:;" class="item-href clearfix" id="choose-addr">
 						<span class="item-left">地址</span>
 						<div class="item-right am-fr">
 							<span id="address" style="font-size: 15px;">选择</span><i class="arrow-right"></i>
 						</div>
 					</a>
+					<div class="detail-addr"><input type="text" placeholder="请填写详细地址" class="de-address"/></div>
 				</li>
 				<li class="list-item">
 					<a href="javascript:;" class="item-href clearfix">
@@ -154,7 +155,7 @@
 		var examStyle = [];
 		$.ajax({
 			type: 'POST',
-			url: reqUrl("style_list"),
+			url: reqUrl("test_type"),
 			dataType: 'JSON',
 			data: {
 				token: token
@@ -198,7 +199,6 @@
 			},
 			success: function(data) {
 				city = data.infor.listItems;
-				console.log(city)
 			},
 			error: function(e, request, settings) {
 				alert(settings);
@@ -346,6 +346,7 @@
 			var school = $('#school').val();
 			var mailbox = $('#mailbox').val();
 			examstyle = $('#type-text').text();
+			var deaddr = $('.de-address').val();
 			if(examstyle == "选择"){
 				examstyle = "";
 			}
@@ -364,10 +365,10 @@
 				mask('学校不能为空');
 				return false;
 			}
-//			if(examstyle == ""){
-//				mask('考试类型不能为空');
-//				return false;
-//			}
+			if(deaddr == ""){
+				mask('详细地址不能为空');
+				return false;
+			}
 			if(mailbox == ""){
 				mask('邮箱不能为空');
 				return false;
@@ -394,7 +395,8 @@
 					img: img,
 					exam: examstyle,
 					address: address,
-					email: mailbox
+					email: mailbox,
+					address_detail:deaddr
 				},
 				xhrFields: {
 					withCredentials: true
@@ -418,7 +420,7 @@
 									setCookie("token", data.infor[0].token, 365);
 									mask('保存成功');
 									setTimeout(function(){
-										window.location.href = preUrl('log/login.html');
+										window.location.href = preUrl('index/index.html');
 									},1000)
 									
 								} else {

@@ -21,14 +21,22 @@
 			</div>
 		</header>
 		<div class="banner">
-			<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{"directionNav":false}'>
+			<div data-am-widget="slider" class="am-slider am-slider-a1">
 				<ul class="am-slides" id="banner-list">
 					<script type="text/html" id="template">
-						{{each listItems as item index}}
+						{{each listItems as item index}} {{if item.keytype == 2}}
 						<li>
-							<img src="{{item.imgurl}}">
+							<a href="graphic-details.html?id={{item.id}}">
+								<img src="{{item.imgurl}}" height="180">
+							</a>
 						</li>
-						{{/each}}
+						{{else if item.keytype == 1}}
+						<li>
+							<a href="{{item.url}}">
+								<img src="{{item.imgurl}}" height="180">
+							</a>
+						</li>
+						{{/if}} {{/each}}
 					</script>
 				</ul>
 			</div>
@@ -96,7 +104,7 @@
 			<div data-am-widget="navbar" class="am-navbar am-cf" id="">
 				<ul class="am-navbar-nav am-cf am-avg-sm-4 foot-wrapper">
 					<li class="foot_item">
-						<a href="index.html">
+						<a href="javascript:;">
 							<i class="home active"></i>
 							<span class="active">首页</span>
 						</a>
@@ -122,9 +130,8 @@
 	<script type="text/javascript" src="../assets/js/template.js"></script>
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript">
-		
-			var token = getCookie('token');
-			var role = getInfo('role');
+		var token = getCookie('token');
+		var role = getInfo('role');
 		$('.nt').on('click', function() {
 			if(role == 2 || role == 3) {
 				$(this).attr('href', 'javascript:;');
@@ -159,12 +166,15 @@
 			url: reqUrl('img_lunbo'),
 			dataType: "json",
 			async: false, //同步
+			xhrFields: {
+				withCredentials: true
+			},
 			success: function(data) {
 				if(data.success) {
 					console.log(data)
 					var html = template('template', data.infor);
 					$('#banner-list').html(html);
-//					$('.am-slider').flexslider('play');
+					$('.am-slider').flexslider();
 
 				} else {
 					mask(data.msg);
