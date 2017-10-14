@@ -1,8 +1,8 @@
 var para = window.location.search;
 //页面地址前缀
 function preUrl(path) {
-	var fUrl = 'http://127.0.0.1:8020/hm_slpg/';
-//		var fUrl = 'http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/';
+	var fUrl = 'http://192.168.2.74:8020/hm_slpg/';
+	//		var fUrl = 'http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/';
 	return fUrl + path;
 }
 //重新登录后点击返回键
@@ -154,78 +154,138 @@ function getImgData(img, dir, next) {
 			drawWidth, drawHeight, width, height;
 		drawWidth = this.naturalWidth;
 		drawHeight = this.naturalHeight;
-		//以下改变一下图片大小
-		var maxSide = Math.max(drawWidth, drawHeight);
-		if(maxSide > 1024) {
-			var minSide = Math.min(drawWidth, drawHeight);
-			minSide = minSide / maxSide * 1024;
-			maxSide = 1024;
-			if(drawWidth > drawHeight) {
-				drawWidth = maxSide;
-				drawHeight = minSide;
-			} else {
-				drawWidth = minSide;
-				drawHeight = maxSide;
-			}
-		}
 		var canvas = document.createElement('canvas');
-		console.log(canvas);
-		canvas.width = width = drawWidth;
-		canvas.height = height = drawHeight;
-		
 		var context = canvas.getContext('2d');
+		//以下改变一下图片大小
+		var cw = image.width;
+		var ch = image.height;
+		var w = image.width;
+		var h = image.height;
+		canvas.width = w;
+		canvas.height = h;
+		if(cw > 1024 && cw > ch) {
+			w = 1024;
+			h = (1024 * ch) / cw;
+			canvas.width = w;
+			canvas.height = h;
+		}
+		if(ch > 1024 && ch > cw) {
+			h = 1024;
+			w = (1024 * cw) / ch;
+			canvas.width = w;
+			canvas.height = h;
+
+		}
+
 		//判断图片方向，重置canvas大小，确定旋转角度，iphone默认的是home键在右方的横屏拍摄方式
 		switch(dir) {
 			//iphone横屏拍摄，此时home键在左侧
 			case 3:
 				degree = 180;
-				drawWidth = -width;
-				drawHeight = -height;
+				w = -width;
+				h = -height;
 				break;
 				//iphone竖屏拍摄，此时home键在下方(正常拿手机的方向)
 			case 6:
 				canvas.width = height;
 				canvas.height = width;
 				degree = 90;
-				drawWidth = width;
-				drawHeight = -height;
+				w = width;
+				h = -height;
 				break;
 				//iphone竖屏拍摄，此时home键在上方
 			case 8:
 				canvas.width = height;
 				canvas.height = width;
 				degree = 270;
-				drawWidth = -width;
-				drawHeight = height;
+				w = -width;
+				h = height;
 				break;
 		}
-		
 		//使用canvas旋转校正
 		context.rotate(degree * Math.PI / 180);
-		var ratio = getPixelRatio(context);
-		context.drawImage(this, 0, 0, drawWidth, drawHeight);
-		context.drawImage(this, 0, 0, drawWidth * ratio, drawHeight * ratio);
+		context.drawImage(this, 0, 0, w, h);
 		//返回校正图片
-		next(canvas.toDataURL("image/jpeg",0.9));
-		
-	
-		
+		next(canvas.toDataURL("image/jpeg", .8));
 	}
 	image.src = img;
 }
-
-var getPixelRatio = function(context) {
-  var backingStore = context.backingStorePixelRatio ||
-    context.webkitBackingStorePixelRatio ||
-    context.mozBackingStorePixelRatio ||
-    context.msBackingStorePixelRatio ||
-    context.oBackingStorePixelRatio ||
-    context.backingStorePixelRatio || 1;
-   return (window.devicePixelRatio || 1) / backingStore;
-};
-
-//调用
-//var ratio = getPixelRatio(context);
-//之后，在调用ctx.drawImage()的时候，给width和height乘以ratio，如下：
-
-//ctx.drawImage(document.querySelector('img'), 10, 10, 300 * ratio, 90 * ratio);
+//// @param {string} img 图片的base64
+//// @param {int} dir exif获取的方向信息
+//// @param {function} next 回调方法，返回校正方向后的base64
+//function getImgData(img, dir, next) {
+//	var image = new Image();
+//	image.onload = function() {
+//		var degree = 0,
+//			drawWidth, drawHeight, width, height;
+//		drawWidth = this.naturalWidth;
+//		drawHeight = this.naturalHeight;
+//		//以下改变一下图片大小
+////		var maxSide = Math.max(drawWidth, drawHeight);
+////		if(maxSide > 1024) {
+////			var minSide = Math.min(drawWidth, drawHeight);
+////			minSide = minSide / maxSide * 1024;
+////			maxSide = 1024;
+////			if(drawWidth > drawHeight) {
+////				drawWidth = maxSide;
+////				drawHeight = minSide;
+////			} else {
+////				drawWidth = minSide;
+////				drawHeight = maxSide;
+////			}
+////		}
+//		var canvas = document.createElement('canvas');
+//		console.log(canvas);
+//		canvas.width = width = drawWidth;
+//		canvas.height = height = drawHeight;
+//		
+//		var context = canvas.getContext('2d');
+//		//判断图片方向，重置canvas大小，确定旋转角度，iphone默认的是home键在右方的横屏拍摄方式
+//		switch(dir) {
+//			//iphone横屏拍摄，此时home键在左侧
+//			case 3:
+//				degree = 180;
+//				drawWidth = -width;
+//				drawHeight = -height;
+//				break;
+//				//iphone竖屏拍摄，此时home键在下方(正常拿手机的方向)
+//			case 6:
+//				canvas.width = height;
+//				canvas.height = width;
+//				degree = 90;
+//				drawWidth = width;
+//				drawHeight = -height;
+//				break;
+//				//iphone竖屏拍摄，此时home键在上方
+//			case 8:
+//				canvas.width = height;
+//				canvas.height = width;
+//				degree = 270;
+//				drawWidth = -width;
+//				drawHeight = height;
+//				break;
+//		}
+//		
+//		//使用canvas旋转校正
+//		context.rotate(degree * Math.PI / 180);
+////		var ratio = getPixelRatio(context);
+//		context.drawImage(this, 0, 0, drawWidth, drawHeight);
+////		context.drawImage(this, 0, 0, drawWidth * ratio, drawHeight * ratio);
+//		//返回校正图片
+//		next(canvas.toDataURL("image/jpeg",0.8));
+//		
+//	
+//		
+//	}
+//	image.src = img;
+//}
+//
+//var getPixelRatio = function(context) {
+//var backingStore = context.backingStorePixelRatio ||
+//  context.webkitBackingStorePixelRatio ||
+//  context.mozBackingStorePixelRatio ||
+//  context.msBackingStorePixelRatio ||
+//  context.oBackingStorePixelRatio ||
+//  context.backingStorePixelRatio || 1;
+// return (window.devicePixelRatio || 1) / backingStore;
+//};

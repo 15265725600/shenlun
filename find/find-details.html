@@ -111,7 +111,7 @@
 				},
 				async: false, //同步
 				success: function(data) {
-					if(data.error_code == 200) {
+					if(data.error_code == 100) {
 						window.location.href = preUrl('log/login.html' + para + '&path=find/find-details.html');
 					} else if(data.success) {
 						console.log(data)
@@ -119,7 +119,6 @@
 						$('.container').html(html);
 						$('.find-content').html(data.infor[0].content);
 						$('.article-list a').on('click', function(event) {
-							console.log(0)
 							if(event && event.preventDefault) {
 								event.preventDefault();
 							}
@@ -148,7 +147,7 @@
 							withCredentials: true
 						},
 						success: function(data) {
-							if(data.error_code == 200) {
+							if(data.error_code == 100) {
 								window.location.href = preUrl('log/login.html' + para + '&path=find/find-details.html');
 							} else if(data.success) {
 								var collectNum = data.infor[0].shoucang_count;
@@ -172,7 +171,7 @@
 							withCredentials: true
 						},
 						success: function(data) {
-							if(data.error_code == 200) {
+							if(data.error_code == 100) {
 								window.location.href = preUrl('log/login.html' + para + '&path=find/find-details.html');
 							} else if(data.success) {
 								var collectNum = data.infor[0].shoucang_count;
@@ -202,7 +201,7 @@
 							withCredentials: true
 						},
 						success: function(data) {
-							if(data.error_code == 200) {
+							if(data.error_code == 100) {
 								window.location.href = preUrl('log/login.html' + para + '&path=find/find-details.html');
 							} else if(data.success) {
 								var collectNum = data.infor[0].dianzan_count;
@@ -226,7 +225,7 @@
 							withCredentials: true
 						},
 						success: function(data) {
-							if(data.error_code == 200) {
+							if(data.error_code == 100) {
 								window.location.href = preUrl('log/login.html?path=find/find-details.html');
 							} else if(data.success) {
 								var collectNum = data.infor[0].dianzan_count;

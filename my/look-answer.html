@@ -98,7 +98,7 @@
 				},
 				success: function(data) {
 					if(data.error_code == 100) {
-						window.location.href = preUrl('log/login.html' + para + 'path=my/look-answer.html');
+						window.location.href = preUrl('log/login.html' + para + '&path=my/look-answer.html');
 					} else if(data.success) {
 						var respon = template('respon', data);
 						$('.ar-container').html(respon);

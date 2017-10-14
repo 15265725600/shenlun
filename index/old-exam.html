@@ -111,9 +111,6 @@
 			$('body').addClass('bg-color');
 			var token = getCookie('token');
 			var para = window.location.search;
-			if(token == ""){
-				window.location.href = preUrl('log/login.html?path=index/old-exam.html');
-			}
 			backUrl();
 			//区域滚动
 			var myScroll = new IScroll('#nav-wrapper', {

@@ -58,7 +58,7 @@ $signPackage = $jssdk->GetSignPackage();
 						</div>
 					</div>
 					<div class="voice-word">
-						<div class="voice" id="play" style="display: none;"></div>
+						<!--<div class="voice" id="play" style="display: none;"></div>-->
 					</div>
 				</div>
 			</div>
@@ -143,9 +143,10 @@ $signPackage = $jssdk->GetSignPackage();
 				var START;
 				var END;
 				var recordTimer;
-				var voice = {
-					localId: ""
-				}
+//				var voice = {
+//					localId: ""
+//				}
+				var localID = [];
 				sbtn.onclick = function(event) {
 					event.preventDefault();
 					START = new Date().getTime();
@@ -172,8 +173,22 @@ $signPackage = $jssdk->GetSignPackage();
 					} else {
 						wx.stopRecord({
 							success: function(res) {
-								voice.localId = res.localId;
-								$('.voice').show();
+								localID.push(res.localId);
+								//播放语音
+								var item = "";
+								for(var i = 0;i<localID.length;i++){
+									item +="<div class=\"voice\" id=\"play\"></div>";
+								}
+								$(".voice-word").html(item);
+								var play = $('.voice-word .voice');
+								play.each(function(i,ele){
+									$(this).click(function(){
+										var index = $(this).index();
+										wx.playVoice({
+											localId:localID[i] // 需要播放的音频的本地ID，由stopRecord接口获得
+										});
+									});
+								});
 							},
 							fail: function(res) {
 								alert(JSON.stringify(res));
@@ -182,13 +197,15 @@ $signPackage = $jssdk->GetSignPackage();
 					}
 
 				};
-				//播放语音
-				play.onclick = function(event) {
-					event.preventDefault();
-					wx.playVoice({
-						localId: voice.localId // 需要播放的音频的本地ID，由stopRecord接口获得
-					});
-				}
+				
+				
+				
+//				play.onclick = function(event) {
+//					event.preventDefault();
+//					wx.playVoice({
+//						localId: voice.localId // 需要播放的音频的本地ID，由stopRecord接口获得
+//					});
+//				}
 				//注册微信播放录音结束事件【一定要放在wx.ready函数内】
 				wx.onVoicePlayEnd({
 					success: function(res) {
@@ -238,31 +255,36 @@ $signPackage = $jssdk->GetSignPackage();
 									},
 									async: false,
 									success: function(data) {
-										imgArr.push(data.infor[0].item1);
-										content = '<li>' +
-											'<img class="j-image" src="' + data.infor[0].item1 + '">' +
-											'<i class="icon-close"></i>' +
-											'</li>'
-	
-										that.parent().before(content);
-										//	删除上传图片
-										$('.upload').on('click', '.icon-close', function() {
-											$(this).parent().remove();
-											var tue = $(this).siblings().attr('src');
-											imgArr.removeByValue(tue);
-											if(count > 0) {
-												count--;
-											}
-											var length = $('.upload').children('li').length;
-											console.log(length);
-											$('.have').text(length - 1);
-											$('.addhave').text(4 - $('.have').text());
-										});
-										var length = $('.upload').children('li').length;
-										console.log(length);
-										$('.have').text(length - 1);
-										$('.addhave').text(4 - $('.have').text());
-	
+										if(data.error_code == 100) {
+											window.location.href = preUrl('log/login.html' + para + '&path=index/sl-correct.php');
+										} else if(data.success){
+											imgArr.push(data.infor[0].item1);
+													content = '<li>' +
+														'<img class="j-image" src="' + data.infor[0].item1 + '">' +
+														'<i class="icon-close"></i>' +
+														'</li>'
+				
+													that.parent().before(content);
+													//	删除上传图片
+													$('.upload').on('click', '.icon-close', function() {
+														$(this).parent().remove();
+														var tue = $(this).siblings().attr('src');
+														imgArr.removeByValue(tue);
+														if(count > 0) {
+															count--;
+														}
+														var length = $('.upload').children('li').length;
+														console.log(length);
+														$('.have').text(length - 1);
+														$('.addhave').text(4 - $('.have').text());
+													});
+													var length = $('.upload').children('li').length;
+													console.log(length);
+													$('.have').text(length - 1);
+													$('.addhave').text(4 - $('.have').text());
+				
+										}
+										
 									}
 								});
 							});
@@ -279,6 +301,7 @@ $signPackage = $jssdk->GetSignPackage();
 				$('.compltet').click(function() {
 					var message = $('.message').val();
 					var imgString = imgArr.join(",");
+					var localString = localID.join(",");
 					$.ajax({
 						url: reqUrl('pigai_do'),
 						type: 'post',
@@ -288,13 +311,13 @@ $signPackage = $jssdk->GetSignPackage();
 							pigai_id: id,
 							pigai: imgString,
 							pigai_word: message,
-							pigai_sound:voice.localId
+							pigai_sound:localString
 						},
 						xhrFields: {
 							withCredentials: true
 						},
 						success: function(data) {
-							if(data.error_code == 200) {
+							if(data.error_code == 100) {
 								window.location.href = preUrl('log/login.html' + para + '&path=index/sl-correct.php');
 							} else if(data.success) {
 								//							mask('ok')

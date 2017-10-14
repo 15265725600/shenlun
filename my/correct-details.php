@@ -53,9 +53,10 @@ $signPackage = $jssdk->GetSignPackage();
 				{{/if}}
 				{{if infor[0].pigai_sound != null}}
 				<div class="voice-word">
-					<div class="voice" id = "play" style="padding: 5px 10px;">
-						<span class="tip" style="display: none;"></span>
+					{{each infor[0].pigai_sound.split(',') as item index}}
+					<div class="voice" id = "play" style="padding: 5px 10px;display: block;">
 					</div>
+					{{/each}}
 				</div>
 				{{/if}}
 			</script>
@@ -120,9 +121,7 @@ $signPackage = $jssdk->GetSignPackage();
 						var START;
 						var END;
 						var recordTimer;
-						var voice = {
-							localId: ""
-						};
+						var arrstring = "";
 						var para = window.location.search;
 						var token = getCookie('token');
 						var id = GetQueryString('id');
@@ -138,26 +137,32 @@ $signPackage = $jssdk->GetSignPackage();
 								withCredentials: true
 							},
 							success: function(data) {
-								if(data.error_code == 200) {
-									window.location.href = preUrl('log/login.html' + para + '&path=index/correct-details.html');
+								if(data.error_code == 100) {
+									window.location.href = preUrl('log/login.html' + para + '&path=my/correct-details.php');
 								} else if(data.success) {
 									var content = template('content', data);
 									$('.cd-container').html(content);
 									$('.am-gallery').pureview();
-									voice.localId = data.infor[0].pigai_sound;
-									if(voice.localId == null){
-										$('.tip').hide();
-									}else{
-										$('.tip').show();
-									}
-									//播放语音
-									play.onclick = function(event) {
-										event.preventDefault();
-										wx.playVoice({
-											localId:voice.localId // 需要播放的音频的本地ID，由stopRecord接口获得
+									arrstring = data.infor[0].pigai_sound;
+									var arrLen = arrstring.split(",");
+									var play = $('.voice-word .voice');
+									play.each(function(i,ele){
+										$(this).click(function(){
+											var index = $(this).index();
+											wx.playVoice({
+												localId:arrLen[i] // 需要播放的音频的本地ID，由stopRecord接口获得
+											});
 										});
-										$('.tip').hide();
-									}
+									});
+									
+//									//播放语音
+//									play.onclick = function(event) {
+//										event.preventDefault();
+//										wx.playVoice({
+//											localId:voice.localId // 需要播放的音频的本地ID，由stopRecord接口获得
+//										});
+//										$('.tip').hide();
+//									}
 									//注册微信播放录音结束事件【一定要放在wx.ready函数内】
 									wx.onVoicePlayEnd({
 										success: function(res) {

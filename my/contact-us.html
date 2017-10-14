@@ -28,25 +28,26 @@
 		    </h1>
 		</header>
 		<div class="cu-container">
-			<div class="company child">
-				<span>公司</span>
-				<div class="addr">联创世华山东总部 · 研发中心</div>
-			</div>
-			<div class="address child">
-				<span>地址</span>
-				<div class="addr">济南市历下区解放路16号黄金大厦（公 交总公司东100米）8楼整层</div>
-			</div>
-			<div class="tel child">
-				<span>联系电话</span>
-				<div class="phone addr">
-					0531-88951376</br>
-					0531-88951372</br> 
-					0531-88951332</br>
-					0531-88951375
+			<script type="text/html" id="use-list">
+				<div class="company child">
+					<span>公司</span>
+					<div class="addr">{{listItems[0].company}}</div>
 				</div>
-			</div>
+				<div class="address child">
+					<span>地址</span>
+					<div class="addr">{{listItems[0].address}}</div>
+				</div>
+				<div class="tel child">
+					<span>联系电话</span>
+					<div class="phone addr">
+						{{each listItems[0].list as item index}}
+						<li>{{item.mobile}}</li>
+						{{/each}}
+					</div>
+				</div>
+			</script>
 		</div>
-		
+
 	</body>
 	<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../assets/js/amazeui.js"></script>
@@ -56,7 +57,28 @@
 	<script type="text/javascript">
 		$(function() {
 			$('body').addClass('bg-color');
-			
+			var token = getCookie('token');
+			$.ajax({
+				type: 'POST',
+				url: reqUrl("company"),
+				data: {
+					token: token
+				},
+				dataType: 'JSON',
+				xhrFields: {
+					withCredentials: true
+				},
+				async: false,
+				success: function(data) {
+					if(data.success) {
+						var useList = template('use-list', data.infor);
+						$('.cu-container').html(useList);
+					} else {
+						mask(data.msg);
+					}
+				}
+			});
+
 		});
 	</script>
 

@@ -34,12 +34,12 @@
 					<div class="log-password log-item"><input type="password" placeholder="请输入密码" id="pwd" class="text" /></div>
 					<div class="log-btn">登录</div>
 					<div class="wx-log">
-						<!--<a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe5e8f70efc47d1b8&redirect_uri=http://slpg.lgwy.net/hm_shenlun/index.php/Webservice/Wechat/weichat_login&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect" class="href-item">
-							<span class="wx-img"></span>微信登录
-						</a>-->
-						<a href="javascript:;" class="href-item">
+						<a href="get_openid.html" class="href-item">
 							<span class="wx-img"></span>微信登录
 						</a>
+						<!--<a href="javascript:;" class="href-item">
+							<span class="wx-img"></span>微信登录
+						</a>-->
 					</div>
 					<div class="go-for">
 						<div class="forget">
@@ -115,7 +115,7 @@
 							setCookie('token', data.infor[0].token, 365);
 							setInfo('role', data.infor[0].role);
 							setInfo('mobile', data.infor[0].mobile);
-							
+							console.log(data)
 							if(path) {
 								window.location.href = preUrl(path);
 							} else {
@@ -133,38 +133,38 @@
 
 			});
 			
-			$('.wx-log').click(function(){
-				$.ajax({
-					type: 'POST',
-					url: "http://slpg.lgwy.net/hm_shenlun/index.php/Webservice/wechat/weichat_login",
-					dataType: 'JSON',
-					async: false,
-					xhrFields: {
-						withCredentials: true
-					},
-					success: function(data) {
-						if(data.success) {
-							setCookie('token', data.infor[0].token, 365);
-							setInfo("role", data.infor[0].role);
-							var role = data.infor[0].role;
-							var token = data.infor[0].token;
-							console.log(typeof(token))
-							if(path) {
-								window.location.href = preUrl(path);
-							} else {
-								window.location.href = preUrl('log/perfect-infor.html');
-							}
-
-						} else {
-							mask(data.msg);
-						}
-					},
-					error: function(e, request, settings) {
-						alert(settings);
-					}
-				})
-
-			})
+//			$('.wx-log').click(function(){
+//				$.ajax({
+//					type: 'POST',
+//					url: "http://slpg.lgwy.net/hm_shenlun/index.php/Webservice/wechat/weichat_login",
+//					dataType: 'JSON',
+//					async: false,
+//					xhrFields: {
+//						withCredentials: true
+//					},
+//					success: function(data) {
+//						if(data.success) {
+//							setCookie('token', data.infor[0].token, 365);
+//							setInfo("role", data.infor[0].role);
+//							var role = data.infor[0].role;
+//							var token = data.infor[0].token;
+//							console.log(typeof(token))
+//							if(path) {
+//								window.location.href = preUrl(path);
+//							} else {
+//								window.location.href = preUrl('log/perfect-infor.html');
+//							}
+//
+//						} else {
+//							mask(data.msg);
+//						}
+//					},
+//					error: function(e, request, settings) {
+//						alert(settings);
+//					}
+//				})
+//
+//			})
 		});
 	</script>
 
