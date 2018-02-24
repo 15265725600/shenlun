@@ -57,6 +57,7 @@ $signPackage = $jssdk->GetSignPackage();
 							</ul>
 						</div>
 					</div>
+					<div class="desc" style="font-size:#ff85a8;padding:10px 15px;">提示：每条语音不得超过一分钟，可录制多条</div>
 					<div class="voice-word">
 						<!--<div class="voice" id="play" style="display: none;"></div>-->
 					</div>
@@ -88,6 +89,7 @@ $signPackage = $jssdk->GetSignPackage();
 				mask('保存成功');
 			});
 			var word = getCookie('word');
+			
 			if(word != ""){
 				$('.message').val(word);
 			}
@@ -177,7 +179,7 @@ $signPackage = $jssdk->GetSignPackage();
 								//播放语音
 								var item = "";
 								for(var i = 0;i<localID.length;i++){
-									item +="<div class=\"voice\" id=\"play\"></div>";
+									item +="<div class=\"voice\" id=\"play\" style=\"padding: 5px 10px;display: block;width:100px;height:24px;margin-bottom:10px\"></div>";
 								}
 								$(".voice-word").html(item);
 								var play = $('.voice-word .voice');
@@ -216,7 +218,7 @@ $signPackage = $jssdk->GetSignPackage();
 				var count = 0;
 				$('.j-file-cert').on('change', function(e) {
 					count++;
-					if(count < 5) {
+					if(count < 21) {
 						var that = $(this);
 						if(!window.FileReader) return;
 	
@@ -255,7 +257,7 @@ $signPackage = $jssdk->GetSignPackage();
 									},
 									async: false,
 									success: function(data) {
-										if(data.error_code == 100) {
+										if(data.error_code == 100 || data.error_code == 200) {
 											window.location.href = preUrl('log/login.html' + para + '&path=index/sl-correct.php');
 										} else if(data.success){
 											imgArr.push(data.infor[0].item1);
@@ -276,12 +278,12 @@ $signPackage = $jssdk->GetSignPackage();
 														var length = $('.upload').children('li').length;
 														console.log(length);
 														$('.have').text(length - 1);
-														$('.addhave').text(4 - $('.have').text());
+														$('.addhave').text(20 - $('.have').text());
 													});
 													var length = $('.upload').children('li').length;
 													console.log(length);
 													$('.have').text(length - 1);
-													$('.addhave').text(4 - $('.have').text());
+													$('.addhave').text(20 - $('.have').text());
 				
 										}
 										
@@ -293,9 +295,10 @@ $signPackage = $jssdk->GetSignPackage();
 						reader.readAsDataURL(file);
 					} else {
 						mask('最多传4张图片');
-						count = 4;
+						count = 20;
 						return false;
 					}
+					e.target.value = '';
 	
 				});
 				$('.compltet').click(function() {
@@ -317,7 +320,7 @@ $signPackage = $jssdk->GetSignPackage();
 							withCredentials: true
 						},
 						success: function(data) {
-							if(data.error_code == 100) {
+							if(data.error_code == 100 || data.error_code == 200) {
 								window.location.href = preUrl('log/login.html' + para + '&path=index/sl-correct.php');
 							} else if(data.success) {
 								//							mask('ok')

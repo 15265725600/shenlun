@@ -34,11 +34,9 @@ $signPackage = $jssdk->GetSignPackage();
 		</header>
 		<div class="cd-container">
 			<script type="text/html" id="content">
-				{{if infor[0].pigai_word != ""}}
 				<div class="message">
-					<p>{{infor[0].pigai_word}}</p>
+					<p class="txt"></p>
 				</div>
-				{{/if}}
 				{{if infor[0].pigai != null}}
 				<div class="cd-img">
 					<ul class="cd-list am-gallery" data-am-widget="gallery" data-am-gallery="{ pureview: true }">
@@ -54,7 +52,7 @@ $signPackage = $jssdk->GetSignPackage();
 				{{if infor[0].pigai_sound != null}}
 				<div class="voice-word">
 					{{each infor[0].pigai_sound.split(',') as item index}}
-					<div class="voice" id = "play" style="padding: 5px 10px;display: block;">
+					<div class="voice" id = "play" style="padding: 5px 10px;display: block;width:100px;height:24px;margin-bottom:10px">
 					</div>
 					{{/each}}
 				</div>
@@ -137,11 +135,13 @@ $signPackage = $jssdk->GetSignPackage();
 								withCredentials: true
 							},
 							success: function(data) {
-								if(data.error_code == 100) {
+								if(data.error_code == 100 || data.error_code == 200) {
 									window.location.href = preUrl('log/login.html' + para + '&path=my/correct-details.php');
 								} else if(data.success) {
 									var content = template('content', data);
 									$('.cd-container').html(content);
+									var word = data.infor[0].pigai_word;
+									$('.txt').html(word);
 									$('.am-gallery').pureview();
 									arrstring = data.infor[0].pigai_sound;
 									var arrLen = arrstring.split(",");

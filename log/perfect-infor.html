@@ -167,12 +167,13 @@
 			success: function(data) {
 				//				examStyle = data.infor.listItems;
 				if(data.success) {
+					console.log(data)
 					var shopCla = document.getElementById('choose-type');
 					var shopval = document.getElementById('type-text')
 					var arrLen = data.infor.listItems;
 					for(var i = 1; i <= arrLen.length; i++) {
 						var item = {
-							text: data.infor.listItems[i - 1].style,
+							text: data.infor.listItems[i - 1].type,
 							value: i
 						}
 						examStyle.push(item);

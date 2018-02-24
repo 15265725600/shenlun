@@ -169,8 +169,7 @@
 			var id = GetQueryString('id');
 			var testID = "";
 			var answer = "";
-			//			var fid = GetQueryString('fid');
-			//			console.log(fid);
+			var fid = GetQueryString('fid');
 			var para = window.location.search;
 			var role = getInfo('role');
 			if(role == "2" || role == "3") {
@@ -246,7 +245,7 @@
 				data: {
 					token: token,
 					id: id,
-					test_type: 2
+					test_type:3
 				},
 				xhrFields: {
 					withCredentials: true
@@ -254,16 +253,16 @@
 				async: false,
 				success: function(data) {
 					if(data.error_code == 200 || data.error_code == 100) {
-						window.location.href = preUrl('log/login.html' + para + '&path=index/slx-paper-details.html');
+						window.location.href = preUrl('log/login.html' + para + '&path=index/t-paper-details.html');
 					} else if(data.success) {
 						var examDetail = template('exam-datail', data);
 						$('.detailsMain').html(examDetail);
 						$('.illustration').html(data.infor[0].illustration);
 						$('.data').html(data.infor[0].data);
 						$('.require').html(data.infor[0].require);
-						//						$('.illustration').find("*").attr('style',"");
-						//						$('.data').find("*").attr('style',"");
-						//						$('.require').find("*").attr('style',"");
+//						$('.illustration').find("*").attr('style',"");
+//						$('.data').find("*").attr('style',"");
+//						$('.require').find("*").attr('style',"");
 						var collect = data.infor[0].is_shoucang;
 						if(collect == 0) {
 							$('.heart').removeClass('active');
@@ -277,9 +276,9 @@
 						var respon = '';
 						for(var i = 0; i < list.length; i++) {
 							if(list[i].is_answer == 0) {
-								respon = "<a href=\"f-exam-answer.html?id=" + list[i].id + "&pid=" + testID + "\" class=\"item-answer\">立即作答</a>";
+								respon = "<a href=\"t-exam-answer.html?id=" + list[i].id + "&fid=" + fid + "&pid=" + testID + "\" class=\"item-answer\">立即作答</a>";
 							} else if(list[i].is_answer == 1) {
-								respon = "<a href=\"f-exam-answer.html?id=" + list[i].id + "&pid=" + testID + "\" class=\"item-answer\">修改作答</a>";
+								respon = "<a href=\"t-exam-answer.html?id=" + list[i].id + "&fid=" + fid + "&pid=" + testID + "\" class=\"item-answer\">修改作答</a>";
 
 							}
 							$('.answer-nav li').eq(i).find('.cor').html(respon);
@@ -324,35 +323,68 @@
 
 			function submit() {
 				var message = $('.word').val();
-				$.ajax({
-					url: reqUrl('submit_test_do'),
-					type: 'post',
-					dataType: 'json',
-					data: {
-						token: token,
-						test_id: testID,
-						message: message,
-						jian_xiang: 2,
-						famousteacher_id: ""
-					},
-					xhrFields: {
-						withCredentials: true
-					},
-					success: function(data) {
-						var tid = data.infor[0].id;
-						if(data.error_code == 200 || data.error_code == 100) {
-							window.location.href = preUrl('log/login.html' + para + '&path=index/slx-paper-details.html');
-						} else if(data.success) {
-							window.location.href = preUrl('index/submit-slx-correct.html?id=' + tid + '');
-						} else {
-							mask(data.msg);
-						}
+				if(fid == null) {
+					$.ajax({
+						url: reqUrl('submit_test_do'),
+						type: 'post',
+						dataType: 'json',
+						data: {
+							token: token,
+							test_id: testID,
+							message: message,
+							jian_xiang:2,
+							famousteacher_id: ""
 
-					},
-					error: function(e, request, settings) {
-						alert(settings);
-					}
-				});
+						},
+						xhrFields: {
+							withCredentials: true
+						},
+						success: function(data) {
+							var tid = data.infor[0].id;
+							if(data.error_code == 200 || data.error_code == 100) {
+								window.location.href = preUrl('log/login.html' + para + '&path=index/t-paper-details.html');
+							} else if(data.success) {
+								window.location.href = preUrl('index/submit-t-correct.html?id=' + tid + '&fid=' + fid + '');
+							} else {
+								mask(data.msg);
+							}
+
+						},
+						error: function(e, request, settings) {
+							alert(settings);
+						}
+					});
+				} else {
+					$.ajax({
+						url: reqUrl('submit_test_do'),
+						type: 'post',
+						dataType: 'json',
+						data: {
+							token: token,
+							test_id: testID,
+							message: message,
+							jian_xiang:2,
+							famousteacher_id: fid
+						},
+						xhrFields: {
+							withCredentials: true
+						},
+						success: function(data) {
+							var tid = data.infor[0].id;
+							if(data.error_code == 200 || data.error_code == 100) {
+								window.location.href = preUrl('log/login.html' + para + '&path=index/t-paper-details.html');
+							} else if(data.success) {
+								window.location.href = preUrl('index/submit-t-correct.html?id=' + tid + '&fid=' + fid + '');
+							} else {
+								mask(data.msg);
+							}
+
+						},
+						error: function(e, request, settings) {
+							alert(settings);
+						}
+					});
+				}
 			}
 
 		});

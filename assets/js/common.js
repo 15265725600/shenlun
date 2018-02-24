@@ -1,6 +1,7 @@
 var para = window.location.search;
 //页面地址前缀
 function preUrl(path) {
+//		var fUrl = 'http://127.0.0.1:8020/hm_slpg/';
 	var fUrl = 'http://192.168.2.74:8020/hm_slpg/';
 	//		var fUrl = 'http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/';
 	return fUrl + path;
@@ -8,7 +9,7 @@ function preUrl(path) {
 //重新登录后点击返回键
 function backUrl() {
 	var prevUrl = document.referrer.split('?')[0];
-	var Url = "http://slpg.lgwy.net/hm_shenlun/web/Webservice/hm_slpg/log/login.html";
+	var Url = "http://slpg.lgwy.net/web/Webservice/hm_slpg/log/login.html";
 	if(prevUrl == Url) {
 		$('.backUrl').attr('href', 'javascript:history.go(-2);');
 	}
@@ -28,7 +29,8 @@ function GetQueryString(name) {
 //ajax 传参url
 function reqUrl(path) {
 	//	var frontUrl = 'http://192.168.2.146:8008/group19/hm_shenlun/index.php/Webservice/V100/';
-	var frontUrl = 'http://slpg.lgwy.net/hm_shenlun/index.php/Webservice/V100/';
+	var frontUrl = 'http://slpg.lgwy.net/index.php/Webservice/V100/';
+//	var frontUrl = 'http://47.92.136.34/hm_shenlun/index.php/Webservice/V100/';
 	return frontUrl + path;
 }
 
@@ -94,6 +96,20 @@ var fnUrlReplace = function(eleLink) {
 	}
 };
 
+function returnFloat(value) {
+	var value = Math.round(parseFloat(value) * 100) / 100;
+	var xsd = value.toString().split(".");
+	if(xsd.length == 1) {
+		value = value.toString() + ".00";
+		return value;
+	}
+	if(xsd.length > 1) {
+		if(xsd[1].length < 2) {
+			value = value.toString() + "0";
+		}
+		return value;
+	}
+}
 /** picker底部滑动选择数据（一列，两列）
  *   arr: 数据
  *   nameEl: 点击对象
@@ -177,31 +193,6 @@ function getImgData(img, dir, next) {
 
 		}
 
-		//判断图片方向，重置canvas大小，确定旋转角度，iphone默认的是home键在右方的横屏拍摄方式
-		switch(dir) {
-			//iphone横屏拍摄，此时home键在左侧
-			case 3:
-				degree = 180;
-				w = -width;
-				h = -height;
-				break;
-				//iphone竖屏拍摄，此时home键在下方(正常拿手机的方向)
-			case 6:
-				canvas.width = height;
-				canvas.height = width;
-				degree = 90;
-				w = width;
-				h = -height;
-				break;
-				//iphone竖屏拍摄，此时home键在上方
-			case 8:
-				canvas.width = height;
-				canvas.height = width;
-				degree = 270;
-				w = -width;
-				h = height;
-				break;
-		}
 		//使用canvas旋转校正
 		context.rotate(degree * Math.PI / 180);
 		context.drawImage(this, 0, 0, w, h);

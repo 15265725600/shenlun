@@ -70,7 +70,10 @@
 				},
 				async: false,
 				success: function(data) {
-					if(data.success) {
+					if(data.error_code == 100 || data.error_code == 200){
+						window.location.href = preUrl('log/login.html?path=my/contact-us.html');
+					}
+					else if(data.success) {
 						var useList = template('use-list', data.infor);
 						$('.cu-container').html(useList);
 					} else {

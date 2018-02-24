@@ -112,6 +112,7 @@
 					},
 					success: function(data) {
 						if(data.success) {
+							console.log(data);
 							setCookie('token', data.infor[0].token, 365);
 							setInfo('role', data.infor[0].role);
 							setInfo('mobile', data.infor[0].mobile);

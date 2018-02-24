@@ -35,100 +35,96 @@
 		<div class="test-wrapper">
 			<div class="detail-wrapper clearfix">
 				<div class="detail-main" id="examDetail">
-					<div class="detailsMain">
-						<script type="text/html" id="exam-datail">
-							<div class="title">
-								{{infor[0].title}}
-							</div>
-							<div class="line"></div>
-							<div class="test-content">
-								<div class="am-panel-group" id="accordion" style="margin-bottom: 0;">
-									<div class="am-panel am-panel-default" style="margin-top:0">
-										<div class="am-panel-hd test-title">
-											<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-1'}">
+					<script type="text/html" id="exam-datail">
+						<div class="title">
+							{{infor[0].title}}
+						</div>
+						<div class="line"></div>
+						<div class="test-content">
+							<div class="am-panel-group" id="accordion" style="margin-bottom: 0;">
+								<div class="am-panel am-panel-default" style="margin-top:0">
+									<div class="am-panel-hd test-title">
+										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-1'}">
 								       查看注意事项
 								    </h4>
-											<i class="colls coll1" data-am-collapse="{parent: '#accordion', target: '#do-not-say-1'}"></i>
-										</div>
-										<div id="do-not-say-1" class="am-panel-collapse am-collapse">
-											<div class="am-panel-bd">
-												<p class="illustration">
-												</p>
-											</div>
+										<i class="colls coll1" data-am-collapse="{parent: '#accordion', target: '#do-not-say-1'}"></i>
+									</div>
+									<div id="do-not-say-1" class="am-panel-collapse am-collapse">
+										<div class="am-panel-bd">
+											<p class="illustration"></p>
+
 										</div>
 									</div>
-									<div class="am-panel am-panel-default" style="margin-top:0">
-										<div class="am-panel-hd test-title">
-											<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
+								</div>
+								<div class="am-panel am-panel-default" style="margin-top:0">
+									<div class="am-panel-hd test-title">
+										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
 								        查看给定材料
 								     </h4>
-											<i class="colls coll2" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}"></i>
-										</div>
-										<div id="do-not-say-2" class="am-panel-collapse am-collapse">
-											<div class="am-panel-bd">
-												<p class="data">
-												</p>
-											</div>
+										<i class="colls coll2" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}"></i>
+									</div>
+									<div id="do-not-say-2" class="am-panel-collapse am-collapse">
+										<div class="am-panel-bd">
+											<p class="data"></p>
 										</div>
 									</div>
-									<div class="am-panel am-panel-default" style="margin-top:0">
-										<div class="am-panel-hd test-title">
-											<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-3'}">查看做题要求</h4>
-											<i class="colls coll3" data-am-collapse="{parent: '#accordion', target: '#do-not-say-3'}"></i>
-										</div>
-										<div id="do-not-say-3" class="am-panel-collapse am-collapse">
-											<div class="am-panel-bd">
-												<p class="require">
-												</p>
-											</div>
+								</div>
+								<div class="am-panel am-panel-default" style="margin-top:0">
+									<div class="am-panel-hd test-title">
+										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-3'}">查看做题要求</h4>
+										<i class="colls coll3" data-am-collapse="{parent: '#accordion', target: '#do-not-say-3'}"></i>
+									</div>
+									<div id="do-not-say-3" class="am-panel-collapse am-collapse">
+										<div class="am-panel-bd">
+											<p class="require"></p>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="line"></div>
-							<div class="start-answer">
-								<div class="am-panel-group" id="accordion" style="margin-bottom: 0;">
-									<div class="am-panel am-panel-default" style="margin-top:0">
-										<div class="am-panel-hd test-title">
-											<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-4'}">
+						</div>
+						<div class="line"></div>
+						<div class="start-answer">
+							<div class="am-panel-group" id="accordion" style="margin-bottom: 0;">
+								<div class="am-panel am-panel-default" style="margin-top:0">
+									<div class="am-panel-hd test-title">
+										<h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-4'}">
 								      开始答题<span>(仅支持拍照作答)</span>
 								    </h4>
-											<i class="colls coll4" data-am-collapse="{parent: '#accordion', target: '#do-not-say-4'}"></i>
-										</div>
-										<div id="do-not-say-4" class="am-panel-collapse am-collapse">
-											<div class="am-panel-bd" style="padding: 0;">
-												<ul class="answer-nav">
-													{{each infor[0].question as item index}}
-													<li class="list-item">
-														<div class="item-left">
-															<div class="item-img">
-																{{if item.is_answer == 0}}
-																<img class="picture" src="../assets/i/add-pic.png" alt="" width="68" height="68" /> {{else if item.is_answer == 1}}
-																<img class="picture" src="{{item.answer.split(',')[0]}}" alt="" width="68" height="68" /> {{/if}}
-															</div>
-															<div class="content">
-																<h1 class="name">{{item.title}}</h1> {{if item.is_answer == 0}}
-																<span class="status">未作答</span> {{else if item.is_answer == 1}}
-																<span class="status">已作答</span> {{/if}}
-															</div>
+										<i class="colls coll4" data-am-collapse="{parent: '#accordion', target: '#do-not-say-4'}"></i>
+									</div>
+									<div id="do-not-say-4" class="am-panel-collapse am-collapse">
+										<div class="am-panel-bd" style="padding: 0;">
+											<ul class="answer-nav">
+												{{each infor[0].question as item index}}
+												<li class="list-item">
+													<div class="item-left">
+														<div class="item-img">
+															{{if item.is_answer == 0}}
+															<img class="picture" src="../assets/i/add-pic.png" alt="" width="68" height="68" /> {{else if item.is_answer == 1}}
+															<img class="picture" src="{{item.answer.split(',')[0]}}" alt="" width="68" height="68" /> {{/if}}
 														</div>
-														<div class="item-right cor">
+														<div class="content">
+															<h1 class="name">{{item.title}}</h1> {{if item.is_answer == 0}}
+															<span class="status">未作答</span> {{else if item.is_answer == 1}}
+															<span class="status">已作答</span> {{/if}}
 														</div>
-													</li>
-													{{/each}}
-												</ul>
-											</div>
+													</div>
+													<div class="item-right">
+														{{if item.is_answer == 0}}
+														<a href="exam-answer.html?id={{item.id}}&pid={{infor[0].id}}" class="item-answer">立即作答</a>
+														{{else if item.is_answer == 1}}
+														<a href="exam-answer.html?id={{item.id}}&pid={{infor[0].id}}" class="item-answer">修改作答</a>
+														{{/if}}
+													</div>
+												</li>
+												{{/each}}
+											</ul>
 										</div>
 									</div>
 								</div>
 							</div>
-						</script>
-					</div>
-					<div class="line"></div>
-					<div class="slx-message">
-						<textarea name="" rows="5" cols="" class="word" placeholder="请输入给老师的留言" onkeyup="checkLength(this);"></textarea>
-						<span class="text">0/<i id="txtnumber">50</i></span>
-					</div>
+						</div>
+					</script>
 				</div>
 			</div>
 			<div class="test-submit">
@@ -155,28 +151,17 @@
 	<script type="text/javascript" src="../assets/js/common.js"></script>
 	<script type="text/javascript" src="../assets/js/iscroll.js"></script>
 	<script type="text/javascript">
-		//限制留言字数
-		function checkLength(which) {
-			var maxChars = 50;
-			if(which.value.length > maxChars)
-				which.value = which.value.substring(0, maxChars);
-			var curr = maxChars - which.value.length;
-			document.getElementById("txtnumber").innerHTML = curr.toString();
-		}
 		$(function() {
 			$('body').css('backgroundColor', '#ebebeb');
 			var token = getCookie('token');
+			var para = window.location.search;
 			var id = GetQueryString('id');
 			var testID = "";
 			var answer = "";
-			//			var fid = GetQueryString('fid');
-			//			console.log(fid);
-			var para = window.location.search;
 			var role = getInfo('role');
 			if(role == "2" || role == "3") {
 				$('.test-submit').hide();
 			}
-
 			//改变折叠面板样式
 			function collapse(id, el) {
 				$(id).on('open.collapse.amui', function() {
@@ -185,7 +170,7 @@
 					$(el).removeClass('active').parent().removeClass('active');
 				});
 			};
-			//试卷收藏
+			//			//试卷收藏
 			$('.heart').on('click', function() {
 				$(this).toggleClass('active');
 				if($(this).hasClass('active')) { //收藏
@@ -202,7 +187,7 @@
 						},
 						success: function(data) {
 							if(data.error_code == 200 || data.error_code == 100) {
-								window.location.href = preUrl('log/login.html' + para + '&path=index/sl-paper-details.html');
+								window.location.href = preUrl('log/login.html' + para + '&path=index/paper-details.html');
 							} else if(data.success) {
 
 							}
@@ -225,7 +210,7 @@
 						},
 						success: function(data) {
 							if(data.error_code == 200 || data.error_code == 100) {
-								window.location.href = preUrl('log/login.html?path=index/sl-paper-details.html');
+								window.location.href = preUrl('log/login.html?path=index/paper-details.html');
 							} else if(data.success) {
 
 							}
@@ -237,7 +222,6 @@
 				}
 
 			});
-
 			//试卷详情
 			$.ajax({
 				url: reqUrl('yeartest_get'),
@@ -246,24 +230,18 @@
 				data: {
 					token: token,
 					id: id,
-					test_type: 2
+					test_type:6
+
 				},
 				xhrFields: {
 					withCredentials: true
 				},
-				async: false,
 				success: function(data) {
 					if(data.error_code == 200 || data.error_code == 100) {
-						window.location.href = preUrl('log/login.html' + para + '&path=index/slx-paper-details.html');
+						window.location.href = preUrl('log/login.html' + para + '&path=index/paper-details.html');
 					} else if(data.success) {
 						var examDetail = template('exam-datail', data);
-						$('.detailsMain').html(examDetail);
-						$('.illustration').html(data.infor[0].illustration);
-						$('.data').html(data.infor[0].data);
-						$('.require').html(data.infor[0].require);
-						//						$('.illustration').find("*").attr('style',"");
-						//						$('.data').find("*").attr('style',"");
-						//						$('.require').find("*").attr('style',"");
+						$('#examDetail').html(examDetail);
 						var collect = data.infor[0].is_shoucang;
 						if(collect == 0) {
 							$('.heart').removeClass('active');
@@ -271,25 +249,21 @@
 							$('.heart').addClass('active');
 						}
 						testID = data.infor[0].id;
-						answer = data.infor[0].question;
-						var list = data.infor[0].question;
-						var List = $('.answer-nav li');
-						var respon = '';
-						for(var i = 0; i < list.length; i++) {
-							if(list[i].is_answer == 0) {
-								respon = "<a href=\"f-exam-answer.html?id=" + list[i].id + "&pid=" + testID + "\" class=\"item-answer\">立即作答</a>";
-							} else if(list[i].is_answer == 1) {
-								respon = "<a href=\"f-exam-answer.html?id=" + list[i].id + "&pid=" + testID + "\" class=\"item-answer\">修改作答</a>";
-
-							}
-							$('.answer-nav li').eq(i).find('.cor').html(respon);
-						}
+						$('.illustration').html(data.infor[0].illustration);
+						$('.data').html(data.infor[0].data);
+						$('.require').html(data.infor[0].require);
+						
+						
+//						$('.illustration').find("*").attr('style',"");
+//						$('.data').find("*").attr('style',"");
+//						$('.require').find("*").attr('style',"");
 
 						//折叠面板
 						collapse('#do-not-say-1', '.coll1');
 						collapse('#do-not-say-2', '.coll2');
 						collapse('#do-not-say-3', '.coll3');
 						collapse('#do-not-say-4', '.coll4');
+						answer = data.infor[0].question;
 
 					} else {
 						mask(data.msg);
@@ -300,6 +274,7 @@
 					alert(settings);
 				}
 			});
+
 			$('.test-submit').click(function() {
 				var open = false;
 				if(answer.length == 0) {
@@ -319,11 +294,10 @@
 				} else {
 					submit();
 				}
-
+				
 			});
 
 			function submit() {
-				var message = $('.word').val();
 				$.ajax({
 					url: reqUrl('submit_test_do'),
 					type: 'post',
@@ -331,19 +305,21 @@
 					data: {
 						token: token,
 						test_id: testID,
-						message: message,
-						jian_xiang: 2,
-						famousteacher_id: ""
+						message: '',
+						jian_xiang:1,
+						famousteacher_id: ''
 					},
+					async: false,
 					xhrFields: {
 						withCredentials: true
 					},
 					success: function(data) {
 						var tid = data.infor[0].id;
 						if(data.error_code == 200 || data.error_code == 100) {
-							window.location.href = preUrl('log/login.html' + para + '&path=index/slx-paper-details.html');
+							window.location.href = preUrl('log/login.html' + para + '&path=index/paper-details.html');
 						} else if(data.success) {
-							window.location.href = preUrl('index/submit-slx-correct.html?id=' + tid + '');
+							console.log('bb');
+							window.location.href = preUrl('index/submit-sl-correct.html?id=' + tid + '');
 						} else {
 							mask(data.msg);
 						}

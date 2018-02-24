@@ -94,7 +94,6 @@
 											$('.reg-mask').show();
 										} else {
 											mask(data.msg);
-											console.log(data.msg);
 										}
 									}
 								});
@@ -160,7 +159,7 @@
 				//验证验证码
 				$.ajax({
 					type: 'POST',
-					url: reqUrl("code_verify"),
+					url:reqUrl("code_verify"),
 					data: {
 						username: phone,
 						code: code

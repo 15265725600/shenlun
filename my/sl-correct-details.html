@@ -34,16 +34,16 @@
 					<div class="order-num">考试项目：<span>{{infor[0].style}}</span></div>
 					<div class="order-num">提交时间：<span>{{infor[0].date}}</span></div>
 					{{if infor[0].is_pigai == 0}}
-					<div class="order-num sur-time">剩余批改时间：<span class="stime"></span></div>
+					<div class="order-num sur-time">剩余批改时间：<span class="stime">{{infor[0].shengyu_time}}</span></div>
 					{{else if infor[0].is_pigai == 1}}
 					<div class="order-num">批改时间：<span>{{infor[0].pigai_time}}</span></div>
 					{{/if}} {{if infor[0].is_pigai == 0}}
 					<div class="n-correct">待批改</div>
 					{{else if infor[0].is_pigai == 1}}
 					<div class="y-correct">已批改</div>
-					{{/if}} {{if infor[0].is_message == 1}}
+					{{/if}} {{if infor[0].is_message == 2 || infor[0].is_message == 3}}
 					<div class="batch">详批</div>
-					{{else if infor[0].is_message == 0}}
+					{{else if infor[0].is_message == 1}}
 					<div class="batch">简批</div>
 					{{/if}}
 				</div>
@@ -64,14 +64,24 @@
 									<span class="status">已作答</span> {{/if}}
 								</div>
 							</div>
+							{{if infor[0].is_message == 1}}
 							<div class="item-right">
 								<a href="look-answer.html?id={{item.id}}&sid={{infor[0].student_id}}" class="item-answer">查看作答</a>
 							</div>
+							{{else if infor[0].is_message == 2}}
+							<div class="item-right">
+								<a href="look-answer.html?id={{item.id}}&sid={{infor[0].student_id}}" class="item-answer">查看作答</a>
+							</div>
+							{{else if infor[0].is_message == 3}}
+							<div class="item-right">
+								<a href="look-answer.html?id={{item.id}}&sid={{infor[0].student_id}}" class="item-answer">查看作答</a>
+							</div>
+							{{/if}}
 						</li>
 						{{/each}}
 					</ul>
 				</div>
-				{{if infor[0].is_message == 1}}
+				{{if infor[0].is_message == 2}}
 				<div class="ssc-message">
 					<textarea name="" rows="3" cols="" class="text" style="border:none">{{infor[0].message}}</textarea>
 				</div>
@@ -107,7 +117,7 @@
 					withCredentials: true
 				},
 				success: function(data) {
-					if(data.error_code == 100) {
+					if(data.error_code == 100 || data.error_code == 200) {
 						window.location.href = preUrl('log/login.html' + para + '&path=my/sl-correct-details.html');
 					} else if(data.success) {
 						var content = template('content', data);
@@ -115,32 +125,35 @@
 						var status = data.infor[0].is_pigai;
 						var pid = data.infor[0].pigai_id;
 						var leftTime = data.infor[0].shengyu_time;
+						if(leftTime < 0){
+							$('stime').html('您的时间已到期');
+						}
 						//倒计时
-						function ShowCountDown(divname, leftTime) {
-							var dd = parseInt(leftTime / 60 / 60 / 24, 10); //计算剩余的天数
-							var hh = parseInt(leftTime / 60 / 60 % 24, 10); //计算剩余的小时数
-							var mm = parseInt(leftTime / 60 % 60, 10); //计算剩余的分钟数
-							var ss = parseInt(leftTime % 60, 10); //计算剩余的秒数
-							dd = checkTime(dd);
-							hh = checkTime(hh);
-							mm = checkTime(mm);
-							ss = checkTime(ss); //小于10的话加0
-							divname.html(dd + "天" + hh + "时" + mm + "分" + ss + "秒" + "");
-						}
+//						function ShowCountDown(divname, leftTime) {
+//							var dd = parseInt(leftTime / 60 / 60 / 24, 10); //计算剩余的天数
+//							var hh = parseInt(leftTime / 60 / 60 % 24, 10); //计算剩余的小时数
+//							var mm = parseInt(leftTime / 60 % 60, 10); //计算剩余的分钟数
+//							var ss = parseInt(leftTime % 60, 10); //计算剩余的秒数
+//							dd = checkTime(dd);
+//							hh = checkTime(hh);
+//							mm = checkTime(mm);
+//							ss = checkTime(ss); //小于10的话加0
+//							divname.html(dd + "天" + hh + "时" + mm + "分" + ss + "秒" + "");
+//						}
 
-						function checkTime(i) {
-							if(i < 10) {
-								i = "0" + i;
-							}
-							return i;
-						}
-						var timer = setInterval(function() {
-							ShowCountDown($('.stime'), leftTime);
-							leftTime -= 1;
-							if(leftTime == 0) {
-								clearInterval(timer);
-							}
-						}, 1000);
+//						function checkTime(i) {
+//							if(i < 10) {
+//								i = "0" + i;
+//							}
+//							return i;
+//						}
+//						var timer = setInterval(function() {
+//							ShowCountDown($('.stime'), leftTime);
+//							leftTime -= 1;
+//							if(leftTime == 0) {
+//								clearInterval(timer);
+//							}
+//						}, 1000);
 
 						if(status == 0) {
 							var con = '<a href="javascript:;" class = "look-correct">马上批改</a>';
@@ -158,19 +171,19 @@
 										withCredentials: true
 									},
 									success: function(data) {
-										if(data.error_code == 100) {
+										if(data.error_code == 100 || data.error_code == 200) {
 											window.location.href = preUrl('log/login.html' + para + '&path=my/sl-correct-details.html');
 										} else if(data.success) {
 											var week_number = data.infor.listItems[0].week_number;
 											var shengyu_num = data.infor.listItems[0].shengyu_num;
-											if(week_number <= 0){
-												mask('本周限额不足,无法批改');
-												return false;
-											}
-											if(shengyu_num <= 0){
-												mask('剩余限额不足,无法批改');
-												return false;
-											}
+//											if(week_number <= 0){
+//												mask('本周限额不足,无法批改');
+//												return false;
+//											}
+//											if(shengyu_num <= 0){
+//												mask('剩余限额不足,无法批改');
+//												return false;
+//											}
 											window.location.href = preUrl('my/sl-correct.php?id=' + pid + '');
 											
 										} else {
